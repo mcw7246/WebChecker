@@ -7,7 +7,7 @@ a web micro-framework.
 ## Team
 
 - Mikayla Wishart
-- MEMBER2
+- Austin Miller
 - MEMBER3
 - MEMBER4
 
