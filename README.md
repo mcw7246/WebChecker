@@ -8,7 +8,7 @@ a web micro-framework.
 
 - Mikayla Wishart
 - Austin Miller
-- MEMBER3
+- Mario Castano
 - MEMBER4
 
 
