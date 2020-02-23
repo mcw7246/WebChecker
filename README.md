@@ -10,7 +10,7 @@ a web micro-framework.
 - Austin Miller
 - Mario Castano
 - Amena Baig
-- MEMBER5
+- Sean Bergen
 
 
 ## Prerequisites
