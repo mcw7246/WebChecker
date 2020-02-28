@@ -23,7 +23,7 @@ import com.webcheckers.util.Message;
 public class GetSignInRoute implements Route {
     private static final Logger LOG = Logger.getLogger(GetHomeRoute.class.getName());
 
-    private static final Message WELCOME_MSG = Message.info("Welcome to the world of online Checkers.");
+    private static final Message SIGNIN_MSG = Message.info("Please sign in before beginning a game.");
 
     private final TemplateEngine templateEngine;
 
@@ -55,12 +55,12 @@ public class GetSignInRoute implements Route {
         LOG.finer("GetSignInRoute is invoked.");
         //
         Map<String, Object> vm = new HashMap<>();
-        vm.put("title", "Welcome!");
+        vm.put("title", "Sign-in");
 
         // display a user message in the Home page
-        vm.put("message", WELCOME_MSG);
+        vm.put("message", SIGNIN_MSG);
 
         // render the View
-        return templateEngine.render(new ModelAndView(vm , "home.ftl"));
+        return templateEngine.render(new ModelAndView(vm , "signin.ftl"));
     }
 }
