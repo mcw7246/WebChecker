@@ -1,8 +1,6 @@
 package com.webcheckers.ui;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.logging.Logger;
 
 import com.webcheckers.application.PlayerLobby;
@@ -34,7 +32,7 @@ public class GetHomeRoute implements Route {
   static final String USERNAMES= "usernames";
 
   private final TemplateEngine templateEngine;
-  private final PlayerLobby playerLobby;
+  private PlayerLobby playerLobby;
 
   /**
    * Create the Spark Route (UI controller) to handle all {@code GET /} HTTP requests.
@@ -49,6 +47,11 @@ public class GetHomeRoute implements Route {
     this.playerLobby = Objects.requireNonNull(playerLobby, "playerLobby" +
             "is required.");
     //
+    List<String> usernames = Arrays.asList("Mik", "Ausy",
+            "Sean");
+    for(String user : usernames){
+      playerLobby.addUsername(user);
+    }
     LOG.config("GetHomeRoute is initialized.");
   }
 
@@ -74,9 +77,12 @@ public class GetHomeRoute implements Route {
     // display a user message in the Home page
     vm.put("message", WELCOME_MSG);
 
+    vm.put(SIGN_IN_ATTR, true);
+    vm.put(USERNAMES, this.playerLobby.getUsernames());
     if(httpSession.attribute(PLAYER_SERVICES_KEY) == null) {
       //Tell the user to log-in
     } else {
+
       // display the player lobby if the player is signed in and has more than
       // one player.
       if (playerLobby.hasOpponents()) {

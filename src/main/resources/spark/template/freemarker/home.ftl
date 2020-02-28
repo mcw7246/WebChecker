@@ -26,9 +26,8 @@
             or replay archived games
     -->
 
-    <!-- List of Players below
+    <!-- List of Players below     -->
     <#include "player-lobby.ftl" />
-    -->
 
   </div>
 

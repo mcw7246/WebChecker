@@ -1,21 +1,12 @@
-<#if signin??>
-    <div id="player-lobby" style="display:none">
-        <table style="width:0">
+<#if signIn>
+    <div id="player-lobby">
             <#list usernames as username>
-                <tr>
-                    <td>
-                        ${username}
-                    </td>
-                    <td>
-                        <form action='./requestGame' method="POST">
-                            <button type="submit" value=${username}>Request
-                                Game</button>
-                        </form>
-                    </td>
-                </tr>
+                <p>${username}:
+                <form action='./requestGame' method="POST">
+                <button type="submit" value=${username}>Request Game</button>
+            </form>
             </#list>
-        </table>
     </div>
 <#else>
-    <div id="player-lobby"> </div>
+    <div id="player-lobby" style="display:none"> </div>
 </#if>

@@ -36,7 +36,7 @@ public class PlayerLobby
   }
 
   // Methods
-  public synchronized static boolean addUsername(String username){
+  public synchronized boolean addUsername(String username){
     usernames.add(username);
     currentPlayer = new Player(username);
     return true;
