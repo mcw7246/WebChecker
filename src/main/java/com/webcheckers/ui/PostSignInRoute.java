@@ -1,5 +1,6 @@
 package com.webcheckers.ui;
 
+import com.webcheckers.application.PlayerLobby;
 import spark.*;
 
 import java.util.HashMap;
@@ -18,17 +19,18 @@ public class PostSignInRoute {
     //
     // Attributes
     //
-
+    private final PlayerLobby playerLobby;
     private final TemplateEngine templateEngine;
 
     //
     // Constructor
     //
-    PostSignInRoute(TemplateEngine templateEngine) {
+    PostSignInRoute(PlayerLobby playerLobby, TemplateEngine templateEngine) {
         // validation
-        Objects.requireNonNull(gameCenter, "gameCenter must not be null");
+        Objects.requireNonNull(playerLobby, "gameCenter must not be null");
         Objects.requireNonNull(templateEngine, "templateEngine must not be null");
         //
+        this.playerLobby = playerLobby;
         this.templateEngine = templateEngine;
     }
 
@@ -36,19 +38,20 @@ public class PostSignInRoute {
     public String handle(Request request, Response response) {
         // start building the View-Model
         final Map<String, Object> vm = new HashMap<>();
-        vm.put(GetHomeRoute.TITLE_ATTR, GetGameRoute.TITLE);
+        vm.put(GetHomeRoute.TITLE_ATTR, GetHomeRoute.TITLE);
         vm.put(GetHomeRoute.NEW_PLAYER_ATTR, Boolean.FALSE);
 
         // retrieve the game object
         final Session session = request.session();
-        final PlayerServices playerServices = session.attribute(GetHomeRoute.PLAYERSERVICES_KEY);
+        final PlayerLobby playerLobby = session.attribute(GetHomeRoute.PLAYERLOBBY_KEY);
+        //TODO: create PLAYERLOBBY_KEY
 
         /* A null playerServices indicates a timed out session or an illegal request on this URL.
          * In either case, we will redirect back to home.
          */
-        if(playerServices != null) {
-            vm.put(GetGameRoute.GAME_BEGINS_ATTR, playerServices.isStartingGame());
-            vm.put(GetGameRoute.GUESSES_LEFT_ATTR, playerServices.guessesLeft());
+        if(playerLobby != null) {
+            vm.put(GetHomeRoute.GAME_BEGINS_ATTR, playerLobby.isStartingGame());
+            //TODO: Change the isStartingGame() to what is needed from PlayerLobby
 
             // retrieve request parameter
             final String guessStr = request.queryParams(GUESS_PARAM);
