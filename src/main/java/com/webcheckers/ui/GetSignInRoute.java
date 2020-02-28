@@ -24,7 +24,7 @@ public class GetSignInRoute implements Route {
     private static final Logger LOG = Logger.getLogger(GetHomeRoute.class.getName());
 
     private static final Message SIGNIN_MSG = Message.info("Please sign in before beginning a game.");
-
+    static final String SIGN_IN_ATTR = "signin";
     private final TemplateEngine templateEngine;
 
     /**
@@ -34,8 +34,8 @@ public class GetSignInRoute implements Route {
      *   the HTML template rendering engine
      */
     public GetSignInRoute(final TemplateEngine templateEngine) {
-        this.templateEngine = Objects.requireNonNull(templateEngine, "templateEngine is required");
-        //
+        Objects.requireNonNull(templateEngine, "templateEngine is required");
+        this.templateEngine = templateEngine;
         LOG.config("GetSignInRoute is initialized.");
     }
 

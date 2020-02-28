@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.logging.Logger;
 
+import com.webcheckers.model.Player;
 import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
@@ -22,6 +23,13 @@ public class GetHomeRoute implements Route {
   private static final Logger LOG = Logger.getLogger(GetHomeRoute.class.getName());
 
   private static final Message WELCOME_MSG = Message.info("Welcome to the world of online Checkers.");
+
+  static final String TITLE_ATTR = "title";
+  static final String NEW_PLAYER_ATTR = "newPlayer";
+  static final String SIGN_IN_ATTR = "signIn";
+
+  static final String TITLE = "Welcome to WebCheckers! Please signin.";
+  static final String PLAYER_LOBBY_KEY ="playerLobby";
 
   private final TemplateEngine templateEngine;
 
