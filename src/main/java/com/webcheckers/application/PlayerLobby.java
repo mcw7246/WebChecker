@@ -26,7 +26,12 @@ public class PlayerLobby
 
     // Constructor
     public PlayerLobby(){
+    }
 
+    public PlayerLobby(List<String> usernames){
+        for(String user : usernames){
+          addUsername(user);
+        }
     }
 
     // Methods
