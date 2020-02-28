@@ -21,13 +21,16 @@ import com.webcheckers.ui.PostSignInRoute;
 
 /**
  * The {@code POST /requestGame} route handler.
+ *
+ * @author Mario Castano
  */
-public class RequestGameRoute implements Route {
+public class PostRequestGameRoute implements Route {
 
     private static final Logger LOG = Logger.getLogger(GetHomeRoute.class.getName());
 
     // Values used in the view-model map for rendering the Challenge Player/requestGame screen
-    static final String CHALLENGER_ATTR = "Request Sent";
+    static final String CHALLENGER_ATTR = "username";
+    static final String MESSAGE = "message";
     static final String VIEW_NAME = "home.ftl";
 
     private final TemplateEngine templateEngine;
@@ -38,10 +41,9 @@ public class RequestGameRoute implements Route {
      * @param templateEngine
      *      The {@link TemplateEngine} used to render pages into HTML.
      */
-    RequestGameRoute(final TemplateEngine templateEngine) {
+    PostRequestGameRoute(final TemplateEngine templateEngine) {
         //validate
         Objects.requireNonNull(templateEngine, "templateEngine must not be null");
-
         this.templateEngine = templateEngine;
     }
 
@@ -64,7 +66,7 @@ public class RequestGameRoute implements Route {
          */
         if(playerLobby != null) {
             final Map<String, Object> vm = new HashMap<>();
-            vm.put(CHALLENGER_ATTR, playerLobby.getUsername());
+            vm.put(MESSAGE, "Request Sent");
             return templateEngine.render(new ModelAndView(vm, VIEW_NAME));
         }
         else {

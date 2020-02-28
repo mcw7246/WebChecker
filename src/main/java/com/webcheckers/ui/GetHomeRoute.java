@@ -18,13 +18,14 @@ import com.webcheckers.util.Message;
 public class GetHomeRoute implements Route {
   private static final Logger LOG = Logger.getLogger(GetHomeRoute.class.getName());
 
-  private static final Message WELCOME_MSG = Message.info("Welcome to the world of online Checkers.");
+  private static final Message WELCOME_MSG = Message.info("Welcome to the world" +
+          " of online Checkers. Please sign-in.");
 
   static final String TITLE_ATTR = "title";
   static final String NEW_PLAYER_ATTR = "newPlayer";
   static final String SIGN_IN_ATTR = "signIn";
 
-  static final String TITLE = "Welcome to WebCheckers! Please signin.";
+  static final String TITLE = "Welcome to WebCheckers! Please sign-in.";
   static final String PLAYER_SERVICES_KEY = "playerServices";
   static final String PLAYER_LOBBY_KEY ="playerLobby";
 
@@ -74,13 +75,13 @@ public class GetHomeRoute implements Route {
     Map<String, Object> vm = new HashMap<>();
     vm.put("title", "Welcome!");
 
-    // display a user message in the Home page
-    vm.put("message", WELCOME_MSG);
+
 
     vm.put(SIGN_IN_ATTR, true);
     vm.put(USERNAMES, this.playerLobby.getUsernames());
     if(httpSession.attribute(PLAYER_SERVICES_KEY) == null) {
-      //Tell the user to log-in
+      // display a user message in the Home page
+      vm.put("message", WELCOME_MSG);
     } else {
 
       // display the player lobby if the player is signed in and has more than
