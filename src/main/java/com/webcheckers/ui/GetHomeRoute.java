@@ -7,11 +7,7 @@ import java.util.logging.Logger;
 
 import com.webcheckers.application.PlayerLobby;
 import com.webcheckers.model.Player;
-import spark.ModelAndView;
-import spark.Request;
-import spark.Response;
-import spark.Route;
-import spark.TemplateEngine;
+import spark.*;
 
 import com.webcheckers.util.Message;
 
@@ -19,6 +15,7 @@ import com.webcheckers.util.Message;
  * The UI Controller to GET the Home page.
  *
  * @author <a href='mailto:bdbvse@rit.edu'>Bryan Basham</a>
+ * @author Austin Miller 'akm8654@rit.edu'
  */
 public class GetHomeRoute implements Route {
   private static final Logger LOG = Logger.getLogger(GetHomeRoute.class.getName());
@@ -30,7 +27,9 @@ public class GetHomeRoute implements Route {
   static final String SIGN_IN_ATTR = "signIn";
 
   static final String TITLE = "Welcome to WebCheckers! Please signin.";
+  static final String PLAYER_SERVICES_KEY = "playerServices";
   static final String PLAYER_LOBBY_KEY ="playerLobby";
+
 
   static final String USERNAMES= "usernames";
 
@@ -67,6 +66,7 @@ public class GetHomeRoute implements Route {
   @Override
   public Object handle(Request request, Response response) {
     LOG.finer("GetHomeRoute is invoked.");
+    final Session httpSession = request.session();
     //
     Map<String, Object> vm = new HashMap<>();
     vm.put("title", "Welcome!");
@@ -74,12 +74,15 @@ public class GetHomeRoute implements Route {
     // display a user message in the Home page
     vm.put("message", WELCOME_MSG);
 
-    // display the player lobby if the player is signed in and has more than
-    // one player.
-    if (playerLobby.hasOpponents()) {
-      vm.put(USERNAMES, this.playerLobby.getUsernames());
+    if(httpSession.attribute(PLAYER_SERVICES_KEY) == null) {
+      //Tell the user to log-in
+    } else {
+      // display the player lobby if the player is signed in and has more than
+      // one player.
+      if (playerLobby.hasOpponents()) {
+        vm.put(USERNAMES, this.playerLobby.getUsernames());
+      }
     }
-
     // render the View
     return templateEngine.render(new ModelAndView(vm , "home.ftl"));
   }

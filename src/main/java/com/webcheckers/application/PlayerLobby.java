@@ -75,11 +75,11 @@ public class PlayerLobby
      * @return returns the list of usernames
      */
     public synchronized List<String> getUsernames(){
-        return this.getUsernames();
+        return usernames;
     }
 
     /**
-     * Returns the whether or not the username is valid or not.
+     * Returns the value if the username is useable or not.
      *
      * @return one of the enumerated options for result.
      */
