@@ -1,4 +1,4 @@
-package com.webcheckers.player;
+package com.webcheckers.model;
 
 /**
  * placeholder for actual code and information

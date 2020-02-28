@@ -25,7 +25,7 @@ public class PostSignInRoute {
     //
     // Constructor
     //
-    PostSignInRoute(PlayerLobby playerLobby, TemplateEngine templateEngine) {
+    public PostSignInRoute(PlayerLobby playerLobby, TemplateEngine templateEngine) {
         // validation
         Objects.requireNonNull(playerLobby, "gameCenter must not be null");
         Objects.requireNonNull(templateEngine, "templateEngine must not be null");
