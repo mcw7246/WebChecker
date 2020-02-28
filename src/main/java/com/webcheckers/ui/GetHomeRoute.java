@@ -42,7 +42,7 @@ public class GetHomeRoute implements Route {
    * @param templateEngine
    *   the HTML template rendering engine
    */
-  public GetHomeRoute(final PlayerLobby playerLobby,
+  public GetHomeRoute(PlayerLobby playerLobby,
                       TemplateEngine templateEngine) {
     // validation
     this.templateEngine = Objects.requireNonNull(templateEngine, "templateEngine is required");

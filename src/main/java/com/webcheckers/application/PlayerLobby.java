@@ -6,16 +6,30 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * A site-wide holding for all of the player's in the lobby.
+ *
+ * @author Austin Miller 'akm8654'
+ */
 public class PlayerLobby
 {
     public enum UsernameResult {TAKEN, AVAILABLE, INVALID}
 
+    // Constants
     static final String USERNAME_TAKEN = "This username is already taken. Please choose another one.";
     static final String USERNAME_INVALID = "This username is invalid. It contains characters that are not allowed in a username.";
+
+    // Attributes
     public static List<String> usernames = new ArrayList<>();
     static Player currentPlayer;
     static UsernameResult result;
 
+    // Constructor
+    public PlayerLobby(){
+
+    }
+
+    // Methods
     public synchronized static boolean addUsername(String username){
         usernames.add(username);
         currentPlayer = new Player(username);
