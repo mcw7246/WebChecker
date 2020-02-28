@@ -145,7 +145,6 @@ public class WebServer {
     //post(SIGNIN_URL, new PostSignInRoute(playerLobby, templateEngine)); //TODO add playerLobby
     post(REQUEST_GAME_URL, new PostRequestGameRoute(templateEngine));
 
-
     //
     LOG.config("WebServer is initialized.");
   }
