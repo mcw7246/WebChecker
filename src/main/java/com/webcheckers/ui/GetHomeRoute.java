@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.logging.Logger;
 
+import com.webcheckers.application.PlayerLobby;
 import com.webcheckers.model.Player;
 import spark.ModelAndView;
 import spark.Request;
@@ -31,7 +32,10 @@ public class GetHomeRoute implements Route {
   static final String TITLE = "Welcome to WebCheckers! Please signin.";
   static final String PLAYER_LOBBY_KEY ="playerLobby";
 
+  static final String USERNAMES= "usernames";
+
   private final TemplateEngine templateEngine;
+  private final PlayerLobby playerLobby;
 
   /**
    * Create the Spark Route (UI controller) to handle all {@code GET /} HTTP requests.
@@ -39,8 +43,12 @@ public class GetHomeRoute implements Route {
    * @param templateEngine
    *   the HTML template rendering engine
    */
-  public GetHomeRoute(final TemplateEngine templateEngine) {
+  public GetHomeRoute(final PlayerLobby playerLobby,
+                      TemplateEngine templateEngine) {
+    // validation
     this.templateEngine = Objects.requireNonNull(templateEngine, "templateEngine is required");
+    this.playerLobby = Objects.requireNonNull(playerLobby, "playerLobby" +
+            "is required.");
     //
     LOG.config("GetHomeRoute is initialized.");
   }
@@ -65,6 +73,12 @@ public class GetHomeRoute implements Route {
 
     // display a user message in the Home page
     vm.put("message", WELCOME_MSG);
+
+    // display the player lobby if the player is signed in and has more than
+    // one player.
+    if (playerLobby.hasOpponents()) {
+      vm.put(USERNAMES, this.playerLobby.getUsernames());
+    }
 
     // render the View
     return templateEngine.render(new ModelAndView(vm , "home.ftl"));

@@ -8,6 +8,8 @@ import java.util.List;
 
 public class PlayerLobby
 {
+    public enum UsernameResult {TAKEN, AVAILABLE, INVALID}
+
     static final String USERNAME_TAKEN = "This username is already taken. Please choose another one.";
     static final String USERNAME_INVALID = "This username is invalid. It contains characters that are not allowed in a username.";
     public static List<String> usernames = new ArrayList<>();
@@ -58,8 +60,32 @@ public class PlayerLobby
         return currentPlayer.getUsername();
     }
 
+    /**
+     * Determines whether the lobby has more than one player in it or not.
+     *
+     * @return whether usernames has more than one player or not.
+     */
+    public boolean hasOpponents(){
+        return (usernames.size() > 1);
+    }
+
+    /**
+     * Getter for the list of usernames.
+     *
+     * @return returns the list of usernames
+     */
+    public synchronized List<String> getUsernames(){
+        return this.getUsernames();
+    }
+
+    /**
+     * Returns the whether or not the username is valid or not.
+     *
+     * @return one of the enumerated options for result.
+     */
     public synchronized UsernameResult getUsernameResult(){
         return result;
     }
-    public enum UsernameResult {TAKEN, AVAILABLE, INVALID}
+
+
 }
