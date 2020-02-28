@@ -1,4 +1,4 @@
-package com.webcheckers.model;
+package com.webcheckers.application;
 
 /**
  * This object coordinates one player's interactions with the server.
@@ -7,4 +7,5 @@ package com.webcheckers.model;
  * @author Austin Miller 'akm8654'
  */
 public class PlayerServices {
+
 }
