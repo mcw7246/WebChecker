@@ -80,9 +80,11 @@ public class PostSignInRoute implements Route{
                     break;
 
                 default:
-                    throw new NoSuchElementException("Invalid result of username recieved.");
+                    throw new NoSuchElementException("Invalid result of username received.");
             }
+
             //vm.put(GetHomeRoute.GAME_BEGINS_ATTR, playerLobby.isStartingGame);
+
             //TODO: Change the isStartingGame() to what is needed from PlayerLobby
 
             System.out.println("UsernameResult: " + playerLobby.getUsernameResult().toString());
