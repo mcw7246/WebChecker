@@ -28,6 +28,7 @@ public class GetHomeRoute implements Route
     static final String VIEW_NAME = "home.ftl";
     static final String TITLE = "Welcome to WebCheckers! Please signin.";
     static final String PLAYER_KEY = "player";
+    static final String PLAYER_LOBBY_KEY = "player-lobby";
     static final String LIST_PLAYERS_KEY = "listPlayers";
     static final String CURRENT_USRER_ATTR = "currentUser";
     private static final Logger LOG = Logger.getLogger(GetHomeRoute.class.getName());

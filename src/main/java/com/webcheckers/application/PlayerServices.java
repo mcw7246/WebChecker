@@ -9,8 +9,8 @@ import com.webcheckers.model.Player;
  * @author Austin Miller 'akm8654'
  */
 public class PlayerServices {
-    // Attributes
-    private Player player;
-    private String username;
+  // Attributes
+  private Player player;
+  private String username;
 
 }

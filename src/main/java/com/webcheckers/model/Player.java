@@ -48,7 +48,7 @@ public class Player {
         else
         {
             //username already exists
-            if(playerLobby.users.stream().anyMatch(p1 -> p1.username.equals(username)))
+            if(playerLobby.getUsernames().stream().anyMatch(p1 -> p1.equals(username)))
             {
                 result = UsernameResult.TAKEN;
             }
@@ -72,6 +72,7 @@ public class Player {
         Player player = (Player) o;
         return username.equals(player.username);
     }
+
     public synchronized String getUsername(){
         return username;
     }
