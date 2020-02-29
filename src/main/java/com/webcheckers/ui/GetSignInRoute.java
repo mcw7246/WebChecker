@@ -25,6 +25,7 @@ public class GetSignInRoute implements Route {
 
     private static final Message SIGNIN_MSG = Message.info("Please sign in before beginning a game.");
     static final String SIGN_IN_ATTR = "signin";
+    static final String INVALID_USER_ATTR  = "invalid";
     private final TemplateEngine templateEngine;
 
     /**
