@@ -19,9 +19,10 @@
 
         <!-- Provide a message to the user, if supplied. -->
         <#include "message.ftl" />
+
         <form action='./signin' method="POST">
-            <input name="sign_in_name">
-            <input type="submit">
+            <input name="username">
+            <button type="submit">Submit</button>
         </form>
 
     </div>

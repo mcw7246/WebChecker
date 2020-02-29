@@ -11,79 +11,76 @@ import spark.*;
 
 import com.webcheckers.util.Message;
 
+import static spark.Spark.halt;
+
 /**
  * The UI Controller to GET the Home page.
  *
  * @author <a href='mailto:bdbvse@rit.edu'>Bryan Basham</a>
  * @author Austin Miller 'akm8654@rit.edu'
  */
-public class GetHomeRoute implements Route {
-  private static final Logger LOG = Logger.getLogger(GetHomeRoute.class.getName());
+public class GetHomeRoute implements Route
+{
+    static final String TITLE_ATTR = "title";
 
-  private static final Message WELCOME_MSG = Message.info("Welcome to the world of online Checkers.");
+    //private static final Message WELCOME_MSG = Message.info("Welcome to the world of online Checkers.");
+    static final String NEW_PLAYER_ATTR = "newPlayer";
+    static final String VIEW_NAME = "home.ftl";
+    static final String TITLE = "Welcome to WebCheckers! Please signin.";
+    static final String PLAYER_KEY = "player";
+    static final String LIST_PLAYERS_KEY = "listPlayers";
+    static final String CURRENT_USRER_ATTR = "currentUser";
+    private static final Logger LOG = Logger.getLogger(GetHomeRoute.class.getName());
+    private final TemplateEngine templateEngine;
+    private final PlayerLobby lobby;
 
-  static final String TITLE_ATTR = "title";
-  static final String NEW_PLAYER_ATTR = "newPlayer";
-  static final String SIGN_IN_ATTR = "signIn";
 
-  static final String TITLE = "Welcome to WebCheckers! Please signin.";
-  static final String PLAYER_SERVICES_KEY = "playerServices";
-  static final String PLAYER_LOBBY_KEY ="playerLobby";
-
-
-  static final String USERNAMES= "usernames";
-
-  private final TemplateEngine templateEngine;
-  private final PlayerLobby playerLobby;
-
-  /**
-   * Create the Spark Route (UI controller) to handle all {@code GET /} HTTP requests.
-   *
-   * @param templateEngine
-   *   the HTML template rendering engine
-   */
-  public GetHomeRoute(PlayerLobby playerLobby,
-                      TemplateEngine templateEngine) {
-    // validation
-    this.templateEngine = Objects.requireNonNull(templateEngine, "templateEngine is required");
-    this.playerLobby = Objects.requireNonNull(playerLobby, "playerLobby" +
-            "is required.");
-    //
-    LOG.config("GetHomeRoute is initialized.");
-  }
-
-  /**
-   * Render the WebCheckers Home page.
-   *
-   * @param request
-   *   the HTTP request
-   * @param response
-   *   the HTTP response
-   *
-   * @return
-   *   the rendered HTML for the Home page
-   */
-  @Override
-  public Object handle(Request request, Response response) {
-    LOG.finer("GetHomeRoute is invoked.");
-    final Session httpSession = request.session();
-    //
-    Map<String, Object> vm = new HashMap<>();
-    vm.put("title", "Welcome!");
-
-    // display a user message in the Home page
-    vm.put("message", WELCOME_MSG);
-
-    if(httpSession.attribute(PLAYER_SERVICES_KEY) == null) {
-      //Tell the user to log-in
-    } else {
-      // display the player lobby if the player is signed in and has more than
-      // one player.
-      if (playerLobby.hasOpponents()) {
-        vm.put(USERNAMES, this.playerLobby.getUsernames());
-      }
+    /**
+     * Create the Spark Route (UI controller) to handle all {@code GET /} HTTP requests.
+     *
+     * @param templateEngine the HTML template rendering engine
+     */
+    public GetHomeRoute(final TemplateEngine templateEngine, PlayerLobby playerLobby)
+    {
+        this.lobby = playerLobby;
+        this.templateEngine = Objects.requireNonNull(templateEngine, "templateEngine is required");
+        //
+        LOG.config("GetHomeRoute is initialized.");
     }
-    // render the View
-    return templateEngine.render(new ModelAndView(vm , "home.ftl"));
-  }
+
+    /**
+     * Render the WebCheckers Home page.
+     *
+     * @param request  the HTTP request
+     * @param response the HTTP response
+     * @return the rendered HTML for the Home page
+     */
+    @Override
+    public Object handle(Request request, Response response)
+    {
+        // retrieve the HTTP session
+        final Session httpSession = request.session();
+
+        // start building the View-Model
+        final Map<String, Object> vm = new HashMap<>();
+        vm.put(TITLE_ATTR, TITLE);
+
+        // if this is a brand new browser session or a session that timed out
+        if (httpSession.attribute(PLAYER_KEY) == null)
+        {
+            //uncomment if needed
+            //vm.put(LIST_PLAYERS_KEY, lobby.getUsernamesList());
+            // get the object that will provide client-specific services for this player
+            vm.put(NEW_PLAYER_ATTR, true);
+            return templateEngine.render(new ModelAndView(vm, VIEW_NAME));
+        }
+        else
+        {
+
+            // there is a game already being played so redirect the user to the Game view
+            response.redirect(WebServer.SIGNIN_URL);
+            halt();
+            return null;
+        }
+    }
 }
