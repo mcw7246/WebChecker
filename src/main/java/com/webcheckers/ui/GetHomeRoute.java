@@ -89,18 +89,29 @@ public class GetHomeRoute implements Route
     }
     else
     {
-      vm.put(SIGN_IN_KEY, true);
-      vm.put(CURRENT_USER_ATTR, player.getUsername());
-      Map<String, String> challenges = lobby.getChallenges();
-      if(challenges.containsKey(player.getUsername())){
-        vm.put(CHALLENGED_KEY, true);
-        vm.put(CHALLENGE_USER_KEY, challenges.get(player.getUsername()));
-      } else {
-        vm.put(CHALLENGED_KEY, false);
+      // If the player is currently in a game, then they need to be redirected
+      // to the game screen.
+      if(player.isInGame()){
+        response.redirect(WebServer.GAME_URL);
+        return null;
+      } else
+      {
+        vm.put(SIGN_IN_KEY, true);
+        vm.put(CURRENT_USER_ATTR, player.getUsername());
+        Map<String, String> challenges = lobby.getChallenges();
+        if (challenges.containsKey(player.getUsername()))
+        {
+          vm.put(CHALLENGED_KEY, true);
+          vm.put(CHALLENGE_USER_KEY, challenges.get(player.getUsername()));
+        }
+        else
+        {
+          vm.put(CHALLENGED_KEY, false);
+        }
+        List<String> usernames = lobby.getUsernames();
+        usernames.remove(player.getUsername());
+        vm.put("usernames", usernames);
       }
-      List<String> usernames = lobby.getUsernames();
-      usernames.remove(player.getUsername());
-      vm.put("usernames", usernames);
       return templateEngine.render(new ModelAndView(vm, VIEW_NAME));
     }
   }
