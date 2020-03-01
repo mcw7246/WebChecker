@@ -3,6 +3,12 @@ package com.webcheckers.model;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+/**
+ * An individual row of the board
+ *
+ * @author Zehra Amena Baig (zab1166)
+ */
+
 public class Row implements Iterable<Space>
 {
     /**

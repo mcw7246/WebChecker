@@ -1,5 +1,10 @@
 package com.webcheckers.model;
 
+/**
+ * Each space in a row
+ *
+ * @author Zehra Amena Baig (zab1166)
+ */
 public class Space
 {
     private final boolean isblackSpace;
