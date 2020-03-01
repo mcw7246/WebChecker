@@ -23,6 +23,7 @@ import com.webcheckers.ui.PostSignInRoute;
 /**
  * The {@code POST /requestGame} route handler.
  *
+ * @author Austin Miller 'akm8654'
  * @author Mario Castano
  */
 public class PostRequestGameRoute implements Route {
@@ -30,7 +31,7 @@ public class PostRequestGameRoute implements Route {
   private static final Logger LOG = Logger.getLogger(GetHomeRoute.class.getName());
 
   // Values used in the view-model map for rendering the Challenge Player/requestGame screen
-  static final String CHALLENGER_ATTR = "username";
+  static final String CHALLENGER_ATTR = "challengeUser";
   static final String MESSAGE = "message";
   static final String VIEW_NAME = "home.ftl";
   static final String REQUEST_VAL = "gameRequest";
@@ -71,22 +72,25 @@ public class PostRequestGameRoute implements Route {
     {
       System.out.println("Sending game request.");
       final Map<String, Object> vm = new HashMap<>();
+      vm.put(GetHomeRoute.TITLE_ATTR, GetHomeRoute.TITLE);
       final String usernameStr = request.queryParams(REQUEST_VAL);
       if (playerLobby.challenge(usernameStr, player.getUsername()))
       {
-        vm.put(MESSAGE, "Request Not Sent! " + usernameStr +" has already " +
+        httpSession.attribute(MESSAGE, "Request Not Sent! " + usernameStr +" has " +
+                "already " +
                 "been challenged!");
       } else
       {
         if (playerLobby.challenging(player.getUsername())){
-          vm.put(MESSAGE, "Request Not Sent! " + usernameStr + " is already" +
+          httpSession.attribute(MESSAGE, "Request Not Sent! " + usernameStr + " is already" +
                   "challenging someone!");
         } else
         {
-          vm.put(MESSAGE, "Request sent to " + usernameStr + ".");
+          httpSession.attribute(MESSAGE, "Request sent to " + usernameStr + ".");
         }
       }
-      return templateEngine.render(new ModelAndView(vm, VIEW_NAME));
+      response.redirect(WebServer.HOME_URL);
+      return null;
     }
     else
     {

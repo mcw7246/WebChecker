@@ -12,6 +12,7 @@ import spark.*;
 
 import com.webcheckers.util.Message;
 
+import static com.webcheckers.ui.PostRequestGameRoute.MESSAGE;
 import static spark.Spark.halt;
 
 /**
@@ -27,12 +28,12 @@ public class GetHomeRoute implements Route
   //private static final Message WELCOME_MSG = Message.info("Welcome to the world of online Checkers.");
   static final String NEW_PLAYER_ATTR = "newPlayer";
   static final String VIEW_NAME = "home.ftl";
-  static final String TITLE = "Welcome to WebCheckers! Please signin.";
+  static final String TITLE = "Welcome to WebCheckers!";
   static final String PLAYER_KEY = "player";
   static final String PLAYER_LOBBY_KEY = "player-lobby";
   static final String SIGN_IN_KEY = "signIn";
   static final String PLAYER_NUM_KEY = "playerNum";
-  static final String LIST_PLAYERS_KEY = "listPlayers";
+  static final String CHALLENGE_USER_KEY = "challengeUser";
   static final String CURRENT_USER_ATTR = "currentUser";
   static final String CHALLENGED_KEY = "pendingChallenge";
   private static final Logger LOG = Logger.getLogger(GetHomeRoute.class.getName());
@@ -71,10 +72,15 @@ public class GetHomeRoute implements Route
     vm.put(TITLE_ATTR, TITLE);
     Player player = httpSession.attribute(PLAYER_KEY);
 
+    String msg = httpSession.attribute(MESSAGE);
+    if (msg != null){
+      vm.put(MESSAGE, msg);
+    }
     httpSession.attribute(PLAYER_LOBBY_KEY, lobby);
     // if this is a brand new browser session or a session that timed out
     if (player == null)
     {
+      vm.replace(TITLE_ATTR, TITLE + " Please sign-in.");
       vm.put(SIGN_IN_KEY, false);
       vm.put(PLAYER_NUM_KEY, lobby.getUsernames().size());
       // get the object that will provide client-specific services for this player
@@ -85,8 +91,10 @@ public class GetHomeRoute implements Route
     {
       vm.put(SIGN_IN_KEY, true);
       vm.put(CURRENT_USER_ATTR, player.getUsername());
-      if(lobby.getChallenges().containsKey(player.getUsername())){
+      Map<String, String> challenges = lobby.getChallenges();
+      if(challenges.containsKey(player.getUsername())){
         vm.put(CHALLENGED_KEY, true);
+        vm.put(CHALLENGE_USER_KEY, challenges.get(player.getUsername()));
       } else {
         vm.put(CHALLENGED_KEY, false);
       }
