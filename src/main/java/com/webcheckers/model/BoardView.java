@@ -38,6 +38,7 @@ public class BoardView implements Iterable<Row>
     public BoardView(boolean isFirst)
     {
         board = new ArrayList<Row>();
+
         for(int i = 0; i < DIMENSIONS; i++)
         {
             board.add(new Row(i, isFirst));
