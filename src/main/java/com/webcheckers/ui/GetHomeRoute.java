@@ -1,6 +1,7 @@
 package com.webcheckers.ui;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.logging.Logger;
@@ -29,8 +30,10 @@ public class GetHomeRoute implements Route
     static final String TITLE = "Welcome to WebCheckers! Please signin.";
     static final String PLAYER_KEY = "player";
     static final String PLAYER_LOBBY_KEY = "player-lobby";
+    static final String SIGN_IN_KEY = "signIn";
+    static final String PLAYER_NUM_KEY = "playerNum";
     static final String LIST_PLAYERS_KEY = "listPlayers";
-    static final String CURRENT_USRER_ATTR = "currentUser";
+    static final String CURRENT_USER_ATTR = "currentUser";
     private static final Logger LOG = Logger.getLogger(GetHomeRoute.class.getName());
     private final TemplateEngine templateEngine;
     private final PlayerLobby lobby;
@@ -65,23 +68,25 @@ public class GetHomeRoute implements Route
         // start building the View-Model
         final Map<String, Object> vm = new HashMap<>();
         vm.put(TITLE_ATTR, TITLE);
+        Player player = httpSession.attribute(PLAYER_KEY);
 
         // if this is a brand new browser session or a session that timed out
-        if (httpSession.attribute(PLAYER_KEY) == null)
+        if (player == null)
         {
-            //uncomment if needed
-            //vm.put(LIST_PLAYERS_KEY, lobby.getUsernamesList());
+            vm.put(SIGN_IN_KEY, false);
+            vm.put(PLAYER_NUM_KEY, lobby.getUsernames().size());
             // get the object that will provide client-specific services for this player
             vm.put(NEW_PLAYER_ATTR, true);
             return templateEngine.render(new ModelAndView(vm, VIEW_NAME));
         }
         else
         {
-
-            // there is a game already being played so redirect the user to the Game view
-            response.redirect(WebServer.SIGNIN_URL);
-            halt();
-            return null;
+            vm.put(SIGN_IN_KEY, true);
+            vm.put(CURRENT_USER_ATTR, player.getUsername());
+            List<String> usernames = lobby.getUsernames();
+            usernames.remove(player.getUsername());
+            vm.put("usernames", usernames);
+            return templateEngine.render(new ModelAndView(vm, VIEW_NAME));
         }
     }
 }
