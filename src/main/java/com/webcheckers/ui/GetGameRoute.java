@@ -27,7 +27,7 @@ public class GetGameRoute implements Route
   //Attributes
   private static final Logger LOG = Logger.getLogger(GetHomeRoute.class.getName());
   private final TemplateEngine templateEngine;
-  private String CURRENT_PLAYER;
+  private String CURRENT_PLAYER = "currentUser";
   private String OPPONENT_PLAYER;
   private PlayerLobby lobby;
 

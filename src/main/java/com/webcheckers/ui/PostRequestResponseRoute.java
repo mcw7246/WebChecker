@@ -14,6 +14,8 @@ import spark.Response;
 import spark.Route;
 import spark.Session;
 import spark.TemplateEngine;
+
+import static com.webcheckers.ui.GetHomeRoute.CHALLENGE_USER_KEY;
 import static spark.Spark.halt;
 
 import com.webcheckers.util.Message;
@@ -62,21 +64,22 @@ public class PostRequestResponseRoute implements Route {
     @Override
     public String handle(Request request, Response response)
     {
+        LOG.config("Post Request Response has been invoked.");
         //retrieve the playerLobby object to verify that no time out has occurred
         final Session httpSession = request.session();
         final Player player = httpSession.attribute(GetHomeRoute.PLAYER_KEY);
-        final String oppPlayer =
-                httpSession.attribute(GetHomeRoute.CHALLENGED_USER_KEY);
+
 
         /* A null playerLobby indicates a timed out session or an illegal request on this URL.
          * In either case, we will redirect back to home.
          */
         if (player != null) {
-
             final Map<String, Object> vm = new HashMap<>();
             final String usernameStr = player.getUsername();
             vm.put(GetHomeRoute.TITLE_ATTR, GetHomeRoute.TITLE);
             final String accept = request.queryParams(GAME_ACCEPT);
+            final String oppPlayer = httpSession.attribute(CHALLENGE_USER_KEY);
+            LOG.config("Response to: " + oppPlayer);
             vm.put(GetHomeRoute.SIGN_IN_KEY, true);
             switch (accept) {
                 case "yes":

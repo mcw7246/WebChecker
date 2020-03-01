@@ -75,7 +75,7 @@ public class PlayerLobby
    *
    * @return the map of challengers and victims.
    */
-  public static Map<String, String> getChallenges()
+  public Map<String, String> getChallenges()
   {
     return challenges;
   }
@@ -84,10 +84,15 @@ public class PlayerLobby
    * Determines whether someone is challenging another or not.
    *
    * @param challenger is the player actively challenging another.
-   * @return whether the player is currently challenging or not.
+   * @return whether the player is currently challenging or not. (Also false
+   * if they are challenging the correct victim
    */
-  public boolean challenging(String challenger)
+  public boolean challenging(String challenger, String victim)
   {
+    if (challenges.get(victim) != null &&
+            challenges.get(victim).equals(challenger)){
+      return false;
+    }
     if (challengers.contains(challenger))
     {
       return true;

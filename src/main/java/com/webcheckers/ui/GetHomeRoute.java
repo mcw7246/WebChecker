@@ -105,6 +105,8 @@ public class GetHomeRoute implements Route
         Map<String, String> challenges = lobby.getChallenges();
         if (challenges.containsKey(player.getUsername()))
         {
+          httpSession.attribute(CHALLENGE_USER_KEY,
+                  challenges.get(player.getUsername()));
           vm.put(CHALLENGED_KEY, true);
           vm.put(CHALLENGE_USER_KEY, challenges.get(player.getUsername()));
         }
