@@ -29,6 +29,8 @@ public class GetHomeRoute implements Route
     static final String TITLE = "Welcome to WebCheckers! Please signin.";
     static final String PLAYER_KEY = "player";
     static final String PLAYER_LOBBY_KEY = "player-lobby";
+    static final String SIGN_IN_KEY = "signIn";
+    static final String PLAYER_NUM_KEY = "playerNum";
     static final String LIST_PLAYERS_KEY = "listPlayers";
     static final String CURRENT_USRER_ATTR = "currentUser";
     private static final Logger LOG = Logger.getLogger(GetHomeRoute.class.getName());
@@ -69,8 +71,8 @@ public class GetHomeRoute implements Route
         // if this is a brand new browser session or a session that timed out
         if (httpSession.attribute(PLAYER_KEY) == null)
         {
-            //uncomment if needed
-            //vm.put(LIST_PLAYERS_KEY, lobby.getUsernamesList());
+            vm.put(SIGN_IN_KEY, false);
+            vm.put(PLAYER_NUM_KEY, lobby.getUsernames().size());
             // get the object that will provide client-specific services for this player
             vm.put(NEW_PLAYER_ATTR, true);
             return templateEngine.render(new ModelAndView(vm, VIEW_NAME));
@@ -78,10 +80,9 @@ public class GetHomeRoute implements Route
         else
         {
 
-            // there is a game already being played so redirect the user to the Game view
-            response.redirect(WebServer.SIGNIN_URL);
-            halt();
-            return null;
+            vm.replace(SIGN_IN_KEY, true);
+            vm.put("usernames", lobby.getUsernames());
+            return templateEngine.render(new ModelAndView(vm, VIEW_NAME));
         }
     }
 }

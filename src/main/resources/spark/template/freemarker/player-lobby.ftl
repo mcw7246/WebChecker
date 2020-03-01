@@ -8,5 +8,5 @@
             </#list>
     </div>
 <#else>
-    <div id="player-lobby" style="display:none"> </div>
+    <div id="player-lobby">Currently logged in Players: ${playerNum}</div>
 </#if>

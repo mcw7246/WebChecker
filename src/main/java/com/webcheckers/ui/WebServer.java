@@ -56,7 +56,7 @@ public class WebServer {
    */
   public static final String HOME_URL = "/";
   public static final String SIGNIN_URL = "/signin";
-  public static final String REQUEST_GAME_URL = "/request-game";
+  public static final String REQUEST_GAME_URL = "/requestGame";
 
   //
   // Attributes
