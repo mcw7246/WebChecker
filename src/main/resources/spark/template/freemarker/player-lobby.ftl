@@ -19,7 +19,6 @@
             <form action='./requestResponse' method="Post">
                 <button type="submit" name="gameAccept"
                         value="yes">Accept</button>
-
             </form>
 
             <form action='./requestResponse' method="Post">

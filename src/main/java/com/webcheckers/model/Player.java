@@ -13,6 +13,9 @@ import java.util.regex.Pattern;
 public class Player
 {
   public static UsernameResult result = null;
+  public enum ViewMode {
+    PLAY
+  }
   private String username;
   private PlayerLobby playerLobby;
    private boolean inGame = false;
@@ -31,13 +34,6 @@ public class Player
      */
     public void hasEnteredGame() {
         inGame = true;
-    }
-
-    /**
-     * Gets the opponent of this player.
-     */
-    public String getOpponent() {
-        return playerLobby.getChallenger(username);
     }
 
     /**

@@ -6,6 +6,7 @@ import java.util.Objects;
 import java.util.logging.Logger;
 
 import com.webcheckers.model.Player;
+import jdk.nashorn.internal.objects.annotations.Getter;
 import org.w3c.dom.css.ViewCSS;
 import spark.ModelAndView;
 import spark.Request;
@@ -32,8 +33,9 @@ public class PostRequestResponseRoute implements Route {
     // Values used in the view-model map for rendering the receivedRequest message on screen
     static final String REQUEST_VAL = "gameRequest";
     static final String VIEW_NAME = "home.ftl";
-    static final String GAME_ACCEPT = "response";
+    static final String GAME_ACCEPT = "gameAccept";
 
+    private final PlayerLobby lobby;
     private final TemplateEngine templateEngine;
 
     /**
@@ -42,10 +44,12 @@ public class PostRequestResponseRoute implements Route {
      * @param templateEngine
      *      The {@link TemplateEngine} used to render pages into HTML.
      */
-    PostRequestResponseRoute(final TemplateEngine templateEngine) {
+    PostRequestResponseRoute(final TemplateEngine templateEngine,
+                             final PlayerLobby lobby) {
         //validation
         Objects.requireNonNull(templateEngine, "templateEngine must not be null");
         this.templateEngine = templateEngine;
+        this.lobby = lobby;
     }
 
     /**
@@ -60,25 +64,27 @@ public class PostRequestResponseRoute implements Route {
     {
         //retrieve the playerLobby object to verify that no time out has occurred
         final Session httpSession = request.session();
-        final PlayerLobby playerLobby =
-          httpSession.attribute(GetHomeRoute.PLAYER_LOBBY_KEY);
         final Player player = httpSession.attribute(GetHomeRoute.PLAYER_KEY);
-        final Player opposingPlayer = httpSession.attribute(GetHomeRoute.CHALLENGED_USER_KEY);
+        final String oppPlayer =
+                httpSession.attribute(GetHomeRoute.CHALLENGED_USER_KEY);
 
         /* A null playerLobby indicates a timed out session or an illegal request on this URL.
          * In either case, we will redirect back to home.
          */
-        if (playerLobby != null) {
+        if (player != null) {
+
             final Map<String, Object> vm = new HashMap<>();
-            final String usernameStr = request.queryParams(REQUEST_VAL);
+            final String usernameStr = player.getUsername();
             vm.put(GetHomeRoute.TITLE_ATTR, GetHomeRoute.TITLE);
-            switch (GAME_ACCEPT) {
-                case YES:
-                    PlayerLobby.gameStarted(usernameStr);
+            final String accept = request.queryParams(GAME_ACCEPT);
+            vm.put(GetHomeRoute.SIGN_IN_KEY, true);
+            switch (accept) {
+                case "yes":
+                    lobby.startGame(oppPlayer, usernameStr);
                     response.redirect(WebServer.GAME_URL);
                     break;
-                case NO:
-                    removePlayer(player.getUsername());
+                case "no":
+                    removePlayer(usernameStr);
                     response.redirect(WebServer.HOME_URL);
                     break;
                 //Act upon the player's response to a game request
@@ -92,10 +98,11 @@ public class PostRequestResponseRoute implements Route {
             }
     }
 
-    private void getResponse() {
-
-    }
-
+    /**
+     * Removes the challenger from the victim.
+     *
+     * @param username  the challenger's username.
+     */
     static private void removePlayer(String username) {
         PlayerLobby.removeChallenger(username);
     }
