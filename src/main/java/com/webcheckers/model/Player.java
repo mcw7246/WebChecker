@@ -11,6 +11,7 @@ import java.util.regex.Pattern;
  * placeholder for actual code and information
  *
  * swen fwiends
+ * @author: Mikayla Wishart 'mcw7246'
  */
 
 public class Player {
