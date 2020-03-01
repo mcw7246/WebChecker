@@ -36,6 +36,7 @@ public class GetHomeRoute implements Route
   static final String CHALLENGE_USER_KEY = "challengeUser";
   static final String CURRENT_USER_ATTR = "currentUser";
   static final String CHALLENGED_KEY = "pendingChallenge";
+  static final String CHALLENGED_USER_KEY = "opposingUser";
   private static final Logger LOG = Logger.getLogger(GetHomeRoute.class.getName());
   private final TemplateEngine templateEngine;
   private final PlayerLobby lobby;

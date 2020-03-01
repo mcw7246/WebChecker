@@ -27,6 +27,20 @@ public class Player
   }
 
     /**
+     * Toggles that the player is in game.
+     */
+    public void hasEnteredGame() {
+        inGame = true;
+    }
+
+    /**
+     * Gets the opponent of this player.
+     */
+    public String getOpponent() {
+        return playerLobby.getChallenger(username);
+    }
+
+    /**
      * Returns whether the player is actively in a game or not.
      *
      * @return true or false for in game.

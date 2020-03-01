@@ -12,37 +12,39 @@ import java.util.*;
  */
 public class PlayerLobby
 {
-  // Attributes
-  private static Map<String, Player> players = new HashMap<>();
-  private static Map<String, String> challenges = new HashMap<>();
-  private static Set<String> challengers = new HashSet<>();
 
-  public synchronized static void newPlayer(Player player)
-  {
-    players.put(player.getUsername(), player);
-  }
+    // Attributes
+    private static Map<String, Player> players = new HashMap<>();
+    private static Map<String, String> challenges = new HashMap<>();
+    private static Set<String> challengers = new HashSet<>();
 
-  /**
-   * Adds a challenge to the current hashMap.
-   *
-   * @param challenger the person challenging
-   * @param victim the person challenged.
-   * @return Whether the challenge can be issued, if the victim already is
-   * targetted returns false.
-   */
-  public boolean challenge(String victim, String challenger)
-  {
-    if(challenges.containsKey(victim))
+    // Constructor
+    public PlayerLobby()
     {
-      return false;
     }
-    else
+
+    public synchronized static void newPlayer(Player player)
     {
-      challenges.put(victim, challenger);
-      challengers.add(challenger);
-      return true;
+        players.put(player.getUsername(), player);
     }
-  }
+
+    /**
+     * Adds a challenge to the current hashMap.
+     *
+     * @param challenger the person challenging
+     * @param victim the person challenged.
+     * @return Whether the challenge can be issued, if the victim already is
+     * targetted returns false.
+     */
+    public boolean challenge(String victim, String challenger){
+        if(challenges.containsKey(victim)){
+            return false;
+        } else {
+            challenges.put(victim, challenger);
+            challengers.add(challenger);
+            return true;
+        }
+    }
 
   /**
    * Gets the challenges ongoing in the lobby.
@@ -69,30 +71,44 @@ public class PlayerLobby
       }
     }
 
-    /**
+  /**
+   * Retrieves a specific player/opponent set from the set of challengers
+   */
+  public static String getChallenger(String username) {
+    return challenges.get(username);
+  }
+
+  /**
      * Removes a potential challenger from the list of challengees.
      */
-  public void removeChallenger(String challenger) {
-    if (challengers.contains(challenger)) {
-      challengers.remove(challenger);
+    public static synchronized void removeChallenger(String challenger) {
+            challengers.remove(challenger);
     }
+
+  /**
+   * If a given player has entered the game, set their opponent as in a game as well.
+   */
+  public static void gameStarted(String username) {
+    players.get(username).hasEnteredGame();
+    players.get(getChallenger(username)).hasEnteredGame();
   }
 
   /**
-   * Getter for the list of usernames.
-   *
-   * @return returns the list of usernames
-   */
-  public synchronized List<String> getUsernames(){
-    return new ArrayList<>(players.keySet());
-  }
+     * Getter for the list of usernames.
+     *
+     * @return returns the list of usernames
+     */
+    public synchronized List<String> getUsernames(){
+        return new ArrayList<>(players.keySet());
+    }
 
-  /**
-   * Gets the Players hashmap.
-   *
-   * @return the hashmap of all players.
-   */
-  public synchronized Map<String, Player> getPlayers(){
-    return players;
-  }
+    /**
+     * Gets the Players hashmap.
+     *
+     * @return the hashmap of all players.
+     */
+    public synchronized Map<String, Player> getPlayers(){
+        return players;
+    }
+
 }
