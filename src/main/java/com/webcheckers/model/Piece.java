@@ -1,5 +1,11 @@
 package com.webcheckers.model;
 
+/**
+ * Each piece on the board
+ *
+ * @author Zehra Amena Baig (zab1166)
+ */
+
 public class Piece
 {
     /**
