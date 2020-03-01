@@ -11,18 +11,28 @@ import java.util.regex.Pattern;
  * placeholder for actual code and information
  *
  * swen fwiends
- * @author: Mikayla Wishart 'mcw7246'
+ * @author Austin Miller 'akm8654'
  */
 
 public class Player {
 
-
     public static UsernameResult result = null;
     private String username;
     private PlayerLobby playerLobby;
+    private boolean inGame = false;
 
     public Player(PlayerLobby playerLobby){
         this.playerLobby = playerLobby;
+    }
+
+    /**
+     * Returns whether the player is actively in a game or not.
+     *
+     * @return true or false for in game.
+     */
+    public boolean isInGame()
+    {
+        return inGame;
     }
 
     public String setUsername(String name)
