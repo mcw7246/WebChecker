@@ -26,11 +26,11 @@ public class GetHomeRoute implements Route
     //private static final Message WELCOME_MSG = Message.info("Welcome to the world of online Checkers.");
     static final String NEW_PLAYER_ATTR = "newPlayer";
     static final String VIEW_NAME = "home.ftl";
-    static final String TITLE = "Welcome to WebCheckers! Please signin.";
+    static final String TITLE = "Welcome to WebCheckers! Please Sign In.";
     static final String PLAYER_KEY = "player";
     static final String PLAYER_LOBBY_KEY = "player-lobby";
     static final String LIST_PLAYERS_KEY = "listPlayers";
-    static final String CURRENT_USRER_ATTR = "currentUser";
+    static final String CURRENT_USER_ATTR = "currentUser";
     private static final Logger LOG = Logger.getLogger(GetHomeRoute.class.getName());
     private final TemplateEngine templateEngine;
     private final PlayerLobby lobby;

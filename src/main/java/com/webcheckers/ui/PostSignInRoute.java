@@ -92,11 +92,19 @@ public class PostSignInRoute implements Route{
         }
     }
 
+    /**
+     * Helper method that notifies a user of unexpected responses or other internal errors that occur
+     *
+     * @param vm the View-Model map to update in case of error
+     * @param message the message associated with the error that occurred
+     * @return the updated View to notify the user that an error had occurred
+     */
     private ModelAndView error(final Map<String, Object> vm, final String message)
     {
         vm.put(MESSAGE_ATTR, Message.error(message));
         return new ModelAndView(vm, VIEW_NAME);
     }
+
     private void available(Response response)
     {
         response.redirect(WebServer.HOME_URL);
