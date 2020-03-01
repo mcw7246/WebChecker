@@ -74,7 +74,7 @@ public class GetHomeRoute implements Route
 
     String msg = httpSession.attribute(MESSAGE);
     if (msg != null){
-      vm.put(MESSAGE, msg);
+      vm.put(MESSAGE, Message.info(msg));
     }
     httpSession.attribute(PLAYER_LOBBY_KEY, lobby);
     // if this is a brand new browser session or a session that timed out
