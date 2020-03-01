@@ -73,7 +73,8 @@ public class GetHomeRoute implements Route
     Player player = httpSession.attribute(PLAYER_KEY);
 
     String msg = httpSession.attribute(MESSAGE);
-    if (msg != null){
+    if (msg != null)
+    {
       vm.put(MESSAGE, Message.info(msg));
     }
     httpSession.attribute(PLAYER_LOBBY_KEY, lobby);
@@ -91,10 +92,12 @@ public class GetHomeRoute implements Route
     {
       // If the player is currently in a game, then they need to be redirected
       // to the game screen.
-      if(player.isInGame()){
+      if(player.isInGame())
+      {
         response.redirect(WebServer.GAME_URL);
         return null;
-      } else
+      }
+      else
       {
         vm.put(SIGN_IN_KEY, true);
         vm.put(CURRENT_USER_ATTR, player.getUsername());
