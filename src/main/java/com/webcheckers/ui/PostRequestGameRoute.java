@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.logging.Logger;
 
+import com.webcheckers.model.Player;
 import org.w3c.dom.css.ViewCSS;
 import spark.ModelAndView;
 import spark.Request;
@@ -61,6 +62,7 @@ public class PostRequestGameRoute implements Route {
     final Session httpSession = request.session();
     final PlayerLobby playerLobby =
             httpSession.attribute(GetHomeRoute.PLAYER_LOBBY_KEY);
+    final Player player = httpSession.attribute(GetHomeRoute.PLAYER_KEY);
 
     /* A null playerLobby indicates a timed out session or an illegal request on this URL.
      * In either case, we will redirect back to home.
@@ -68,7 +70,15 @@ public class PostRequestGameRoute implements Route {
     if(playerLobby != null)
     {
       final Map<String, Object> vm = new HashMap<>();
-      vm.put(MESSAGE, "Request Sent");
+      final String usernameStr = request.queryParams(REQUEST_VAL);
+      if (playerLobby.challenge(usernameStr, player.getUsername()))
+      {
+        vm.put(MESSAGE, "Request Not Sent! " + usernameStr +" has already " +
+                "been challenged!");
+      } else
+      {
+        vm.put(MESSAGE, "Request sent to " + usernameStr + ".");
+      }
       return templateEngine.render(new ModelAndView(vm, VIEW_NAME));
     }
     else
