@@ -2,10 +2,7 @@ package com.webcheckers.application;
 
 import com.webcheckers.model.Player;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * A site-wide holding for all of the player's in the lobby.
@@ -19,6 +16,7 @@ public class PlayerLobby
     // Attributes
     private static Map<String, Player> players = new HashMap<>();
     private static Map<String, String> challenges = new HashMap<>();
+    private static Set<String> challengers = new HashSet<>();
 
     // Constructor
     public PlayerLobby()
@@ -44,8 +42,24 @@ public class PlayerLobby
             return false;
         } else {
             challenges.put(victim, challenger);
+            challengers.add(challenger);
             return true;
         }
+    }
+
+  /**
+   * Determines whether someone is challenging another or not.
+   *
+   * @param challenger is the player actively challenging another.
+   * @return whether the player is currently challenging or not.
+   */
+    public boolean challenging(String challenger)
+    {
+      if(challengers.contains(challenger)){
+        return true;
+      } else {
+        return false;
+      }
     }
 
     /**
@@ -54,7 +68,7 @@ public class PlayerLobby
      * @return returns the list of usernames
      */
     public synchronized List<String> getUsernames(){
-        return new ArrayList<String>(players.keySet());
+        return new ArrayList<>(players.keySet());
     }
 
     /**
