@@ -77,7 +77,13 @@ public class PostRequestGameRoute implements Route {
                 "been challenged!");
       } else
       {
-        vm.put(MESSAGE, "Request sent to " + usernameStr + ".");
+        if (playerLobby.challenging(player.getUsername())){
+          vm.put(MESSAGE, "Request Not Sent! " + usernameStr + " is already" +
+                  "challenging someone!");
+        } else
+        {
+          vm.put(MESSAGE, "Request sent to " + usernameStr + ".");
+        }
       }
       return templateEngine.render(new ModelAndView(vm, VIEW_NAME));
     }
