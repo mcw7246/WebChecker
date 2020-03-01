@@ -15,6 +15,8 @@ public class Row implements Iterable<Space>
         this.spaces = new ArrayList<Space>();
     }
 
+
+
     @Override
     public Iterator<Space> iterator()
     {
