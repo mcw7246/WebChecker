@@ -65,7 +65,7 @@
               <tr data-row="${row.getIndex()}">
               <#list row.iterator() as space>
                 <td data-cell="${space.getColumnIndex()}"
-                    <#if space.isValid() >
+                    <#if space.isValidSpace() >
                     class="Space"
                     </#if>
                     >
