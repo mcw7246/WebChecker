@@ -33,7 +33,7 @@ public class GetHomeRoute implements Route
     static final String SIGN_IN_KEY = "signIn";
     static final String PLAYER_NUM_KEY = "playerNum";
     static final String LIST_PLAYERS_KEY = "listPlayers";
-    static final String CURRENT_USRER_ATTR = "currentUser";
+    static final String CURRENT_USER_ATTR = "currentUser";
     private static final Logger LOG = Logger.getLogger(GetHomeRoute.class.getName());
     private final TemplateEngine templateEngine;
     private final PlayerLobby lobby;
@@ -73,7 +73,6 @@ public class GetHomeRoute implements Route
         // if this is a brand new browser session or a session that timed out
         if (player == null)
         {
-            System.out.println("PLAYER_KEY null");
             vm.put(SIGN_IN_KEY, false);
             vm.put(PLAYER_NUM_KEY, lobby.getUsernames().size());
             // get the object that will provide client-specific services for this player
@@ -82,8 +81,8 @@ public class GetHomeRoute implements Route
         }
         else
         {
-            System.out.println("PLAYER_KEY not null");
             vm.put(SIGN_IN_KEY, true);
+            vm.put(CURRENT_USER_ATTR, player.getUsername());
             List<String> usernames = lobby.getUsernames();
             usernames.remove(player.getUsername());
             vm.put("usernames", usernames);
