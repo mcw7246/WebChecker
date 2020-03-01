@@ -3,19 +3,19 @@ package com.webcheckers.model;
 public class Space
 {
     private final boolean isblackSpace;
-    private final int index;
+    private final int columnIndex;
     private Piece piece;
 
-    public Space(int index, boolean isblackSpace, Piece piece)
+    public Space(int columnIndex, boolean isblackSpace, Piece piece)
     {
-        this.index = index;
+        this.columnIndex = columnIndex;
         this.isblackSpace = isblackSpace;
         this.piece = piece;
     }
 
-    public Space(int index, boolean isblackSpace)
+    public Space(int columnIndex, boolean isblackSpace)
     {
-        this.index = index;
+        this.columnIndex = columnIndex;
         this.isblackSpace = isblackSpace;
     }
 
@@ -23,9 +23,9 @@ public class Space
      * Returns index of column
      * @return column index of the space
      */
-    public int getIndex()
+    public int getColumnIndex()
     {
-        return index;
+        return columnIndex;
     }
 
     /**
