@@ -13,7 +13,7 @@ public class GameModel {
     /* dimensions */
     public final static int DIM = 8;
 
-    public enum Color{RED, WHITE}
+    public enum activeColor{RED, WHITE}
 
     public enum Piece{RED, WHITE, NONE}
 
@@ -21,7 +21,7 @@ public class GameModel {
      * Represents each square on the board
      */
     public class Square{
-        public Color COLOR;
+        public activeColor COLOR;
         public Piece PIECE;
     }
 
@@ -30,7 +30,7 @@ public class GameModel {
      * and to keep track of whose turn it is
      */
     public enum Move {
-        RED_PLAYER, WHITE_PLAYER, NONE;
+        RED_PLAYER, WHITE_PLAYER;
 
         public Move opponent() {
             return this == RED_PLAYER ?
@@ -99,20 +99,6 @@ public class GameModel {
         return this.status;
     }
 
-    /**
-     * Will this move be accepted as valid?
-     * This method is added so that a bad move is caught before it is made.
-     *
-     * @return true iff the chosen square is red and not occupied
-     */
-    public boolean isDroppable(Square sq) {
-        if((sq.COLOR.equals(Color.WHITE)) || !(sq.PIECE.equals(Piece.NONE)) ) {
-            return false;
-        }
-        else {
-            return true;
-        }
-    }
 
 
 
