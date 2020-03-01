@@ -1,6 +1,6 @@
 <#if signIn>
     <div id="player-lobby">
-        <h1>Welcome ${currentUser}! You can request a game below.</h1>
+        <h2>Welcome ${currentUser}! You can request a game below.</h2>
         <#list usernames as username>
                 <p>${username}:
                 <form action='./requestGame' method="POST">
