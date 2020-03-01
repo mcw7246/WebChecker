@@ -12,21 +12,21 @@ public class Row implements Iterable<Space>
     /**
      * The ArrayList of spaces in the row
      */
-    private ArrayList<Space> spaces;
+    private ArrayList<Space> squares;
     /**
      * The index of the row
      */
-    private final int index;
+    private final int rowIndex;
 
     /**
      * Constructor for row class
-     * @param index The index of the row
+     * @param rowIndex The index of the row
      * @param first used in initializeBoard method for piece arrangement
      */
-    public Row(int index, boolean first)
+    public Row(int rowIndex, boolean first)
     {
-        this.index = index;
-        this.spaces = new ArrayList<Space>();
+        this.rowIndex = rowIndex;
+        this.squares = new ArrayList<Space>();
         initializeBoard(first);
     }
 
@@ -34,11 +34,13 @@ public class Row implements Iterable<Space>
      * Initializes the board with alternating b&w spaces
      * And arranges the pieces for the start of the game
      */
-    public void initializeBoard(boolean first)
+    private void initializeBoard(boolean first)
     {
         boolean isBlackSpace;
+        Piece red = new Piece(Piece.Color.RED, Piece.Type.SINGLE);
+        Piece white = new Piece(Piece.Color.WHITE, Piece.Type.SINGLE);
 
-        if(index % 2 == 1)
+        if(rowIndex % 2 == 1)
         {
             isBlackSpace = true;
         }
@@ -47,13 +49,59 @@ public class Row implements Iterable<Space>
             isBlackSpace = false;
         }
 
-        //Constructs board with alternating b&w tiles
         for(int i = 0; i < DIMENSIONS; i++)
         {
-            spaces.add(new Space(i, isBlackSpace));
+            squares.add(new Space(i, isBlackSpace));
             isBlackSpace = !isBlackSpace;
         }
 
+        placePieces(first, red, white);
+    }
+
+    /**
+     * Helper method to place pieces on board
+     * @param first whether player is first or not (determines arrangement of piece colors)
+     * @param red red piece
+     * @param white white piece
+     */
+    private void placePieces(boolean first, Piece red, Piece white)
+    {
+        if(first)
+        {
+            if(rowIndex == DIMENSIONS - 1 || rowIndex == DIMENSIONS - 2)
+            {
+                fillRow(red);
+            }
+            else if(rowIndex == 0|| rowIndex == 1)
+            {
+                fillRow(white);
+            }
+        }
+        else
+        {
+            if(rowIndex == DIMENSIONS - 1 || rowIndex == DIMENSIONS - 2)
+            {
+                fillRow(white);
+            }
+            else if(rowIndex == 0|| rowIndex == 1)
+            {
+                fillRow(red);
+            }
+        }
+    }
+
+    /**
+     * Places pieces in row in alternating fashion
+     * @param piece The piece to place on the squares
+     */
+    public void fillRow(Piece piece){
+        for(Space s: squares)
+        {
+            if(s.isValidSpace())
+            {
+                s.setPiece(piece);
+            }
+        }
     }
 
     /**
@@ -62,25 +110,13 @@ public class Row implements Iterable<Space>
      */
     public int getIndex()
     {
-        return this.index;
+        return this.rowIndex;
     }
+
 
     @Override
     public Iterator<Space> iterator()
     {
-        return spaces.iterator();
-    }
-
-    /**
-     * Will place pieces on a row in an alternating pattern
-     * Meant to be used only as a helper function for init when starting a game
-     * @param piece The piece to add to the row
-     */
-    public void addPieces(Piece piece){
-        for(Space space: spaces){
-            if(space.isValidSpace()){
-                space.setPiece(piece);
-            }
-        }
+        return squares.iterator();
     }
 }
