@@ -21,7 +21,6 @@ public class PlayerLobby
     // Constructor
     public PlayerLobby()
     {
-
     }
 
     public synchronized static void newPlayer(Player player)
