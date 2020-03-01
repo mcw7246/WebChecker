@@ -4,7 +4,9 @@
         <#list usernames as username>
                 <p>${username}:
                 <form action='./requestGame' method="POST">
-                <button type="submit" value=${username}>Request Game</button>
+                <button type="submit" name="gameRequest"
+                value=${username}>Request
+                    Game</button>
             </form>
         <#else>
             No other players are currently logged in. ):

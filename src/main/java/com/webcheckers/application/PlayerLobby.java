@@ -16,29 +16,36 @@ public class PlayerLobby
 {
     public enum UsernameResult {TAKEN, AVAILABLE, INVALID}
 
-    // Constants
-    static final String USERNAME_TAKEN = "This username is already taken. Please choose another one.";
-    static final String USERNAME_INVALID = "This username is invalid. It contains characters that are not allowed in a username.";
-
     // Attributes
     private static Map<String, Player> players = new HashMap<>();
+    private static Map<String, String> challenges = new HashMap<>();
 
     // Constructor
-    public PlayerLobby(){
+    public PlayerLobby()
+    {
 
     }
 
-    public synchronized static void newPlayer(Player player){
+    public synchronized static void newPlayer(Player player)
+    {
         players.put(player.getUsername(), player);
     }
 
     /**
-     * Determines whether the lobby has more than one player in it or not.
+     * Adds a challenge to the current hashMap.
      *
-     * @return whether usernames has more than one player or not.
+     * @param challenger the person challenging
+     * @param victim the person challenged.
+     * @return Whether the challenge can be issued, if the victim already is
+     * targetted returns false.
      */
-    public boolean hasOpponents(){
-        return (players.size() > 1);
+    public boolean challenge(String victim, String challenger){
+        if(challenges.containsKey(victim)){
+            return false;
+        } else {
+            challenges.put(victim, challenger);
+            return true;
+        }
     }
 
     /**
