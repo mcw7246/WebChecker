@@ -84,6 +84,11 @@ public class GetHomeRoute implements Route
     {
       vm.put(SIGN_IN_KEY, true);
       vm.put(CURRENT_USER_ATTR, player.getUsername());
+      if(lobby.getChallenges().containsKey(player.getUsername())){
+        vm.put(CHALLENGED_KEY, true);
+      } else {
+        vm.put(CHALLENGED_KEY, false);
+      }
       List<String> usernames = lobby.getUsernames();
       usernames.remove(player.getUsername());
       vm.put("usernames", usernames);

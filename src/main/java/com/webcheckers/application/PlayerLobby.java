@@ -48,6 +48,16 @@ public class PlayerLobby
     }
 
   /**
+   * Gets the challenges ongoing in the lobby.
+   *
+   * @return the map of challengers and victims.
+   */
+  public static Map<String, String> getChallenges()
+  {
+    return challenges;
+  }
+
+  /**
    * Determines whether someone is challenging another or not.
    *
    * @param challenger is the player actively challenging another.
