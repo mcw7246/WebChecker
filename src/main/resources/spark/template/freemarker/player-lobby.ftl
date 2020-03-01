@@ -1,5 +1,5 @@
 <#if signIn>
-    <#if pendingChallenge>
+    <#if !pendingChallenge>
     <div id="player-lobby">
         <h2>Welcome ${currentUser}! You can request a game below.</h2>
         <#list usernames as username>
@@ -14,7 +14,7 @@
         </#list>
     </div>
     <#else>
-        <div id="chellenge-pending">
+        <div id="challenge-pending">
             <h2>${challengeUser} has challenged you to a game!</h2>
             <form action='/requestResponse' method="Post">
                 <button type="submit" name="gameAccept"
