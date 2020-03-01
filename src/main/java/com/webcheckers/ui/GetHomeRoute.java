@@ -110,10 +110,6 @@ public class GetHomeRoute implements Route
           vm.put(CHALLENGED_KEY, true);
           vm.put(CHALLENGE_USER_KEY, challenges.get(player.getUsername()));
         }
-        else
-        {
-          vm.put(CHALLENGED_KEY, false);
-        }
         List<String> usernames = lobby.getUsernames();
         usernames.remove(player.getUsername());
         vm.put("usernames", usernames);
