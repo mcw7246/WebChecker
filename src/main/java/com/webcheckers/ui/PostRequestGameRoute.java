@@ -74,16 +74,16 @@ public class PostRequestGameRoute implements Route {
       final Map<String, Object> vm = new HashMap<>();
       vm.put(GetHomeRoute.TITLE_ATTR, GetHomeRoute.TITLE);
       final String usernameStr = request.queryParams(REQUEST_VAL);
-      if (playerLobby.challenge(usernameStr, player.getUsername()))
+      if (!playerLobby.challenge(usernameStr, player.getUsername()))
       {
         httpSession.attribute(MESSAGE, "Request Not Sent! " + usernameStr +" has " +
                 "already " +
                 "been challenged!");
       } else
       {
-        if (playerLobby.challenging(player.getUsername())){
+        if (playerLobby.challenging(usernameStr)){
           httpSession.attribute(MESSAGE, "Request Not Sent! " + usernameStr + " is already" +
-                  "challenging someone!");
+                  " challenging someone!");
         } else
         {
           httpSession.attribute(MESSAGE, "Request sent to " + usernameStr + ".");

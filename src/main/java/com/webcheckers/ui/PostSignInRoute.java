@@ -12,6 +12,11 @@ import java.util.Objects;
 
 import static spark.Spark.halt;
 
+/**
+UI controller to POST a sign in
+@author: Mikayla Wishart 'mcw7246'
+ **/
+
 public class PostSignInRoute implements Route{
 
 

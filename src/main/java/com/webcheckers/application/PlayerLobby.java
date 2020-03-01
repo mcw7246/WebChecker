@@ -7,11 +7,10 @@ import java.util.*;
 /**
  * A site-wide holding for all of the player's in the lobby.
  *
- * @author Austin Miller 'akm8654'
+ * @author Austin Miller 'akm8654' Mikayla Wishart 'mcw7246'
  */
 public class PlayerLobby
 {
-    public enum UsernameResult {TAKEN, AVAILABLE, INVALID}
 
     // Attributes
     private static Map<String, Player> players = new HashMap<>();
@@ -21,7 +20,6 @@ public class PlayerLobby
     // Constructor
     public PlayerLobby()
     {
-
     }
 
     public synchronized static void newPlayer(Player player)

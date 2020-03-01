@@ -19,13 +19,13 @@ import com.webcheckers.util.Message;
  * @author <a href='mailto:bdbvse@rit.edu'>Bryan Basham</a>
  *
  * code from GetHomeRoute has been adapted for this, GetSignInRoute
+ *
+ * @author: Mikayla Wishart 'mcw7246'
  */
 public class GetSignInRoute implements Route {
     private static final Logger LOG = Logger.getLogger(GetHomeRoute.class.getName());
 
     private static final Message SIGNIN_MSG = Message.info("Please sign in before beginning a game.");
-    static final String SIGN_IN_ATTR = "signin";
-    static final String INVALID_USER_ATTR  = "invalid";
     private final TemplateEngine templateEngine;
 
     /**
