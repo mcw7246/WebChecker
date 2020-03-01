@@ -69,6 +69,7 @@ public class PostRequestGameRoute implements Route {
      */
     if(playerLobby != null)
     {
+      System.out.println("Sending game request.");
       final Map<String, Object> vm = new HashMap<>();
       final String usernameStr = request.queryParams(REQUEST_VAL);
       if (playerLobby.challenge(usernameStr, player.getUsername()))
