@@ -41,7 +41,6 @@ public class GetHomeRoute implements Route
   private final TemplateEngine templateEngine;
   private final PlayerLobby lobby;
 
-
   /**
    * Create the Spark Route (UI controller) to handle all {@code GET /} HTTP requests.
    *

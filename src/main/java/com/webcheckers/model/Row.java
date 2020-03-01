@@ -22,16 +22,16 @@ public class Row implements Iterable<Space>
     /**
      * The index of the row
      */
-    private final int rowIndex;
+    public final int index;
 
     /**
      * Constructor for row class
-     * @param rowIndex The index of the row
+     * @param index The index of the row
      * @param first used in initializeBoard method for piece arrangement
      */
-    public Row(int rowIndex, boolean first)
+    public Row(int index, boolean first)
     {
-        this.rowIndex = rowIndex;
+        this.index = index;
         this.squares = new ArrayList<Space>();
         initializeBoard(first);
     }
@@ -46,7 +46,7 @@ public class Row implements Iterable<Space>
         Piece red = new Piece(Piece.Color.RED, Piece.Type.SINGLE);
         Piece white = new Piece(Piece.Color.WHITE, Piece.Type.SINGLE);
 
-        if(rowIndex % 2 == 1)
+        if(index % 2 == 1)
         {
             isBlackSpace = true;
         }
@@ -74,22 +74,22 @@ public class Row implements Iterable<Space>
     {
         if(first)
         {
-            if(rowIndex == DIMENSIONS - 1 || rowIndex == DIMENSIONS - 2)
+            if(index == DIMENSIONS - 1 || index == DIMENSIONS - 2)
             {
                 fillRow(red);
             }
-            else if(rowIndex == 0|| rowIndex == 1)
+            else if(index == 0|| index == 1)
             {
                 fillRow(white);
             }
         }
         else
         {
-            if(rowIndex == DIMENSIONS - 1 || rowIndex == DIMENSIONS - 2)
+            if(index == DIMENSIONS - 1 || index == DIMENSIONS - 2)
             {
                 fillRow(white);
             }
-            else if(rowIndex == 0|| rowIndex == 1)
+            else if(index == 0|| index == 1)
             {
                 fillRow(red);
             }
@@ -114,9 +114,9 @@ public class Row implements Iterable<Space>
      * Returns the index of the row
      * @return the row's index
      */
-    public int getRowIndex()
+    public int getIndex()
     {
-        return this.rowIndex;
+        return this.index;
     }
 
 
