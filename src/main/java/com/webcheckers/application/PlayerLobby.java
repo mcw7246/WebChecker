@@ -73,6 +73,15 @@ public class PlayerLobby
     }
 
     /**
+     * Removes a potential challenger from the list of challengees.
+     */
+    public void removeChallenger(String challenger) {
+        if (challengers.contains(challenger)) {
+            challengers.remove(challenger);
+        }
+    }
+
+    /**
      * Getter for the list of usernames.
      *
      * @return returns the list of usernames
