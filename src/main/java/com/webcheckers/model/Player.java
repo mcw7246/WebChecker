@@ -10,7 +10,6 @@ import java.util.regex.Pattern;
 /**
  * placeholder for actual code and information
  *
- * swen fwiends
  * @author Austin Miller 'akm8654' Mikayla Wishart 'mcw7246'
  */
 

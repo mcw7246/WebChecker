@@ -7,7 +7,8 @@ import java.util.*;
 /**
  * A site-wide holding for all of the player's in the lobby.
  *
- * @author Austin Miller 'akm8654' Mikayla Wishart 'mcw7246'
+ * @author Austin Miller 'akm8654'
+ * @author Mikayla Wishart 'mcw7246'
  */
 public class PlayerLobby
 {
