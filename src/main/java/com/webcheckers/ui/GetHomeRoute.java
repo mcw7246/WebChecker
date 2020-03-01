@@ -71,6 +71,7 @@ public class GetHomeRoute implements Route
     vm.put(TITLE_ATTR, TITLE);
     Player player = httpSession.attribute(PLAYER_KEY);
 
+    httpSession.attribute(PLAYER_LOBBY_KEY, lobby);
     // if this is a brand new browser session or a session that timed out
     if (player == null)
     {
