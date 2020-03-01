@@ -1,6 +1,11 @@
 package com.webcheckers.application;
 import com.webcheckers.model.GameModel;
 
+/**
+ * The Move Application tier
+ *
+ * @author Zehra Amena Baig
+ */
 public class Move
 {
     GameModel gameModel = new GameModel();
