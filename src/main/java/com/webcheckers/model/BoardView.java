@@ -4,6 +4,12 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+/**
+ * The Board itself
+ *
+ * @author Zehra Amena Baig (zab1166)
+ */
+
 public class BoardView implements Iterable<Row>
 {
     /**
