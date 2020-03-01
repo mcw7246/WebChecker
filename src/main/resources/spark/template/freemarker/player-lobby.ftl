@@ -1,12 +1,15 @@
 <#if signIn>
     <div id="player-lobby">
-            <#list usernames as username>
+        <h2>Welcome ${currentUser}! You can request a game below.</h2>
+        <#list usernames as username>
                 <p>${username}:
                 <form action='./requestGame' method="POST">
                 <button type="submit" value=${username}>Request Game</button>
             </form>
-            </#list>
+        <#else>
+            No other players are currently logged in. ):
+        </#list>
     </div>
 <#else>
-    <div id="player-lobby" style="display:none"> </div>
+    <div id="player-lobby">Currently logged in Players: ${playerNum}</div>
 </#if>
