@@ -84,7 +84,12 @@ public class PostRequestGameRoute implements Route {
         if (playerLobby.challenging(usernameStr)){
           httpSession.attribute(MESSAGE, "Request Not Sent! " + usernameStr + " is already" +
                   " challenging someone!");
-        } else
+        } else if (playerLobby.challenging(player.getUsername()))
+        {
+          httpSession.attribute(MESSAGE, "Request Not Sent! You've already" +
+                  "sent a challenge!");
+        }
+        else
         {
           httpSession.attribute(MESSAGE, "Request sent to " + usernameStr + ".");
         }
