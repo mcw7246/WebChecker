@@ -114,7 +114,7 @@ public class Row implements Iterable<Space>
      * Returns the index of the row
      * @return the row's index
      */
-    public int getIndex()
+    public int getRowIndex()
     {
         return this.rowIndex;
     }
