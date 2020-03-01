@@ -16,19 +16,18 @@ public class PlayerLobby
 {
     public enum UsernameResult {TAKEN, AVAILABLE, INVALID}
 
-    // Constants
-    static final String USERNAME_TAKEN = "This username is already taken. Please choose another one.";
-    static final String USERNAME_INVALID = "This username is invalid. It contains characters that are not allowed in a username.";
-
     // Attributes
     private static Map<String, Player> players = new HashMap<>();
+    private static Map<String, String> challenges = new HashMap<>();
 
     // Constructor
-    public PlayerLobby(){
+    public PlayerLobby()
+    {
 
     }
 
-    public synchronized static void newPlayer(Player player){
+    public synchronized static void newPlayer(Player player)
+    {
         players.put(player.getUsername(), player);
     }
 
