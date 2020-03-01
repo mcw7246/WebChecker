@@ -22,7 +22,8 @@ public class PostSignInRoute implements Route{
     static final String MESSAGE_ATTR = "message";
 
     static final String VIEW_NAME = "signin.ftl";
-    static final String SIGN_IN_ERROR = "%s is already taken. Please try another username.";
+    static final String SIGN_IN_ERROR = "%s is already taken. Please try " +
+            "another username.";
     //
     // Attributes
     //
@@ -59,8 +60,6 @@ public class PostSignInRoute implements Route{
 
         // retrieve the game object
         final Session session = request.session();
-        player = session.attribute(GetHomeRoute.PLAYER_KEY);
-
 
         if(session.attribute(GetHomeRoute.PLAYER_KEY) == null)
         {
@@ -78,14 +77,16 @@ public class PostSignInRoute implements Route{
                     mv = error(vm, String.format(SIGN_IN_ERROR, username));
                     break;
                 case AVAILABLE:
+                    session.attribute(GetHomeRoute.PLAYER_KEY, player);
                     available(response);
                 default:
                     throw new NoSuchElementException("Invalid result of username received.");
             }
+
             return templateEngine.render(mv);
         }
         else
-            {
+        {
             response.redirect(WebServer.SIGNIN_URL);
             halt();
             return null;
@@ -97,6 +98,7 @@ public class PostSignInRoute implements Route{
         vm.put(MESSAGE_ATTR, Message.error(message));
         return new ModelAndView(vm, VIEW_NAME);
     }
+
     private void available(Response response)
     {
         response.redirect(WebServer.HOME_URL);

@@ -1,6 +1,7 @@
 package com.webcheckers.ui;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.logging.Logger;
@@ -67,10 +68,12 @@ public class GetHomeRoute implements Route
         // start building the View-Model
         final Map<String, Object> vm = new HashMap<>();
         vm.put(TITLE_ATTR, TITLE);
+        Player player = httpSession.attribute(PLAYER_KEY);
 
         // if this is a brand new browser session or a session that timed out
-        if (httpSession.attribute(PLAYER_KEY) == null)
+        if (player == null)
         {
+            System.out.println("PLAYER_KEY null");
             vm.put(SIGN_IN_KEY, false);
             vm.put(PLAYER_NUM_KEY, lobby.getUsernames().size());
             // get the object that will provide client-specific services for this player
@@ -79,9 +82,11 @@ public class GetHomeRoute implements Route
         }
         else
         {
-
-            vm.replace(SIGN_IN_KEY, true);
-            vm.put("usernames", lobby.getUsernames());
+            System.out.println("PLAYER_KEY not null");
+            vm.put(SIGN_IN_KEY, true);
+            List<String> usernames = lobby.getUsernames();
+            usernames.remove(player.getUsername());
+            vm.put("usernames", usernames);
             return templateEngine.render(new ModelAndView(vm, VIEW_NAME));
         }
     }
