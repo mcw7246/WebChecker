@@ -59,6 +59,7 @@ public class PostRequestGameRoute implements Route {
    */
   @Override
   public String handle(Request request, Response response) {
+    LOG.config("PostRequestGame has been invoked");
     //retrieve the playerLobby object from which the usernames of logged in players can be retrieved
     final Session httpSession = request.session();
     final PlayerLobby playerLobby =
@@ -70,7 +71,6 @@ public class PostRequestGameRoute implements Route {
      */
     if(playerLobby != null)
     {
-      System.out.println("Sending game request.");
       final Map<String, Object> vm = new HashMap<>();
       vm.put(GetHomeRoute.TITLE_ATTR, GetHomeRoute.TITLE);
       final String usernameStr = request.queryParams(REQUEST_VAL);
@@ -84,7 +84,12 @@ public class PostRequestGameRoute implements Route {
         if (playerLobby.challenging(usernameStr)){
           httpSession.attribute(MESSAGE, "Request Not Sent! " + usernameStr + " is already" +
                   " challenging someone!");
-        } else
+        } else if (playerLobby.challenging(player.getUsername()))
+        {
+          httpSession.attribute(MESSAGE, "Request Not Sent! You've already" +
+                  "sent a challenge!");
+        }
+        else
         {
           httpSession.attribute(MESSAGE, "Request sent to " + usernameStr + ".");
         }
