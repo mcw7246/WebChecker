@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.logging.Logger;
 
+import static com.webcheckers.ui.GetHomeRoute.ERROR_MESSAGE_KEY;
 import static com.webcheckers.util.Message.error;
 import static com.webcheckers.util.Message.info;
 import static spark.Spark.halt;
@@ -73,34 +74,37 @@ public class PostRequestGameRoute implements Route
       String username = player.getUsername();
       if (playerLobby.getChallenges().get(username) != null)
       {
-        error("Request not Sent! You have a pending request.");
+        httpSession.attribute(ERROR_MESSAGE_KEY,  "Request not Sent! You have a pending request.");
         response.redirect(WebServer.HOME_URL);
         return null;
       }
       else if (playerLobby.getInGame().contains(challengerStr))
       {
-        error("Request not Sent! " + challengerStr + " is already in a game.");
+        System.out.println("Analagous request.");
+        httpSession.attribute(ERROR_MESSAGE_KEY,  "Request not Sent! " +
+                challengerStr + " is already in a game.");
       }
       else if (!playerLobby.challenge(challengerStr, username))
       {
-        error("Request Not Sent! " +
-                challengerStr);
+        httpSession.attribute(ERROR_MESSAGE_KEY,  "Request Not Sent! " +
+                challengerStr + " has already been challenged.");
       }
       else
       {
         if (playerLobby.challenging(challengerStr, username))
         {
-          error("Request Not Sent! " +
+          httpSession.attribute(ERROR_MESSAGE_KEY,  "Request Not Sent! " +
                   challengerStr + " is already challenging someone!");
         }
         else if (playerLobby.challenging(username, challengerStr))
         {
-          error("Request Not Sent! You've already" +
+          httpSession.attribute(ERROR_MESSAGE_KEY,  "Request Not Sent! You've already" +
                   " sent a challenge!");
         }
         else
         {
-          info("Request sent to " + challengerStr + ".");
+          httpSession.attribute(MESSAGE, "Request sent to " + challengerStr +
+                  ".");
         }
       }
       response.redirect(WebServer.HOME_URL);

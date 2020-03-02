@@ -36,7 +36,7 @@ public class GetHomeRoute implements Route
   static final String CHALLENGE_USER_KEY = "challengeUser";
   static final String CURRENT_USER_ATTR = "currentUser";
   static final String CHALLENGED_KEY = "pendingChallenge";
-  static final String CHALLENGED_USER_KEY = "opposingUser";
+  static final String ERROR_MESSAGE_KEY = "errorMessage";
   private static final Logger LOG = Logger.getLogger(GetHomeRoute.class.getName());
   private final TemplateEngine templateEngine;
   private final PlayerLobby lobby;
@@ -77,6 +77,16 @@ public class GetHomeRoute implements Route
     {
       vm.put(MESSAGE, Message.info(msg));
     }
+    String errorMsg = httpSession.attribute(ERROR_MESSAGE_KEY);
+    if (errorMsg != null)
+    {
+      if (msg != null)
+      {
+        vm.replace(MESSAGE, Message.error(errorMsg));
+      } else {
+        vm.put(MESSAGE, Message.error(errorMsg));
+      }
+    }
     httpSession.attribute(PLAYER_LOBBY_KEY, lobby);
     // if this is a brand new browser session or a session that timed out
     if (player == null)
@@ -86,7 +96,6 @@ public class GetHomeRoute implements Route
       vm.put(PLAYER_NUM_KEY, lobby.getUsernames().size());
       // get the object that will provide client-specific services for this player
       vm.put(NEW_PLAYER_ATTR, true);
-      return templateEngine.render(new ModelAndView(vm, VIEW_NAME));
     }
     else
     {
@@ -113,7 +122,7 @@ public class GetHomeRoute implements Route
         usernames.remove(player.getUsername());
         vm.put("usernames", usernames);
       }
-      return templateEngine.render(new ModelAndView(vm, VIEW_NAME));
     }
+    return templateEngine.render(new ModelAndView(vm, VIEW_NAME));
   }
 }
