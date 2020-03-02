@@ -17,43 +17,52 @@ import spark.template.freemarker.FreeMarkerEngine;
  *
  * @author <a href='mailto:bdbvse@rit.edu'>Bryan Basham</a>
  */
-public final class Application {
+public final class Application
+{
   private static final Logger LOG = Logger.getLogger(Application.class.getName());
 
   /**
    * Queries whether the application is being run in demo-mode.
    *
    * <p>
-   *   This method uses the memoization idiom so the calculation of
-   *   this value is only done once.
-   * @see <a href="https://en.wikipedia.org/wiki/Memoization">Memoization (wikipedia)</a>
-   * </p>
+   * This method uses the memoization idiom so the calculation of
+   * this value is only done once.
    *
    * @return true if 'demoMode' property is equal to 'true'; false if the
    * property isn't set or is not 'true'
+   * @see <a href="https://en.wikipedia.org/wiki/Memoization">Memoization (wikipedia)</a>
+   * </p>
    */
-  public static boolean isInDemoMode() {
-    if (inDemoMode == null) {
+  public static boolean isInDemoMode()
+  {
+    if (inDemoMode == null)
+    {
       inDemoMode = _isInDemoMode();
     }
     return inDemoMode;
   }
+
   private static final String DEMO_MODE_PROPERTY = "demoMode";
   private static Boolean inDemoMode = null;
 
   /**
    * The explicit, private property lookup method.
    */
-  private static boolean _isInDemoMode() {
+  private static boolean _isInDemoMode()
+  {
     final String demoModeStr = System.getProperty(DEMO_MODE_PROPERTY);
-    if (demoModeStr == null) {
+    if (demoModeStr == null)
+    {
       return false;
-    } else {
-      try {
+    } else
+    {
+      try
+      {
         return Boolean.parseBoolean(demoModeStr);
-      } catch (Exception e) {
+      } catch (Exception e)
+      {
         LOG.warning(String.format("Bad '%s' value, '%s'; must be a boolean.",
-            DEMO_MODE_PROPERTY, demoModeStr));
+                DEMO_MODE_PROPERTY, demoModeStr));
         return false;
       }
     }
@@ -71,16 +80,18 @@ public final class Application {
    * of <a href='https://en.wikipedia.org/wiki/Dependency_injection'>Dependency Injection</a>
    * </p>
    *
-   * @param args
-   *    Command line arguments; none expected.
+   * @param args Command line arguments; none expected.
    */
-  public static void main(String[] args) {
+  public static void main(String[] args)
+  {
     // initialize Logging
-    try {
+    try
+    {
       ClassLoader classLoader = Application.class.getClassLoader();
       final InputStream logConfig = classLoader.getResourceAsStream("log.properties");
       LogManager.getLogManager().readConfiguration(logConfig);
-    } catch (Exception e) {
+    } catch (Exception e)
+    {
       e.printStackTrace();
       System.err.println("Could not initialize log manager because: " + e.getMessage());
     }
@@ -115,7 +126,8 @@ public final class Application {
   // Constructor
   //
 
-  private Application(final WebServer webServer) {
+  private Application(final WebServer webServer)
+  {
     // validation
     Objects.requireNonNull(webServer, "webServer must not be null");
     //
@@ -126,7 +138,8 @@ public final class Application {
   // Private methods
   //
 
-  private void initialize() {
+  private void initialize()
+  {
     LOG.config("WebCheckers is initializing.");
 
     // configure Spark and startup the Jetty web server

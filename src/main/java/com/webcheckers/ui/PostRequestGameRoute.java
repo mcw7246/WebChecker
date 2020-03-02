@@ -74,34 +74,29 @@ public class PostRequestGameRoute implements Route
       String username = player.getUsername();
       if (playerLobby.getChallenges().get(username) != null)
       {
-        httpSession.attribute(ERROR_MESSAGE_KEY,  "Request not Sent! You have a pending request.");
+        httpSession.attribute(ERROR_MESSAGE_KEY, "Request not Sent! You have a pending request.");
         response.redirect(WebServer.HOME_URL);
         return null;
-      }
-      else if (playerLobby.getInGame().contains(challengerStr))
+      } else if (playerLobby.getInGame().contains(challengerStr))
       {
         System.out.println("Analagous request.");
-        httpSession.attribute(ERROR_MESSAGE_KEY,  "Request not Sent! " +
+        httpSession.attribute(ERROR_MESSAGE_KEY, "Request not Sent! " +
                 challengerStr + " is already in a game.");
-      }
-      else if (!playerLobby.challenge(challengerStr, username))
+      } else if (!playerLobby.challenge(challengerStr, username))
       {
-        httpSession.attribute(ERROR_MESSAGE_KEY,  "Request Not Sent! " +
+        httpSession.attribute(ERROR_MESSAGE_KEY, "Request Not Sent! " +
                 challengerStr + " has already been challenged.");
-      }
-      else
+      } else
       {
         if (playerLobby.challenging(challengerStr, username))
         {
-          httpSession.attribute(ERROR_MESSAGE_KEY,  "Request Not Sent! " +
+          httpSession.attribute(ERROR_MESSAGE_KEY, "Request Not Sent! " +
                   challengerStr + " is already challenging someone!");
-        }
-        else if (playerLobby.challenging(username, challengerStr))
+        } else if (playerLobby.challenging(username, challengerStr))
         {
-          httpSession.attribute(ERROR_MESSAGE_KEY,  "Request Not Sent! You've already" +
+          httpSession.attribute(ERROR_MESSAGE_KEY, "Request Not Sent! You've already" +
                   " sent a challenge!");
-        }
-        else
+        } else
         {
           httpSession.attribute(MESSAGE, "Request sent to " + challengerStr +
                   ".");
@@ -109,8 +104,7 @@ public class PostRequestGameRoute implements Route
       }
       response.redirect(WebServer.HOME_URL);
       return null;
-    }
-    else
+    } else
     {
       response.redirect(WebServer.HOME_URL);
       halt();

@@ -82,7 +82,8 @@ public class GetGameRoute implements Route
       vm.put(ACTIVE_COLOR, Piece.Color.RED);
 
       return templateEngine.render(new ModelAndView(vm, VIEW_NAME));
-    } else {
+    } else
+    {
       response.redirect(HOME_URL);
       return null;
     }

@@ -13,7 +13,8 @@ import java.util.logging.Logger;
  *
  * @author <a href='mailto:bdbvse@rit.edu'>Bryan Basham</a>
  */
-public final class Message {
+public final class Message
+{
   private static final Logger LOG = Logger.getLogger(Message.class.getName());
 
   //
@@ -23,22 +24,22 @@ public final class Message {
   /**
    * A static helper method to create new error messages.
    *
-   * @param message  the text of the message
-   *
+   * @param message the text of the message
    * @return a new {@link Message}
    */
-  public static Message error(final String message) {
+  public static Message error(final String message)
+  {
     return new Message(message, Type.ERROR);
   }
 
   /**
    * A static helper method to create new informational messages.
    *
-   * @param message  the text of the message
-   *
+   * @param message the text of the message
    * @return a new {@link Message}
    */
-  public static Message info(final String message) {
+  public static Message info(final String message)
+  {
     return new Message(message, Type.INFO);
   }
 
@@ -49,7 +50,8 @@ public final class Message {
   /**
    * The type of {@link Message}; either information or an error.
    */
-  public enum Type {
+  public enum Type
+  {
     INFO, ERROR
   }
 
@@ -67,10 +69,11 @@ public final class Message {
   /**
    * Create a new message.
    *
-   * @param message  the text of the message
-   * @param type  the type of message
+   * @param message the text of the message
+   * @param type    the type of message
    */
-  private Message(final String message, final Type type) {
+  private Message(final String message, final Type type)
+  {
     this.text = message;
     this.type = type;
     LOG.finer(this + " created.");
@@ -83,14 +86,16 @@ public final class Message {
   /**
    * Get the text of the message.
    */
-  public String getText() {
+  public String getText()
+  {
     return text;
   }
 
   /**
    * Get the type of the message.
    */
-  public Type getType() {
+  public Type getType()
+  {
     return type;
   }
 
@@ -100,7 +105,8 @@ public final class Message {
    *
    * @return true if not an error
    */
-  public boolean isSuccessful() {
+  public boolean isSuccessful()
+  {
     return !type.equals(Type.ERROR);
   }
 
@@ -109,7 +115,8 @@ public final class Message {
   //
 
   @Override
-  public String toString() {
+  public String toString()
+  {
     return "{Msg " + type + " '" + text + "'}";
   }
 

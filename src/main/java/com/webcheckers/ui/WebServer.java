@@ -45,7 +45,8 @@ import spark.TemplateEngine;
  * @author <a href='mailto:bdbvse@rit.edu'>Bryan Basham</a>
  * @author Austin Miller 'akm8654'
  */
-public class WebServer {
+public class WebServer
+{
   private static final Logger LOG = Logger.getLogger(WebServer.class.getName());
 
   //
@@ -75,15 +76,12 @@ public class WebServer {
   /**
    * The constructor for the Web Server.
    *
-   * @param templateEngine
-   *    The default {@link TemplateEngine} to render page-level HTML views.
-   * @param gson
-   *    The Google JSON parser object used to render Ajax responses.
-   *
-   * @throws NullPointerException
-   *    If any of the parameters are {@code null}.
+   * @param templateEngine The default {@link TemplateEngine} to render page-level HTML views.
+   * @param gson           The Google JSON parser object used to render Ajax responses.
+   * @throws NullPointerException If any of the parameters are {@code null}.
    */
-  public WebServer(final TemplateEngine templateEngine, final Gson gson) {
+  public WebServer(final TemplateEngine templateEngine, final Gson gson)
+  {
     // validation
     Objects.requireNonNull(templateEngine, "templateEngine must not be null");
     Objects.requireNonNull(gson, "gson must not be null");
@@ -106,7 +104,8 @@ public class WebServer {
    * returns after the web server finishes its initialization.
    * </p>
    */
-  public void initialize() {
+  public void initialize()
+  {
 
     // Configuration to serve static files
     staticFileLocation("/public");

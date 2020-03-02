@@ -13,11 +13,13 @@ import java.util.Objects;
 import static spark.Spark.halt;
 
 /**
- UI controller to POST a sign in
- @author: Mikayla Wishart 'mcw7246'
+ * UI controller to POST a sign in
+ *
+ * @author: Mikayla Wishart 'mcw7246'
  **/
 
-public class PostSignInRoute implements Route{
+public class PostSignInRoute implements Route
+{
 
 
   //
@@ -66,14 +68,14 @@ public class PostSignInRoute implements Route{
     // retrieve the game object
     final Session session = request.session();
 
-    if(session.attribute(GetHomeRoute.PLAYER_KEY) == null)
+    if (session.attribute(GetHomeRoute.PLAYER_KEY) == null)
     {
       final String username = request.queryParams(USERNAME_PARAM);
       ModelAndView mv;
       Player player = new Player(playerLobby);
 
       //goes through the cases and submits the correct message/response
-      switch(player.isValidUsername(username))
+      switch (player.isValidUsername(username))
       {
         case INVALID:
           mv = error(vm, makeInvalidArgMessage(username));
@@ -89,8 +91,7 @@ public class PostSignInRoute implements Route{
       }
 
       return templateEngine.render(mv);
-    }
-    else
+    } else
     {
       response.redirect(WebServer.SIGNIN_URL);
       halt();
@@ -101,7 +102,7 @@ public class PostSignInRoute implements Route{
   /**
    * Helper method that notifies a user of unexpected responses or other internal errors that occur
    *
-   * @param vm the View-Model map to update in case of error
+   * @param vm      the View-Model map to update in case of error
    * @param message the message associated with the error that occurred
    * @return the updated View to notify the user that an error had occurred
    */

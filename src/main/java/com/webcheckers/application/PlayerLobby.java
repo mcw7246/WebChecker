@@ -90,7 +90,8 @@ public class PlayerLobby
   public boolean challenging(String challenger, String victim)
   {
     if (challenges.get(victim) != null &&
-            challenges.get(victim).equals(challenger)){
+            challenges.get(victim).equals(challenger))
+    {
       return false;
     }
     if (challengers.contains(challenger))
@@ -168,7 +169,8 @@ public class PlayerLobby
    * @param user the challenging user.
    * @return the game.
    */
-  public CheckerGame getGame(String user){
+  public CheckerGame getGame(String user)
+  {
     return games.get(user);
   }
 

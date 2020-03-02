@@ -83,7 +83,8 @@ public class GetHomeRoute implements Route
       if (msg != null)
       {
         vm.replace(MESSAGE, Message.error(errorMsg));
-      } else {
+      } else
+      {
         vm.put(MESSAGE, Message.error(errorMsg));
       }
     }
@@ -96,17 +97,15 @@ public class GetHomeRoute implements Route
       vm.put(PLAYER_NUM_KEY, lobby.getUsernames().size());
       // get the object that will provide client-specific services for this player
       vm.put(NEW_PLAYER_ATTR, true);
-    }
-    else
+    } else
     {
       // If the player is currently in a game, then they need to be redirected
       // to the game screen.
-      if(player.isInGame())
+      if (player.isInGame())
       {
         response.redirect(WebServer.GAME_URL);
         return null;
-      }
-      else
+      } else
       {
         vm.put(SIGN_IN_KEY, true);
         vm.put(CURRENT_USER_ATTR, player.getUsername());

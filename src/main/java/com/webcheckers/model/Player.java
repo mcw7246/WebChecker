@@ -13,44 +13,48 @@ import java.util.regex.Pattern;
 public class Player
 {
   public static UsernameResult result = null;
-  public enum ViewMode {
+
+  public enum ViewMode
+  {
     PLAY
   }
+
   private String username;
   private PlayerLobby playerLobby;
-   private boolean inGame = false;
+  private boolean inGame = false;
 
   /**
    * constructor for Player
+   *
    * @param playerLobby the lobby that the user is going into
    */
   public Player(PlayerLobby playerLobby)
   {
-      this.playerLobby = playerLobby;
+    this.playerLobby = playerLobby;
   }
 
-    /**
-     * Toggles that the player is in game.
-     */
-    public void hasEnteredGame() {
-        inGame = true;
-    }
+  /**
+   * Toggles that the player is in game.
+   */
+  public void hasEnteredGame()
+  {
+    inGame = true;
+  }
 
-    /**
-     * Returns whether the player is actively in a game or not.
-     *
-     * @return true or false for in game.
-     */
+  /**
+   * Returns whether the player is actively in a game or not.
+   *
+   * @return true or false for in game.
+   */
   public boolean isInGame()
   {
     return inGame;
   }
 
   /**
-   *
    * @param name the username that the user submits
    * @return the username
-  */
+   */
   public String setUsername(String name)
   {
     username = name;
@@ -60,9 +64,10 @@ public class Player
 
   /**
    * checks if username is valid
+   *
    * @param username the username that the user inputs
    * @return the enum for UsernameResult
-  */
+   */
   public synchronized UsernameResult isValidUsername(String username)
   {
     /**
@@ -70,7 +75,7 @@ public class Player
      */
 
     boolean userContains = Pattern.matches("[a-zA-Z0-9]+", username);
-    if(!userContains)
+    if (!userContains)
     {
       result = UsernameResult.INVALID;
       return result;
@@ -83,7 +88,7 @@ public class Player
     else
     {
       //username already exists
-      if(playerLobby.getUsernames().stream().anyMatch(p1 -> p1.equals(username)))
+      if (playerLobby.getUsernames().stream().anyMatch(p1 -> p1.equals(username)))
       {
         result = UsernameResult.TAKEN;
       }
@@ -100,7 +105,6 @@ public class Player
   }
 
   /**
-   *
    * @param o object that you are compete
    * @return
    */
@@ -109,7 +113,7 @@ public class Player
   {
     if (this == o)
     {
-     return true;
+      return true;
     }
     if (o == null || getClass() != o.getClass())
     {
@@ -120,12 +124,13 @@ public class Player
   }
 
   /**
-   *
    * @return
    */
   public synchronized String getUsername()
   {
     return username;
   }
-  public enum UsernameResult {TAKEN, AVAILABLE, INVALID}
+
+  public enum UsernameResult
+  {TAKEN, AVAILABLE, INVALID}
 }

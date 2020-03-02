@@ -17,9 +17,8 @@ import com.webcheckers.util.Message;
  * The UI Controller to GET the Home page.
  *
  * @author <a href='mailto:bdbvse@rit.edu'>Bryan Basham</a>
- *
+ * <p>
  * code from GetHomeRoute has been adapted for this, GetSignInRoute
- *
  * @author: Mikayla Wishart 'mcw7246'
  */
 public class GetSignInRoute implements Route
@@ -28,11 +27,11 @@ public class GetSignInRoute implements Route
 
   private static final Message SIGNIN_MSG = Message.info("Please sign in before beginning a game.");
   private final TemplateEngine templateEngine;
+
   /**
    * Create the Spark Route (UI controller) to handle all {@code GET /} HTTP requests.
    *
-   * @param templateEngine
-   *   the HTML template rendering engine
+   * @param templateEngine the HTML template rendering engine
    */
   public GetSignInRoute(final TemplateEngine templateEngine)
   {
@@ -44,13 +43,9 @@ public class GetSignInRoute implements Route
   /**
    * Render the WebCheckers Home page.
    *
-   * @param request
-   *   the HTTP request
-   * @param response
-   *   the HTTP response
-   *
-   * @return
-   *   the rendered HTML for the Home page
+   * @param request  the HTTP request
+   * @param response the HTTP response
+   * @return the rendered HTML for the Home page
    */
   @Override
   public Object handle(Request request, Response response)
@@ -62,6 +57,6 @@ public class GetSignInRoute implements Route
     vm.put("message", SIGNIN_MSG);
 
     // render the View
-    return templateEngine.render(new ModelAndView(vm , "signin.ftl"));
+    return templateEngine.render(new ModelAndView(vm, "signin.ftl"));
   }
 }
