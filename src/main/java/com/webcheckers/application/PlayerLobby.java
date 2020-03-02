@@ -136,7 +136,7 @@ public class PlayerLobby
    *
    * @return the set of usernames actively in a game.
    */
-  public static Set<String> getInGame()
+  public Set<String> getInGame()
   {
     return inGame;
   }
