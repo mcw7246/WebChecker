@@ -55,7 +55,7 @@ public class PostSignInRoute implements Route
   //creates the invalid error message
   static String makeInvalidArgMessage(final String username)
   {
-    return String.format("You entered %s; please create a valid username with only letters and numbers.", username);
+    return String.format("You entered %s; please create a valid username. Usernames may only contain letters and numbers, must start with a letter, must be greater than 6 characters and is least than 25 characters.", username);
   }
 
   @Override

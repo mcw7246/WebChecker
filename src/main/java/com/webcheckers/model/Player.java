@@ -75,7 +75,8 @@ public class Player
      */
 
     boolean userContains = Pattern.matches("[a-zA-Z0-9]+", username);
-    if (!userContains)
+    String startNum = "[0-9]";
+    if (!userContains || username.length() < 6 || username.length() > 25 || username.startsWith(startNum))
     {
       result = UsernameResult.INVALID;
       return result;
@@ -92,7 +93,6 @@ public class Player
       {
         result = UsernameResult.TAKEN;
       }
-      //username does not exist in lobby and is a valid username
       else
       {
         //if there are people in the lobby but chose an acceptable username
