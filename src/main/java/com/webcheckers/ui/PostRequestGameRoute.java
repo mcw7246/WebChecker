@@ -69,7 +69,7 @@ public class PostRequestGameRoute implements Route
     {
       final Map<String, Object> vm = new HashMap<>();
       vm.put(GetHomeRoute.TITLE_ATTR, GetHomeRoute.TITLE);
-      // person sending the request.
+      // person who is being challenged.
       final String challengerStr = request.queryParams(REQUEST_VAL);
       String username = player.getUsername();
       if (playerLobby.getChallenges().get(username) != null)

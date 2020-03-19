@@ -19,8 +19,6 @@ public class PlayerLobby
   public enum PLAYERS
   {PLAYER1, PLAYER2}
 
-  ;
-
   // Attributes
   //Player Hashmap where the username is the key.
   private static Map<String, Player> players = new HashMap<>();
@@ -44,7 +42,7 @@ public class PlayerLobby
    *
    * @param player a player object.
    */
-  public synchronized static void newPlayer(Player player)
+  public synchronized void newPlayer(Player player)
   {
     players.put(player.getUsername(), player);
   }
@@ -103,6 +101,13 @@ public class PlayerLobby
     }
   }
 
+  /**
+   * Returns what type of player the username is (Player1 or Player2)
+   *
+   * @param username the username to check.
+   * @return one of the players object depending on what type of player they
+   * are.
+   */
   public PLAYERS getNumber(String username)
   {
     if (gamesChallenge.get(username) != null)
