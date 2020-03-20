@@ -60,6 +60,9 @@ public class PlayerLobby
     if (challenges.containsKey(victim))
     {
       return false;
+    } else if (challenges.containsKey(challenger))
+    {
+      return false;
     } else
     {
       challenges.put(victim, challenger);
@@ -135,6 +138,16 @@ public class PlayerLobby
     {
       return players.get(gamesVictims.get(username));
     }
+  }
+
+  /**
+   * Getter for getting the current challengers inside the lobby.
+   *
+   * @return the challengers set.
+   */
+  public Set<String> getChallengers()
+  {
+    return challengers;
   }
 
   /**

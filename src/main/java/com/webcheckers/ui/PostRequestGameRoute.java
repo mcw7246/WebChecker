@@ -79,7 +79,6 @@ public class PostRequestGameRoute implements Route
         return null;
       } else if (playerLobby.getInGame().contains(challengerStr))
       {
-        System.out.println("Analagous request.");
         httpSession.attribute(ERROR_MESSAGE_KEY, "Request not Sent! " +
                 challengerStr + " is already in a game.");
       } else if (!playerLobby.challenge(challengerStr, username))

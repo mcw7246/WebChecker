@@ -19,6 +19,7 @@ public class PostRequestGameRouteTest
 
   private static final String PLAYER1 = "Player1";
   private static final String PLAYER2 = "Player2";
+  private static final String PLAYER3 = "Player3";
 
   /**
    * The component-under-rest (CuT).
@@ -38,6 +39,7 @@ public class PostRequestGameRouteTest
   private TemplateEngine engine;
   private Player sender;
   private Player receiver;
+  private Player other;
 
   @BeforeEach
   public void setup()
@@ -49,6 +51,7 @@ public class PostRequestGameRouteTest
     response = mock(Response.class);
     sender = mock(Player.class);
     receiver = mock(Player.class);
+    other = mock(Player.class);
     lobby = new PlayerLobby();
     when(sender.getUsername()).thenReturn(PLAYER1);
     when(receiver.getUsername()).thenReturn(PLAYER2);
@@ -82,10 +85,8 @@ public class PostRequestGameRouteTest
     CuT.handle(request, response);
 
     //Check that the request was sent correctly
-    assertEquals("Request sent to " + PLAYER2 +
-            ".", session.attribute(MESSAGE));
-    assertTrue(lobby.challenge(PLAYER2, PLAYER1));
-    assertTrue(lobby.challenging(PLAYER1, PLAYER2));
+    assertTrue(lobby.getChallengers().contains(PLAYER1));
+    assertEquals(lobby.getChallenges().get(PLAYER2), PLAYER1);
   }
 
   /**
@@ -100,11 +101,8 @@ public class PostRequestGameRouteTest
     final TemplateEngineTest testHelper = new TemplateEngineTest();
     when(engine.render(any(ModelAndView.class))).thenAnswer(testHelper.makeAnswer());
 
-    when(session.attribute(GetHomeRoute.PLAYER_KEY)).thenReturn(sender);
-    when(request.queryParams(PostRequestGameRoute.REQUEST_VAL)).
-            thenReturn(PLAYER2);
     //First request.
-    CuT.handle(request, response);
+    lobby.challenge(PLAYER2, PLAYER1);
 
     // Now Current player is receiver
     when(session.attribute(GetHomeRoute.PLAYER_KEY)).thenReturn(receiver);
@@ -113,12 +111,85 @@ public class PostRequestGameRouteTest
             thenReturn(PLAYER1);
     CuT.handle(request, response);
 
-    assertEquals("Request sent to " + PLAYER2 +
-            ".", session.attribute(MESSAGE));
-    assertFalse(lobby.challenge(PLAYER1, PLAYER2));
+    assertFalse(lobby.getChallengers().contains(PLAYER2));
     assertFalse(lobby.challenging(PLAYER2, PLAYER1));
-    assertTrue(lobby.challenge(PLAYER2, PLAYER1));
-    assertTrue(lobby.challenging(PLAYER1, PLAYER2));
+    assertTrue(lobby.getChallengers().contains(PLAYER1));
+    assertEquals(lobby.getChallenges().get(PLAYER2), PLAYER1);
   }
 
+  @Test
+  public void two_challenge_same()
+  {
+    //Initialize
+    final TemplateEngineTest testHelper = new TemplateEngineTest();
+    when(engine.render(any(ModelAndView.class))).thenAnswer(testHelper.makeAnswer());
+
+    //First request.
+    lobby.challenge(PLAYER2, PLAYER1);
+    //Current player is Player3
+    when(session.attribute(GetHomeRoute.PLAYER_KEY)).thenReturn(other);
+    //Challenging Player2 as well.
+    when(request.queryParams(PostRequestGameRoute.REQUEST_VAL)).
+            thenReturn(PLAYER2);
+    CuT.handle(request, response);
+
+    assertFalse(lobby.getChallengers().contains(PLAYER3));
+    assertFalse(lobby.challenging(PLAYER3, PLAYER1));
+    assertTrue(lobby.getChallengers().contains(PLAYER1));
+  }
+
+  @Test
+  public void another_challenge_sender()
+  {
+    //Initialize
+    final TemplateEngineTest testHelper = new TemplateEngineTest();
+    when(engine.render(any(ModelAndView.class))).thenAnswer(testHelper.makeAnswer());
+    //First request.
+    lobby.challenge(PLAYER2, PLAYER1);
+    //Current player is Player3
+    when(session.attribute(GetHomeRoute.PLAYER_KEY)).thenReturn(other);
+    //Challenging Player1, who has already challenged Player2.
+    when(request.queryParams(PostRequestGameRoute.REQUEST_VAL)).
+            thenReturn(PLAYER1);
+    CuT.handle(request, response);
+
+    assertFalse(lobby.getChallengers().contains(PLAYER3));
+    assertFalse(lobby.challenging(PLAYER3, PLAYER1));
+    assertTrue(lobby.getChallengers().contains(PLAYER1));
+  }
+
+  @Test
+  public void challenge_in_game()
+  {
+    //Initialize
+    final TemplateEngineTest testHelper = new TemplateEngineTest();
+    when(engine.render(any(ModelAndView.class))).thenAnswer(testHelper.makeAnswer());
+    //Place p1 and p2 inside a game.
+    lobby.challenge(PLAYER2, PLAYER1);
+    lobby.startGame(PLAYER1, PLAYER2);
+
+    //Current player is Player3
+    when(session.attribute(GetHomeRoute.PLAYER_KEY)).thenReturn(other);
+    //Challenging Player1, who is in a game with Player2.
+    when(request.queryParams(PostRequestGameRoute.REQUEST_VAL)).
+            thenReturn(PLAYER1);
+    CuT.handle(request, response);
+
+    assertFalse(lobby.getChallengers().contains(PLAYER3));
+    assertFalse(lobby.challenging(PLAYER3, PLAYER1));
+    assertTrue(lobby.getInGame().contains(PLAYER1));
+    assertTrue(lobby.getInGame().contains(PLAYER2));
+    assertFalse(lobby.getInGame().contains(PLAYER3));
+
+    //Do the same with challenging Player2, who is in a game with Player1
+    when(request.queryParams(PostRequestGameRoute.REQUEST_VAL)).
+            thenReturn(PLAYER2);
+    CuT.handle(request, response);
+
+    assertFalse(lobby.getChallengers().contains(PLAYER3));
+    assertFalse(lobby.challenging(PLAYER3, PLAYER1));
+    assertTrue(lobby.getInGame().contains(PLAYER1));
+    assertTrue(lobby.getInGame().contains(PLAYER2));
+    assertFalse(lobby.getInGame().contains(PLAYER3));
+  }
 }
