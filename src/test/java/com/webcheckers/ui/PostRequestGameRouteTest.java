@@ -7,6 +7,9 @@ import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import spark.*;
 
+import java.util.Map;
+import java.util.Set;
+
 import static com.webcheckers.ui.PostRequestGameRoute.MESSAGE;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
@@ -60,8 +63,9 @@ public class PostRequestGameRouteTest
     lobby.newPlayer(receiver);
     //Store in session
     when(session.attribute(GetHomeRoute.PLAYER_LOBBY_KEY)).thenReturn(lobby);
-
-    //TODO: Find which parts use the session
+    when(sender.getUsername()).thenReturn(PLAYER1);
+    when(receiver.getUsername()).thenReturn(PLAYER2);
+    when(other.getUsername()).thenReturn(PLAYER3);
 
     //Create a unique CuT for each test.
     CuT = new PostRequestGameRoute(engine);
@@ -191,5 +195,30 @@ public class PostRequestGameRouteTest
     assertTrue(lobby.getInGame().contains(PLAYER1));
     assertTrue(lobby.getInGame().contains(PLAYER2));
     assertFalse(lobby.getInGame().contains(PLAYER3));
+  }
+
+  @Test
+  public void send_another_challenge()
+  {
+    //Initialize
+    final TemplateEngineTest testHelper = new TemplateEngineTest();
+    when(engine.render(any(ModelAndView.class))).thenAnswer(testHelper.makeAnswer());
+    //Set up one challenge
+    lobby.challenge(PLAYER2, PLAYER1);
+
+    //Current player is Player1
+    when(session.attribute(GetHomeRoute.PLAYER_KEY)).thenReturn(other);
+    //Challenging Player3
+    when(request.queryParams(PostRequestGameRoute.REQUEST_VAL)).
+            thenReturn(PLAYER3);
+
+    CuT.handle(request, response);
+
+    Map<String, String> challenges = lobby.getChallenges();
+    Set<String> challengers = lobby.getChallengers();
+
+    assertTrue(lobby.getChallengers().contains(PLAYER1));
+    assertFalse(lobby.challenging(PLAYER1, PLAYER3));
+    assertTrue(lobby.challenging(PLAYER1, PLAYER2));
   }
 }

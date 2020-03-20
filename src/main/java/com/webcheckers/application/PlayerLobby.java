@@ -125,6 +125,16 @@ public class PlayerLobby
   }
 
   /**
+   * Returns the set of all challengers
+   *
+   * @return challengers in a set of Strings.
+   */
+  public static Set<String> getChallengers()
+  {
+    return challengers;
+  }
+
+  /**
    * Returns the opponent of a player.
    *
    * @param username the username of the player

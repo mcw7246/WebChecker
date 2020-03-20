@@ -77,6 +77,11 @@ public class PostRequestGameRoute implements Route
         httpSession.attribute(ERROR_MESSAGE_KEY, "Request not Sent! You have a pending request.");
         response.redirect(WebServer.HOME_URL);
         return null;
+      } else if (playerLobby.getChallengers().contains(username)){
+        httpSession.attribute(ERROR_MESSAGE_KEY, "Request Not Sent! You've already" +
+                " sent a challenge!");
+        response.redirect(WebServer.HOME_URL);
+        return null;
       } else if (playerLobby.getInGame().contains(challengerStr))
       {
         httpSession.attribute(ERROR_MESSAGE_KEY, "Request not Sent! " +
