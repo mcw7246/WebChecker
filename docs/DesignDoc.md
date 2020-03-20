@@ -88,11 +88,12 @@ Details of the components within these tiers are supplied below.
 This section describes the web interface flow; this is how the user views and interacts
 with the WebCheckers application.
 
-![The WebCheckers Web Interface Statechart](web-interface-placeholder.png)
+![[The WebCheckers Web Interface Statechart]](web-checkers-statechart.png)
 
-> _Provide a summary of the application's user interface.  Describe, from
-> the user's perspective, the flow of the pages in the web application._
-
+The User interface relies on 3 main pages. The Home page, which updates based
+ on a player actively being signed in or not, the sign-in page, and the game
+  page. The home page displays a sign-in prompt if the player is not
+   currently stored in the http-session and the server understands that.
 
 ### UI Tier
 > _Provide a summary of the Server-side UI tier of your architecture.

@@ -16,10 +16,14 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.mockito.ArgumentMatchers.any;
 
+/**
+ * The unit test for the {@link PostRequestGameRoute}
+ *
+ * @author Austin Miller 'akm8654'
+ */
 @Tag("UI-tier")
 public class PostRequestGameRouteTest
 {
-
   private static final String PLAYER1 = "Player1";
   private static final String PLAYER2 = "Player2";
   private static final String PLAYER3 = "Player3";
