@@ -19,6 +19,8 @@ public class PlayerLobby
   public enum PLAYERS
   {PLAYER1, PLAYER2}
 
+  ;
+
   // Attributes
   //Player Hashmap where the username is the key.
   private static Map<String, Player> players = new HashMap<>();
@@ -42,7 +44,7 @@ public class PlayerLobby
    *
    * @param player a player object.
    */
-  public synchronized void newPlayer(Player player)
+  public synchronized static void newPlayer(Player player)
   {
     players.put(player.getUsername(), player);
   }
@@ -58,9 +60,6 @@ public class PlayerLobby
   public boolean challenge(String victim, String challenger)
   {
     if (challenges.containsKey(victim))
-    {
-      return false;
-    } else if (challenges.containsKey(challenger))
     {
       return false;
     } else
@@ -88,6 +87,16 @@ public class PlayerLobby
    * @return whether the player is currently challenging or not. (Also false
    * if they are challenging the correct victim
    */
+
+  public boolean challenging(String challenger, String victim){
+    if(challenges.containsKey(victim) && challenges.get(victim).equals(challenger) && challengers.contains(challenger)){
+      return true;
+    }
+    else{
+      return false;
+    }
+  }
+  /*
   public boolean challenging(String challenger, String victim)
   {
     if (challenges.get(victim) != null &&
@@ -103,14 +112,7 @@ public class PlayerLobby
       return false;
     }
   }
-
-  /**
-   * Returns what type of player the username is (Player1 or Player2)
-   *
-   * @param username the username to check.
-   * @return one of the players object depending on what type of player they
-   * are.
-   */
+*/
   public PLAYERS getNumber(String username)
   {
     if (gamesChallenge.get(username) != null)
@@ -138,16 +140,6 @@ public class PlayerLobby
     {
       return players.get(gamesVictims.get(username));
     }
-  }
-
-  /**
-   * Getter for getting the current challengers inside the lobby.
-   *
-   * @return the challengers set.
-   */
-  public Set<String> getChallengers()
-  {
-    return challengers;
   }
 
   /**
