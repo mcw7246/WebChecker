@@ -87,6 +87,16 @@ public class PlayerLobby
    * @return whether the player is currently challenging or not. (Also false
    * if they are challenging the correct victim
    */
+
+  public boolean challenging(String challenger, String victim){
+    if(challenges.containsKey(victim) && challenges.get(victim).equals(challenger) && challengers.contains(challenger)){
+      return true;
+    }
+    else{
+      return false;
+    }
+  }
+  /*
   public boolean challenging(String challenger, String victim)
   {
     if (challenges.get(victim) != null &&
@@ -102,7 +112,7 @@ public class PlayerLobby
       return false;
     }
   }
-
+*/
   public PLAYERS getNumber(String username)
   {
     if (gamesChallenge.get(username) != null)
