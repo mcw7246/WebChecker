@@ -7,6 +7,8 @@ import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import spark.*;
 
+import static com.webcheckers.ui.PostRequestGameRoute.MESSAGE;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.mockito.ArgumentMatchers.any;
@@ -36,7 +38,6 @@ public class PostRequestGameRouteTest
   private TemplateEngine engine;
   private Player sender;
   private Player receiver;
-
 
   @BeforeEach
   public void setup()
@@ -69,6 +70,7 @@ public class PostRequestGameRouteTest
   @Test
   public void sender_send_request()
   {
+
     when(session.attribute(GetHomeRoute.PLAYER_KEY)).thenReturn(sender);
     when(request.queryParams(PostRequestGameRoute.REQUEST_VAL)).
             thenReturn(PLAYER2);
@@ -79,9 +81,11 @@ public class PostRequestGameRouteTest
     // Invoke Test
     CuT.handle(request, response);
 
-    // Analyze results.
-    testHelper.assertViewModelExists();
-
+    //Check that the request was sent correctly
+    assertEquals("Request sent to " + PLAYER2 +
+            ".", session.attribute(MESSAGE));
+    assertTrue(lobby.challenge(PLAYER2, PLAYER1));
+    assertTrue(lobby.challenging(PLAYER1, PLAYER2));
   }
 
   /**
@@ -90,13 +94,31 @@ public class PostRequestGameRouteTest
   @Test
   public void receiver_send_request()
   {
-    //Current player is receiver
+    //Set up lobby so that sender has sent a request to receiver. (Basically
+    // run the first test above, if the above fails it's clear that this will
+    // fail too.
+    final TemplateEngineTest testHelper = new TemplateEngineTest();
+    when(engine.render(any(ModelAndView.class))).thenAnswer(testHelper.makeAnswer());
+
+    when(session.attribute(GetHomeRoute.PLAYER_KEY)).thenReturn(sender);
+    when(request.queryParams(PostRequestGameRoute.REQUEST_VAL)).
+            thenReturn(PLAYER2);
+    //First request.
+    CuT.handle(request, response);
+
+    // Now Current player is receiver
     when(session.attribute(GetHomeRoute.PLAYER_KEY)).thenReturn(receiver);
     //Challenging the sender.
     when(request.queryParams(PostRequestGameRoute.REQUEST_VAL)).
             thenReturn(PLAYER1);
-    //Set up lobby so that sender has sent a request to receiver.
+    CuT.handle(request, response);
 
+    assertEquals("Request sent to " + PLAYER2 +
+            ".", session.attribute(MESSAGE));
+    assertFalse(lobby.challenge(PLAYER1, PLAYER2));
+    assertFalse(lobby.challenging(PLAYER2, PLAYER1));
+    assertTrue(lobby.challenge(PLAYER2, PLAYER1));
+    assertTrue(lobby.challenging(PLAYER1, PLAYER2));
   }
 
 }
