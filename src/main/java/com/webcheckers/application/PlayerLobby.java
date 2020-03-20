@@ -156,21 +156,21 @@ public class PlayerLobby
    * Starts games, where p1 is the person starting the challenge and p2 is the
    * person accepting
    *
-   * @param p1 player starting
-   * @param p2 player accepting
+   * @param challenger player starting (challenger)
+   * @param victim player accepting (victim)
    */
-  public void startGame(String p1, String p2)
+  public void startGame(String challenger, String victim)
   {
-    removeChallenger(p2);
-    Player player1 = players.get(p1);
-    Player player2 = players.get(p2);
+    removeChallenger(challenger);
+    Player player1 = players.get(challenger);
+    Player player2 = players.get(victim);
     player1.hasEnteredGame();
     player2.hasEnteredGame();
-    gamesChallenge.put(p1, p2);
-    gamesVictims.put(p2, p1);
-    inGame.add(p1);
-    inGame.add(p2);
-    games.put(p1, new CheckerGame(player1, player2, new BoardView(true)));
+    gamesChallenge.put(challenger, victim);
+    gamesVictims.put(victim, challenger);
+    inGame.add(challenger);
+    inGame.add(victim);
+    games.put(challenger, new CheckerGame(player1, player2, new BoardView(true)));
   }
 
   /**
@@ -182,14 +182,6 @@ public class PlayerLobby
   public CheckerGame getGame(String user)
   {
     return games.get(user);
-  }
-
-  /**
-   * Retrieves a specific player/opponent set from the set of challengers
-   */
-  public static String getChallenger(String username)
-  {
-    return gamesChallenge.get(username);
   }
 
   /**
