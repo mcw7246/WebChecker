@@ -44,7 +44,7 @@ public class PlayerLobby
    *
    * @param player a player object.
    */
-  public synchronized static void newPlayer(Player player)
+  public synchronized void newPlayer(Player player)
   {
     players.put(player.getUsername(), player);
   }

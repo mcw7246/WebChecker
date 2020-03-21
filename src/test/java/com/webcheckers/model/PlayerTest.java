@@ -1,6 +1,12 @@
 package com.webcheckers.model;
 
 import com.webcheckers.application.PlayerLobby;
+import com.webcheckers.model.Player.UsernameResult;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * The unit test suite for the {@link Player} component.
@@ -10,16 +16,137 @@ import com.webcheckers.application.PlayerLobby;
 public class PlayerTest
 {
 
+  private static final String GOOD_NAME = "player1";
+  private static final String NO_NUM = "player";
+  private static final String TOO_SHORT = "p1";
+  private static final String TOO_LONG = "itsybitsysp1derwentupthewaterspout";
+  private static final String HAS_SPACE = "player 1";
+  private static final String CAPS_OK = "Player1";
+  private static final String NUM_START = "1Player";
+  private static final String SPECIAL_CHAR = "Player1!";
+
   /**
    * The component under test.
-   *
+   * <p>
    * Stateless component that actually test the functionality of the
    * {@link Player}
    */
-  private PlayerTest CuT;
+  private Player CuT;
 
+  // Friendly objects
   private PlayerLobby lobby;
 
-  // attributes holding mock objects.
+  @BeforeEach
+  public void setup()
+  {
+    lobby = new PlayerLobby();
+  }
 
+  /**
+   * Tests that the main constrcutor works without failure.
+   */
+  @Test
+  public void ctor_withArg()
+  {
+    CuT = new Player(lobby);
+  }
+
+  /**
+   * Tests that a valid username returns valid and can be set.
+   */
+  @Test
+  public void correctUsername()
+  {
+    CuT = new Player(lobby);
+    assertEquals(UsernameResult.AVAILABLE, CuT.isValidUsername(GOOD_NAME));
+    assertEquals(GOOD_NAME, CuT.getUsername());
+  }
+
+  /**
+   * Tests that the correct time of result is given when the username is
+   * already taken.
+   */
+  @Test
+  public void userNameTaken()
+  {
+    Player takenName = new Player(lobby);
+    takenName.isValidUsername(GOOD_NAME);
+    CuT = new Player(lobby);
+    assertEquals(UsernameResult.TAKEN, CuT.isValidUsername(GOOD_NAME));
+  }
+
+  /**
+   * Tests that the correct type of result is given when the username has no
+   * number.
+   */
+  @Test
+  public void no_Num()
+  {
+    CuT = new Player(lobby);
+    assertEquals(UsernameResult.INVALID, CuT.isValidUsername(NO_NUM));
+  }
+
+  /**
+   * Tests the correct result when the username is less than 6 characters.
+   */
+  @Test
+  public void too_Short()
+  {
+    CuT = new Player(lobby);
+    assertEquals(UsernameResult.INVALID, CuT.isValidUsername(TOO_SHORT));
+  }
+
+  /**
+   * Tests that the correct type of result is given when the username is too
+   * long (>15 chars).
+   */
+  @Test
+  public void too_Long()
+  {
+    CuT = new Player(lobby);
+    assertEquals(UsernameResult.INVALID, CuT.isValidUsername(TOO_LONG));
+  }
+
+  /**
+   * Tests that the correct type of result is given when the username
+   * contains a white space (which is an illegal character)
+   */
+  @Test
+  public void has_Space()
+  {
+    CuT = new Player(lobby);
+    assertEquals(UsernameResult.INVALID, CuT.isValidUsername(HAS_SPACE));
+  }
+
+  /**
+   * Tests that the correct type of result is given when the username has
+   * capital letters, which is OK.
+   */
+  @Test
+  public void caps_OK()
+  {
+    CuT = new Player(lobby);
+    assertEquals(UsernameResult.AVAILABLE, CuT.isValidUsername(CAPS_OK));
+  }
+
+  /**
+   * Has a number start which should kick back an invalid type of username
+   * result.
+   */
+  @Test
+  public void num_Start()
+  {
+    CuT = new Player(lobby);
+    assertEquals(UsernameResult.INVALID, CuT.isValidUsername(NUM_START));
+  }
+
+  /**
+   * When a special character is present the result should be invalid.
+   */
+  @Test
+  public void special_Char()
+  {
+    CuT = new Player(lobby);
+    assertEquals(UsernameResult.INVALID, CuT.isValidUsername(SPECIAL_CHAR));
+  }
 }
