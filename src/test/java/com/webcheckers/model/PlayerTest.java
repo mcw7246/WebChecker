@@ -98,7 +98,7 @@ public class PlayerTest
 
   /**
    * Tests that the correct type of result is given when the username is too
-   * long (>15 chars).
+   * long (>25 chars).
    */
   @Test
   public void too_Long()
