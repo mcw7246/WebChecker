@@ -18,6 +18,10 @@ import java.util.Map;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+/**
+ * The {@code PlayerLobby}
+ * @author Mikayla Wishart 'mcw7246'
+ */
 @Tag("Application-tier")
 public class PlayerLobbyTest
 {
@@ -31,11 +35,6 @@ public class PlayerLobbyTest
    */
   private Player player1;
   private Player player2;
-
-
-  /*
-   *attributes holding moc objects
-   */
 
 
   @BeforeEach
@@ -54,6 +53,17 @@ public class PlayerLobbyTest
     CuT.newPlayer(player2);
   }
 
+  /**
+   * tests construction without failure
+   */
+  @Test
+  public void ctor_withArg()
+  {
+    CuT = new PlayerLobby();
+  }
+  /**
+   * tests the creation of a new player
+   */
   @Test
   public void testNew_player()
   {
@@ -65,6 +75,10 @@ public class PlayerLobbyTest
      assertTrue(previousSize + 1 == CuT.getPlayers().size());
   }
 
+  /**
+   * tests a challenge being request with a player that is already in a game
+   * or being challenged by someone already
+   */
   @Test
   public void testNBeing_challenged_rejected()
   {
@@ -76,6 +90,9 @@ public class PlayerLobbyTest
     assertFalse(CuT.challenge(player1.getUsername(), player3.getUsername()));
   }
 
+  /**
+   * tests creating a challenge with a player that was available to receive challenge requests
+   */
   @Test
   public void testBeing_challenged_approved()
   {
@@ -84,7 +101,7 @@ public class PlayerLobbyTest
     assertEquals(player1.getUsername(), CuT.getChallenges().get(player2.getUsername()));
 
   }
-  /*
+  /**
    * tests getChallenges()
    */
   @Test
@@ -95,7 +112,7 @@ public class PlayerLobbyTest
     assertSame(CuT.getChallenges().size(), 1);
   }
 
-  /*
+  /**
    * tests tests challenging(String challenger, String victim)
    */
   @Test
@@ -108,21 +125,9 @@ public class PlayerLobbyTest
     assertTrue(CuT.challenging(player1.getUsername(), player2.getUsername()));
   }
 
+
   /**
-   * not quite sure what this method is for
-   */
-  /*
-   * tests getNumber(String username)
-   */
-
-  @Test
-  public void testGet_player_number()
-  {
-
-  }
-
-  /*
-  tests method getInGame()
+   *tests method getInGame()
    */
  @Test
   public void testGet_in_game()
@@ -135,8 +140,8 @@ public class PlayerLobbyTest
    assertEquals(2, CuT.getInGame().size());
  }
 
- /*
-   Tests removeChallenger(String victim)
+ /**
+  *Tests removeChallenger(String victim)
   */
   @Test
   public void testRemove_challenger()
@@ -147,6 +152,9 @@ public class PlayerLobbyTest
     assertEquals(0, CuT.getChallenges().size());
   }
 
+  /**
+   * tests starting a game
+   */
   @Test
   public void testStart_game(){
     CuT.challenge(player2.getUsername(), player1.getUsername());
@@ -155,7 +163,7 @@ public class PlayerLobbyTest
   }
 
   /**
-   * do after the startGame test is done
+   * test retrieving the opponent by entering the challengers name
    */
 
   @Test
@@ -166,14 +174,20 @@ public class PlayerLobbyTest
     assertEquals(player1, CuT.getOpponent(player2.getUsername()));
   }
 
+  /**
+   * tests retrieving an opponent by entering the victim
+   */
   @Test
-  public void testGet_opponent_by_opponent()
+  public void testGet_opponent_by_victim()
   {
     CuT.challenge(player1.getUsername(), player2.getUsername());
     CuT.startGame(player2.getUsername(), player1.getUsername());
     assertEquals(player2, CuT.getOpponent(player1.getUsername()));
   }
 
+  /**
+   * test getting the list of usernames currently logged in
+   */
   @Test
   public void testGet_usernamens()
   {
@@ -183,6 +197,9 @@ public class PlayerLobbyTest
     assertEquals(usernames, CuT.getUsernames());
   }
 
+  /**
+   * tests getting a list of players currently logged in
+   */
   @Test
   public void testGet_players()
   {
