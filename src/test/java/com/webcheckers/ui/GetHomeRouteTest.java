@@ -23,10 +23,19 @@ public class GetHomeRouteTest
      * @author Zehra Amena Baig 'zab1166'
      */
 
+    /*
+     * The component under test (CuT)
+     */
     private GetHomeRoute CuT;
 
+    /*
+     * Friendly objects
+     */
     private PlayerLobby lobby;
 
+    /*
+       Mock objects
+     */
     private Request request;
     private Session session;
     private Response response;
@@ -44,4 +53,8 @@ public class GetHomeRouteTest
         //Create a unique CuT for each test.
         CuT = new GetHomeRoute(engine, lobby);
     }
+
+
+
+
 }
