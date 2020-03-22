@@ -21,5 +21,4 @@ public class RowTest
      */
     private Row CuT;
 
-
 }

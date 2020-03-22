@@ -13,7 +13,9 @@ import java.util.Set;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.verify;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 
 public class GetHomeRouteTest
 {
@@ -52,6 +54,57 @@ public class GetHomeRouteTest
         lobby = new PlayerLobby();
         //Create a unique CuT for each test.
         CuT = new GetHomeRoute(engine, lobby);
+    }
+
+    /**
+    Test that CuT shows the Home view when the session is brand new.
+     */
+    @Test
+    public void new_session() {
+        // To analyze what the Route created in the View-Model map you need
+        // to be able to extract the argument to the TemplateEngine.render method.
+        // Mock up the 'render' method by supplying a Mockito 'Answer' object
+        // that captures the ModelAndView data passed to the template engine
+        final TemplateEngineTest testHelper = new TemplateEngineTest();
+        when(engine.render(any(ModelAndView.class))).thenAnswer(testHelper.makeAnswer());
+
+        // Invoke the test
+        CuT.handle(request, response);
+
+        // Analyze the results:
+        //   * model is a non-null Map
+        testHelper.assertViewModelExists();
+        testHelper.assertViewModelIsaMap();
+        //   * model contains all necessary View-Model data
+        testHelper.assertViewModelAttribute(GetHomeRoute.NEW_PLAYER_ATTR, Boolean.TRUE);
+        //   * test view name
+        testHelper.assertViewName(GetHomeRoute.VIEW_NAME);
+        //   * verify that a player service object and the session timeout watchdog are stored
+        //   * in the session.
+        verify(session).attribute(eq(GetHomeRoute.PLAYER_LOBBY_KEY), any(PlayerLobby.class));
+    }
+
+    /**
+     * Test that CuT redirects to the Game view when a @Linkplain(PlayerServices) object exists.
+     */
+    @Test
+    public void old_session() {
+        // Arrange the test scenario: There is an existing session with a PlayerLobby
+        when(session.attribute(GetHomeRoute.PLAYER_LOBBY_KEY)).thenReturn(lobby.getPlayers());
+
+        // Invoke the test
+        try {
+            CuT.handle(request, response);
+            fail("Redirects invoke halt exceptions.");
+        }
+        catch (HaltException e)
+        {
+            //expected
+        }
+
+        // Analyze the results:
+        //   * redirect to the Game view
+        verify(response).redirect(WebServer.GAME_URL);
     }
 
 
