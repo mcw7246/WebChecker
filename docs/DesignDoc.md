@@ -96,28 +96,21 @@ The User interface relies on 3 main pages. The Home page, which updates based
    currently stored in the http-session and the server understands that.
 
 ### UI Tier
-> _Provide a summary of the Server-side UI tier of your architecture.
-> Describe the types of components in the tier and describe their
-> responsibilities.  This should be a narrative description, i.e. it has
-> a flow or "story line" that the reader can follow._
 
-> _At appropriate places as part of this narrative provide one or more
-> static models (UML class structure or object diagrams) with some
-> details such as critical attributes and methods._
+The UI Tier deals with the requests dealt from the server. The server is the 
+system running the WebServer class. The user navigates to the address and a 
+`GET /home`. The only true option is to `GET /signin`. This HTTP request 
+sends to a new FTL page with a sign-in option. Once a username is type it is 
+submitted via a `POST /signin` route which is validated in different package.
 
-> _You must also provide any dynamic models, such as statechart and
-> sequence diagrams, as is relevant to a particular aspect of the design
-> that you are describing.  For example, in WebCheckers you might create
-> a sequence diagram of the `POST /validateMove` HTTP request processing
-> or you might show a statechart diagram if the Game component uses a
-> state machine to manage the game._
-
-> _If a dynamic model, such as a statechart describes a feature that is
-> not mostly in this tier and cuts across multiple tiers, you can
-> consider placing the narrative description of that feature in a
-> separate section for describing significant features. Place this after
-> you describe the design of the three tiers._
-
+ If validated this Player attribute is held in the httpSession and the user 
+ is redirected back to the Home screen. Here there are options to request a 
+ game, which is handled through a `POST /requestgame`. There is no page so 
+ the server takes the challenged player and updates their screen using the 
+ `GET /home`. They answer with a `POST /requestresponse`.
+ 
+ Finally there is a navigation to the `GET /game` which is handled through 
+ it's ftl imported from a model.
 
 ### Application Tier
 > _Provide a summary of the Application tier of your architecture. This
