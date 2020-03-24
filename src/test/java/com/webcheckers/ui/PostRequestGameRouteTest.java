@@ -5,6 +5,7 @@ import com.webcheckers.model.Player;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import org.mockito.internal.matchers.Null;
 import spark.*;
 
 import java.util.Map;
@@ -73,6 +74,22 @@ public class PostRequestGameRouteTest
 
     //Create a unique CuT for each test.
     CuT = new PostRequestGameRoute(engine);
+  }
+
+  /**
+   * Test that when the lobby is empty that it simply redirects to the homepage
+   */
+  @Test
+  public void home_redirect()
+  {
+    when(session.attribute(GetHomeRoute.PLAYER_LOBBY_KEY)).thenReturn(null);
+    try
+    {
+      CuT.handle(request, response);
+      fail("Home found a lobby and did not halt.\n");
+    }catch (spark.HaltException e){
+      // Test passed.
+    }
   }
 
   /**

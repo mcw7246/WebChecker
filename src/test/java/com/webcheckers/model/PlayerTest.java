@@ -5,8 +5,7 @@ import com.webcheckers.model.Player.UsernameResult;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * The unit test suite for the {@link Player} component.
@@ -24,6 +23,7 @@ public class PlayerTest
   private static final String CAPS_OK = "Player1";
   private static final String NUM_START = "1Player";
   private static final String SPECIAL_CHAR = "Player1!";
+  private static final String GOOD_NAME_2 = "player2";
 
   /**
    * The component under test.
@@ -73,6 +73,38 @@ public class PlayerTest
     takenName.isValidUsername(GOOD_NAME);
     CuT = new Player(lobby);
     assertEquals(UsernameResult.TAKEN, CuT.isValidUsername(GOOD_NAME));
+  }
+
+  /**
+   * Tests that a player is in game correctly.
+   */
+  @Test
+  public void isInGame()
+  {
+    Player throwAway = new Player(lobby);
+    throwAway.isValidUsername(GOOD_NAME_2);
+    CuT = new Player(lobby);
+    CuT.isValidUsername(GOOD_NAME);
+
+    assertFalse(CuT.isInGame());
+
+    lobby.challenge(GOOD_NAME, GOOD_NAME_2);
+    lobby.startGame(GOOD_NAME_2, GOOD_NAME);
+
+    assertTrue(CuT.isInGame());
+  }
+
+  /**
+   * Tests the equals method for different objects.
+   */
+  @Test
+  public void diffObjects()
+  {
+    CuT = new Player(lobby);
+    //null obj
+    assertNotEquals(CuT, null);
+    //lobby obj
+    assertNotEquals(CuT, lobby);
   }
 
   /**

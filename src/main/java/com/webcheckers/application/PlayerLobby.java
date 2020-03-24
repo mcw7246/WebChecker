@@ -129,7 +129,7 @@ public class PlayerLobby
    *
    * @return challengers in a set of Strings.
    */
-  public static Set<String> getChallengers()
+  public Set<String> getChallengers()
   {
     return challengers;
   }
