@@ -113,6 +113,7 @@ submitted via a `POST /signin` route which is validated in different package.
  it's ftl imported from a model.
 
 ### Application Tier
+The Application Tier is responsible for the logic that flows through the application. T
 > _Provide a summary of the Application tier of your architecture. This
 > section will follow the same instructions that are given for the UI
 > Tier above._
