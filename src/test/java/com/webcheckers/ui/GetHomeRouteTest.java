@@ -83,31 +83,4 @@ public class GetHomeRouteTest
         //   * in the session.
         verify(session).attribute(eq(GetHomeRoute.PLAYER_LOBBY_KEY), any(PlayerLobby.class));
     }
-
-    /**
-     * Test that CuT redirects to the Game view when a @Linkplain(PlayerServices) object exists.
-     */
-    @Test
-    public void old_session() {
-        // Arrange the test scenario: There is an existing session with a PlayerLobby
-        when(session.attribute(GetHomeRoute.PLAYER_LOBBY_KEY)).thenReturn(lobby.getPlayers());
-
-        // Invoke the test
-        try {
-            CuT.handle(request, response);
-            fail("Redirects invoke halt exceptions.");
-        }
-        catch (HaltException e)
-        {
-            //expected
-        }
-
-        // Analyze the results:
-        //   * redirect to the Game view
-        verify(response).redirect(WebServer.GAME_URL);
-    }
-
-
-
-
 }

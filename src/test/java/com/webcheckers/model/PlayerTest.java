@@ -91,6 +91,9 @@ public class PlayerTest
     lobby.challenge(GOOD_NAME, GOOD_NAME_2);
     lobby.startGame(GOOD_NAME_2, GOOD_NAME);
 
+    // Get the updated CuT.
+    CuT = lobby.getOpponent(GOOD_NAME_2);
+
     assertTrue(CuT.isInGame());
   }
 
