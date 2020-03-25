@@ -83,6 +83,6 @@ public class GetSignInRouteTest
         CuT.handle(request, response);
 
         //Check that the request was sent correctly
-        assertTrue(request.queryParams(), );
+        //assertTrue(request.queryParams(), );
     }
 }
