@@ -58,7 +58,7 @@ public class GetHomeRouteTest
 
     /**
     Test that CuT shows the Home view when the session is brand new.
-     */
+    */
     @Test
     public void new_session() {
         // To analyze what the Route created in the View-Model map you need
@@ -82,5 +82,7 @@ public class GetHomeRouteTest
         //   * verify that a player service object and the session timeout watchdog are stored
         //   * in the session.
         verify(session).attribute(eq(GetHomeRoute.PLAYER_LOBBY_KEY), any(PlayerLobby.class));
+
     }
+
 }

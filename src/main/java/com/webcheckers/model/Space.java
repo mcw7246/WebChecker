@@ -65,5 +65,32 @@ public class Space
     this.piece = piece;
   }
 
+  public boolean equals(Object o)
+  {
+    if(o instanceof Space)
+    {
+      Space sp = (Space) o;
+      if((sp.getColumnIndex() == this.getColumnIndex()) && (sp.isValidSpace() == this.isValidSpace()))
+      {
+        if(this.isValidSpace() == false)
+        {
+          return true;
+        }
+        else
+        {
+          if((sp.getPiece().getColor() == this.getPiece().getColor()) && (sp.getPiece().getType() == this.getPiece().getType()))
+          {
+            return true;
+          }
+          else
+          {
+            return false;
+          }
+        }
+      }
+    }
+    return false;
+  }
+
 
 }

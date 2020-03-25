@@ -120,6 +120,11 @@ public class Row implements Iterable<Space>
     return this.index;
   }
 
+  public ArrayList<Space> getRow()
+  {
+    return squares;
+  }
+
 
   @Override
   public Iterator<Space> iterator()
