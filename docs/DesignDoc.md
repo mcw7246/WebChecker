@@ -37,19 +37,25 @@ This is a summary of the project.
 
 This section describes the features of the application.
 
-> _In this section you do not need to be exhaustive and list every
-> story.  Focus on top-level features from the Vision document and
-> maybe Epics and critical Stories._
+The webcheckers app follows the American rules of checkers. The main components
+ for the Webcheckers implementation is the ability to sign-in as a player
+ , start a game, and make a valid move. (For now).
 
 ### Definition of MVP
-> _Provide a simple description of the Minimum Viable Product._
+
+>
+The MVP is producing an application that implements the American rules of
+ webcheckers. It allows players to sign-in and challenge each other to a game.
 
 ### MVP Features
-> _Provide a list of top-level Epics and/or Stories of the MVP._
+
+Sign-in, Start game, Make a Move (Big stories of King and Jump as well), End the
+ Game, and Sign-out. 
 
 ### Roadmap of Enhancements
 > _Provide a list of top-level features in the order you plan to consider them._
 
+Sign-in, Make a Move (jump, then king), Sign-out and End the Game.
 
 ## Application Domain
 
