@@ -1,4 +1,6 @@
 package com.webcheckers.ui;
 
-public class GetSignInRouteTest {
+public class GetSignInRouteTest
+{
+
 }
