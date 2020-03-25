@@ -15,7 +15,7 @@ import static spark.Spark.halt;
 /**
  * UI controller to POST a sign out
  *
- * @author: Sean Bergen 'sdb2139'
+ * @author: Mikayla Wishart 'mcw7246', Sean Bergen 'sdb2139'
  **/
 
 public class PostSignOutRoute implements Route
@@ -28,7 +28,7 @@ public class PostSignOutRoute implements Route
     static final String USERNAME_PARAM = "username";
     static final String MESSAGE_ATTR = "message";
 
-    static final String VIEW_NAME = "signin.ftl";
+    static final String VIEW_NAME = "signout.ftl";
 
     private final TemplateEngine templateEngine;
     //
@@ -60,37 +60,25 @@ public class PostSignOutRoute implements Route
 
         // retrieve the game object
         final Session session = request.session();
-/*
-        if (session.attribute(GetHomeRoute.PLAYER_KEY) == null)
+
+        if (session.attribute(GetHomeRoute.PLAYER_KEY) != null)
         {
-            final String username = request.queryParams(USERNAME_PARAM);
-            ModelAndView mv;
-            Player player = new Player(playerLobby);
+            playerLobby.removePlayer(player);
 
+            Player player = null;
             //goes through the cases and submits the correct message/response
-            switch (player.isValidUsername(username))
-            {
-                case INVALID:
-                    mv = error(vm, makeInvalidArgMessage(username));
-                    break;
-                case TAKEN:
-                    mv = error(vm, String.format(SIGN_IN_ERROR, username));
-                    break;
-                case AVAILABLE:
-                    session.attribute(GetHomeRoute.PLAYER_KEY, player);
-                    available(response);
-                default:
-                    throw new NoSuchElementException("Invalid result of username received.");
-            }
 
-            return templateEngine.render(mv);
+            //sign out then directs to the home page
+            response.redirect(WebServer.HOME_URL);
+
+            return null;
         } else
         {
-            response.redirect(WebServer.SIGNIN_URL);
+            // handle trying to sign out while not signed in
+            response.redirect(WebServer.HOME_URL);
             halt();
             return null;
-        }*/
-        return null;
+        }
     }
 
     /**
