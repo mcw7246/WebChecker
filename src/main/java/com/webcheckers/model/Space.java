@@ -55,6 +55,10 @@ public class Space
     return piece;
   }
 
+  public boolean isBlackSpace() {
+    return isblackSpace;
+  }
+
   /**
    * Mutator method for piece attribute
    *
