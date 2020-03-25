@@ -8,8 +8,7 @@ import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import spark.*;
 
-import static com.webcheckers.util.Message.error;
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
@@ -25,6 +24,7 @@ public class PostSignInRouteTest
   public static final String INVALID_USERNAME_SHORT = "name1";
   public static final String INVALID_USERNAME_LONG = "abcdefghijklmnopqrstuvwxyz123";
   public static final String AVAILABLE_USERNAME = "username1";
+  public static final String TAKEN_USERNAME = "username2";
 
   /*
    *The component-under-test (CuT)
@@ -74,8 +74,8 @@ public class PostSignInRouteTest
     testHelper.assertViewModelIsaMap();
 
     testHelper.assertViewModelAttribute(GetHomeRoute.TITLE_ATTR, GetHomeRoute.TITLE);
-
-    testHelper.assertViewModelAttribute(PostSignInRoute.MESSAGE_ATTR, error(PostSignInRoute.makeInvalidArgMessage(INVALID_USERNAME_SHORT)))
+    assertNotNull(PostSignInRoute.MESSAGE_ATTR);
+    //testHelper.assertViewModelAttribute(PostSignInRoute.MESSAGE_ATTR, null)
     ;
 
     testHelper.assertViewName(PostSignInRoute.VIEW_NAME);
@@ -93,24 +93,44 @@ public class PostSignInRouteTest
     testHelper.assertViewModelExists();
     testHelper.assertViewModelIsaMap();
 
+    assertNotNull(PostSignInRoute.MESSAGE_ATTR);
     testHelper.assertViewModelAttribute(GetHomeRoute.TITLE_ATTR, GetHomeRoute.TITLE);
+
+  }
+  @Test
+  public void testTaken_username(){
+    when(request.queryParams(eq(PostSignInRoute.USERNAME_PARAM))).thenReturn(TAKEN_USERNAME);
+    final TemplateEngineTest testHelper = new TemplateEngineTest();
+
+    try{
+      CuT.handle(request, response);
+      fail("No repeat of username found. Test failed.");
+    }catch (spark.HaltException e){
+      //test npassed
+    }
+
+
+    assertNotNull(PostSignInRoute.MESSAGE_ATTR);
+    assertEquals(player.isValidUsername(TAKEN_USERNAME), Player.UsernameResult.TAKEN);
+
 
   }
 
   @Test
   public void testAvailable_username(){
-    when(request.queryParams(eq(PostSignInRoute.USERNAME_PARAM))).thenReturn(AVAILABLE_USERNAME);
+    when(request.queryParams(eq(PostSignInRoute.USERNAME_PARAM))).thenReturn("testName1");
 
     final TemplateEngineTest testHelper = new TemplateEngineTest();
-    when(engine.render(any(ModelAndView.class))).thenAnswer(testHelper.makeAnswer());
-
     try{
       CuT.handle(request, response);
-      fail("Home found a lobby and did not halt.\n");
-    }catch(spark.HaltException e)
-    {
-      //test passed
+      fail("The username was somehow invalid");
+    }catch(spark.HaltException e){
+      //passes
     }
+
+    //when(engine.render(any(ModelAndView.class))).thenAnswer(testHelper.makeAnswer());
+    assertEquals(player.isValidUsername(AVAILABLE_USERNAME), Player.UsernameResult.AVAILABLE);
+
 
   }
 }

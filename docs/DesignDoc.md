@@ -113,10 +113,12 @@ submitted via a `POST /signin` route which is validated in different package.
  it's ftl imported from a model.
 
 ### Application Tier
-The Application Tier is responsible for the logic that flows through the application. T
-> _Provide a summary of the Application tier of your architecture. This
-> section will follow the same instructions that are given for the UI
-> Tier above._
+The Application Tier is responsible for the logic that flows through the application.
+The only class that is currently in our Application Tier is the `PlayerLobby` class 
+which has a single responsibility of keeping track of all the `Player`'s that are 
+currently running the application. The `PlayerLobby` has the responsibility to keep 
+track of who is currently in a game, who is currently in a game request and who is waiting 
+to get/send a game request.
 
 
 ### Model Tier
