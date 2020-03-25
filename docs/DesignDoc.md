@@ -135,9 +135,21 @@ to get/send a game request.
 
 
 ### Model Tier
-> _Provide a summary of the Application tier of your architecture. This
-> section will follow the same instructions that are given for the UI
-> Tier above._
+The Model tier is responsible for managing the domain entities and domain logic.
+There are currently six classes in the Model tier: BoardView, CheckerGame, Piece,
+Player, Row, and Space. These classes work together in order to process user actions,
+effect changes to the model based on the user actions, and maintain the state of the
+model. Each class represents an entity in the model (ex: Piece represents a checker
+piece and its attributes describe if its a black/white piece, or a single/king).
+
+![The WebCheckers Entity Relationships](Entity-Relations.png)
+
+In the Model tier pictured above, there is a CheckerGame which serves as the wrapper 
+class for the model; in other words, it encompasses all aspects of the model. It contains 
+the two Players for the games as well as the board, represented by BoardView. BoardView 
+holds a List of 8 Rows. Each Row contains an ArrayList of 8 Spaces. The Spaces alternate
+in color depending on their index in the Row. A black Space may contain a Piece. A
+Piece could be either Red or White, and a Single or King. 
 
 ### Design Improvements
 If development were to continue on this product, there are a few areas
