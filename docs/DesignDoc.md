@@ -140,14 +140,15 @@ to get/send a game request.
 > Tier above._
 
 ### Design Improvements
-> _Discuss design improvements that you would make if the project were
-> to continue. These improvement should be based on your direct
-> analysis of where there are problems in the code base which could be
-> addressed with design changes, and describe those suggested design
-> improvements. After completion of the Code metrics exercise, you
-> will also discuss the resutling metric measurements.  Indicate the
-> hot spots the metrics identified in your code base, and your
-> suggested design improvements to address those hot spots._
+If development were to continue on this product, there are a few areas
+in which our design could be further improved.  Some methods that were
+written could have likely been made more efficient, and the same could
+be said for some of the objects that were written.  In particular,
+more could be done to have higher cohesion and better seperation of
+responsibilities, especially within the routes that were defined, as
+well as within the piece, space, and row classes.
+
+Reviewing the code metrics,
 
 ## Testing
 > _This section will provide information about the testing performed
