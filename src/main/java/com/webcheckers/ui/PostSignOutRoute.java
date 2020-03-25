@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Objects;
 
+import static com.webcheckers.ui.GetHomeRoute.PLAYER_KEY;
 import static spark.Spark.halt;
 
 /**
@@ -25,7 +26,6 @@ public class PostSignOutRoute implements Route
     //
     // Static methods
     //
-    static final String USERNAME_PARAM = "username";
     static final String MESSAGE_ATTR = "message";
 
     static final String VIEW_NAME = "signout.ftl";
@@ -60,12 +60,11 @@ public class PostSignOutRoute implements Route
 
         // retrieve the game object
         final Session session = request.session();
-
-        if (session.attribute(GetHomeRoute.PLAYER_KEY) != null)
+        Player player = session.attribute(PLAYER_KEY);
+        if (player != null)
         {
             playerLobby.removePlayer(player);
 
-            Player player = null;
             //goes through the cases and submits the correct message/response
 
             //sign out then directs to the home page
