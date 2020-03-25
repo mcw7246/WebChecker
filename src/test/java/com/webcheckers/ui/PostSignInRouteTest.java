@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import spark.*;
 
 import static com.webcheckers.util.Message.error;
+import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
@@ -22,6 +23,8 @@ import static org.mockito.Mockito.when;
 public class PostSignInRouteTest
 {
   public static final String INVALID_USERNAME_SHORT = "name1";
+  public static final String INVALID_USERNAME_LONG = "abcdefghijklmnopqrstuvwxyz123";
+  public static final String AVAILABLE_USERNAME = "username1";
 
   /*
    *The component-under-test (CuT)
@@ -72,7 +75,7 @@ public class PostSignInRouteTest
 
     testHelper.assertViewModelAttribute(GetHomeRoute.TITLE_ATTR, GetHomeRoute.TITLE);
 
-    //testHelper.assertViewModelAttribute(PostSignInRoute.MESSAGE_ATTR, error(PostSignInRoute.makeInvalidArgMessage(INVALID_USERNAME_SHORT)))
+    testHelper.assertViewModelAttribute(PostSignInRoute.MESSAGE_ATTR, error(PostSignInRoute.makeInvalidArgMessage(INVALID_USERNAME_SHORT)))
     ;
 
     testHelper.assertViewName(PostSignInRoute.VIEW_NAME);
@@ -80,7 +83,34 @@ public class PostSignInRouteTest
 
   @Test
   public void testInvalid_username_long(){
+    when(request.queryParams(eq(PostSignInRoute.USERNAME_PARAM))).thenReturn(INVALID_USERNAME_LONG);
 
+    final TemplateEngineTest testHelper = new TemplateEngineTest();
+    when(engine.render(any(ModelAndView.class))).thenAnswer(testHelper.makeAnswer());
+
+    CuT.handle(request, response);
+
+    testHelper.assertViewModelExists();
+    testHelper.assertViewModelIsaMap();
+
+    testHelper.assertViewModelAttribute(GetHomeRoute.TITLE_ATTR, GetHomeRoute.TITLE);
+
+  }
+
+  @Test
+  public void testAvailable_username(){
+    when(request.queryParams(eq(PostSignInRoute.USERNAME_PARAM))).thenReturn(AVAILABLE_USERNAME);
+
+    final TemplateEngineTest testHelper = new TemplateEngineTest();
+    when(engine.render(any(ModelAndView.class))).thenAnswer(testHelper.makeAnswer());
+
+    try{
+      CuT.handle(request, response);
+      fail("Home found a lobby and did not halt.\n");
+    }catch(spark.HaltException e)
+    {
+      //test passed
+    }
 
   }
 }
