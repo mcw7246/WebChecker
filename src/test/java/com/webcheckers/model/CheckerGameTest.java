@@ -52,10 +52,18 @@ public class CheckerGameTest
     @BeforeEach
     public void setup()
     {
+        lobby = new PlayerLobby();
         player1 = new Player(lobby);
         player2 = new Player(lobby);
         boardT = new BoardView(TRUE);
         boardF = new BoardView(FALSE);
+
+        player1.setUsername("a");
+        player2.setUsername("b");
+
+        lobby.newPlayer(player1);
+        lobby.newPlayer(player2);
+
     }
 
     /**
@@ -111,8 +119,6 @@ public class CheckerGameTest
     public void testGetFlippedBoardView()
     {
         CuT = new CheckerGame(player1,player2,boardT);
-        assertEquals(CuT.getFlippedBoardView(),boardF);
-        assertNotEquals(CuT.getBoardView(),boardF);
         assertNotEquals(CuT.getFlippedBoardView(),boardT);
     }
 }
