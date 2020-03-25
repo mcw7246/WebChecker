@@ -34,6 +34,7 @@ public class GetHomeRouteTest
      * Friendly objects
      */
     private PlayerLobby lobby;
+    private Player p1, p2;
 
     /*
        Mock objects
@@ -52,6 +53,12 @@ public class GetHomeRouteTest
         engine = mock(TemplateEngine.class);
         response = mock(Response.class);
         lobby = new PlayerLobby();
+        p1 = new Player(lobby);
+        p1.setUsername("Username1");
+        p2 = new Player(lobby);
+        p2.setUsername("Username2");
+        lobby.newPlayer(p1);
+        lobby.newPlayer(p2);
         //Create a unique CuT for each test.
         CuT = new GetHomeRoute(engine, lobby);
     }
@@ -75,13 +82,43 @@ public class GetHomeRouteTest
         //   * model is a non-null Map
         testHelper.assertViewModelExists();
         testHelper.assertViewModelIsaMap();
+
         //   * model contains all necessary View-Model data
         testHelper.assertViewModelAttribute(GetHomeRoute.NEW_PLAYER_ATTR, Boolean.TRUE);
+        testHelper.assertViewModelAttribute(GetHomeRoute.CHALLENGED_KEY, null);
+        testHelper.assertViewModelAttribute(GetHomeRoute.SIGN_IN_KEY, false);
         //   * test view name
         testHelper.assertViewName(GetHomeRoute.VIEW_NAME);
         //   * verify that a player service object and the session timeout watchdog are stored
         //   * in the session.
+
         verify(session).attribute(eq(GetHomeRoute.PLAYER_LOBBY_KEY), any(PlayerLobby.class));
+    }
+    
+
+    @Test
+    public void oldSession()
+    {
+        session.attribute(GetHomeRoute.PLAYER_LOBBY_KEY, lobby);
+        session.attribute(GetHomeRoute.PLAYER_KEY, p1);
+        final TemplateEngineTest testHelper = new TemplateEngineTest();
+        when(engine.render(any(ModelAndView.class))).thenAnswer(testHelper.makeAnswer());
+        when(session.attribute(GetHomeRoute.PLAYER_LOBBY_KEY)).thenReturn(lobby);
+        when(session.attribute(GetHomeRoute.PLAYER_KEY)).thenReturn(p1);
+
+        // Invoke the test
+        CuT.handle(request, response);
+        // Analyze the results:
+        //   * model is a non-null Map
+        testHelper.assertViewModelExists();
+        testHelper.assertViewModelIsaMap();
+
+
+        lobby.challenge(p1.getUsername(), p2.getUsername());
+        lobby.startGame(p2.getUsername(), p1.getUsername());
+        assertTrue(p1.isInGame());
+
+
 
     }
 
