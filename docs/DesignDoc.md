@@ -61,11 +61,18 @@ Sign-in, Make a Move (jump, then king), Sign-out and End the Game.
 
 This section describes the application domain.
 
-![The WebCheckers Domain Model](domain-model-placeholder.png)
+![The WebCheckers Domain Model](swen-fwiends-domain-model.png)
 
 > _Provide a high-level overview of the domain for this application. You
 > can discuss the more important domain entities and their relationship
 > to each other._
+
+The domain of this application is a basic overview of the checkers game. A
+ checkers game is played on a board comprised of squares. Each square is
+  either white or red. The checkers are placed on the board, either white or
+   red, and either "kinged" or regular. The pieces move around the board by
+    either going to a valid space or jumping an opponent's piece as many
+     times as possible. A player plays the game of checkers.
 
 
 ## Architecture and Design

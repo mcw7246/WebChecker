@@ -25,7 +25,7 @@ class SpaceTest
   //Mock attribute
   private Piece piece;
 
-  @BeforeAll
+  @BeforeEach
   public void setup() {
     piece = mock(Piece.class);
     when(piece.getColor()).thenReturn(RED);
