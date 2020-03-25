@@ -173,9 +173,31 @@ Reviewing the code metrics,
 > have not had any testing yet. Highlight the issues found during
 > acceptance testing and if there are any concerns._
 
+So far three stories have passed all unit testing. These stories are the
+ Player sign-in, Start a Game, and Username Checking. The issues found in
+  testing were primarily dealing with analogous responses during requestGame
+   and with usernames starting with a number. Following an implementation of
+    unit testing these issues were found and taken care of. 
+
 ### Unit Testing and Code Coverage
 > _Discuss your unit testing strategy. Report on the code coverage
 > achieved from unit testing of the code base. Discuss the team's
 > coverage targets, why you selected those values, and how well your
 > code coverage met your targets. If there are any anomalies, discuss
 > those._
+
+The strategy for unit testing was to find the most complete (or what we
+ thought were complete) classes and begin testing with those. The most
+  thorough we wanted were the PlayerLobby and Player. Since the most
+   important part of Sprint 1 was dealing with the Players and signing-in
+   . Then we used other parts that we found essential. The coverage goals
+    were 80% throughout. For some (such as the UI-tier) it was difficult to
+     truly meet this goal since using mockito only gives us so much. The
+      actual tests have to be done in a demo style test.
+
+![WebCheckers Current Code Coverage](current-test-coverage-25-mar.png)
+
+As you can see the UI did not meet that goal. However, the application and
+ model did. (Application has a Jacoco calculation error, when the link is
+  clicked it actually shows 88%). This is because the GetGameRoute and
+   GetSignInRoute remain untested.
