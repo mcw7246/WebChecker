@@ -71,10 +71,17 @@ public class PostValidateMoveRoute implements Route
     final Move move = gson.fromJson(moveStr, Move.class);
     final PlayerLobby lobby = httpSession.attribute(GetHomeRoute.PLAYER_LOBBY_KEY);
     final Player player = httpSession.attribute(GetHomeRoute.PLAYER_KEY);
-    final CheckerGame game = lobby.getGame(player.getUsername());
 
-    if (lobby != null && game != null)
+
+    if (lobby != null)
     {
+      final CheckerGame game = lobby.getGame(player.getUsername());
+      if (game == null)
+      {
+        response.redirect(WebServer.HOME_URL);
+        halt();
+        return null;
+      }
       MoveStatus moveValidity = move.validateMove(game);
       String msg;
       switch (moveValidity)
