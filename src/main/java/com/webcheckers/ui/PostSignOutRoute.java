@@ -12,6 +12,7 @@ import java.util.Objects;
 
 import static com.webcheckers.ui.GetHomeRoute.PLAYER_KEY;
 import static spark.Spark.halt;
+import static spark.Spark.modelAndView;
 
 /**
  * UI controller to POST a sign out
@@ -28,7 +29,7 @@ public class PostSignOutRoute implements Route
     //
     static final String MESSAGE_ATTR = "message";
 
-    static final String VIEW_NAME = "signout.ftl";
+    static final String VIEW_NAME = "home.ftl";
 
     private final TemplateEngine templateEngine;
     //
@@ -55,29 +56,32 @@ public class PostSignOutRoute implements Route
     public String handle(Request request, Response response)
     {
         // start building the View-Model
+        ModelAndView mv;
         final Map<String, Object> vm = new HashMap<>();
         vm.put(GetHomeRoute.TITLE_ATTR, GetHomeRoute.TITLE);
 
         // retrieve the game object
         final Session session = request.session();
-        Player player = session.attribute(PLAYER_KEY);
-        if (player != null)
+
+        this.player = session.attribute(GetHomeRoute.PLAYER_KEY);
+        if (this.player != null)
         {
-            playerLobby.removePlayer(player);
+            //System.out.println(playerLobby.getPlayers());
+            playerLobby.removePlayer(this.player);
+            //System.out.println(playerLobby.getPlayers());
 
             //goes through the cases and submits the correct message/response
 
             //sign out then directs to the home page
             response.redirect(WebServer.HOME_URL);
-
-            return null;
+            //templateEngine.render(new ModelAndView(vm, VIEW_NAME));
         } else
         {
             // handle trying to sign out while not signed in
             response.redirect(WebServer.HOME_URL);
             halt();
-            return null;
         }
+        return null;
     }
 
     /**
