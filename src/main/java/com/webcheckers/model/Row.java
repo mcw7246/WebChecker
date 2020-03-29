@@ -125,6 +125,16 @@ public class Row implements Iterable<Space>
     return squares;
   }
 
+  /**
+   * Helper function to find a cell at a given int.
+   *
+   * @param cellInt: the index for the cell or column
+   * @return the Space requested.
+   */
+  public Space getSpaceAt(int cellInt)
+  {
+    return squares.get(cellInt);
+  }
 
   @Override
   public Iterator<Space> iterator()

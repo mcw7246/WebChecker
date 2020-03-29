@@ -8,6 +8,7 @@ import java.util.List;
  * The Board itself
  *
  * @author Zehra Amena Baig (zab1166)
+ * @author Austin Miller (akm8654)
  */
 
 public class BoardView implements Iterable<Row>
@@ -46,17 +47,25 @@ public class BoardView implements Iterable<Row>
   }
 
   /**
-   * Determines if move is valid or not
+   * returns the board list.
    *
-   * @param startRow the row index of the current space
-   * @param landRow  the row index of the space the user wants to land on
-   * @param startCol the column index of the current space
-   * @param landCol  the column index of the space the user wants to land on
-   * @return whether the move is valid or not
+   * @return a list of rows.
    */
-  public boolean isMoveValid(int startRow, int landRow, int startCol, int landCol)
+  public List<Row> getBoard(){
+    return this.board;
+  }
+
+  /**
+   * A helper function to find a space at the given indices.
+   *
+   * @param rowInt the row index
+   * @param cellInt the col (or cell) index
+   * @return a Space requested.
+   */
+  public Space getSpaceAt(int rowInt, int cellInt)
   {
-    return true;
+    Row row = board.get(rowInt);
+    return row.getSpaceAt(cellInt);
   }
 
   @Override

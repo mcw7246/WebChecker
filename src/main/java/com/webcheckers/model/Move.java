@@ -1,5 +1,7 @@
 package com.webcheckers.model;
 
+import com.webcheckers.ui.PostValidateMoveRoute.MoveStatus;
+
 /**
  * Uses a getStart and getEnd for a position model.
  *
@@ -34,5 +36,17 @@ public class Move
   public Position getEnd()
   {
     return end;
+  }
+
+  public MoveStatus validateMove(CheckerGame game)
+  {
+    BoardView board = game.getBoardView();
+    Space startSpace = board.getSpaceAt(start.getRow(), start.getCell());
+    Space endSpace = board.getSpaceAt(end.getRow(), end.getCell());
+
+    if (!endSpace.isValidSpace())
+    {
+      return MoveStatus.INVALID_SPACE;
+    }
   }
 }
