@@ -38,6 +38,7 @@ public class PostRequestResponseRoute implements Route
 
   private final PlayerLobby lobby;
   private final TemplateEngine templateEngine;
+  private GameManager gameManager;
 
   /**
    * Constructor for the {@code GET/game} route handler.
@@ -63,6 +64,7 @@ public class PostRequestResponseRoute implements Route
   @Override
   public String handle(Request request, Response response)
   {
+    gameManager = new GameManager(lobby);
     LOG.config("Post Request Response has been invoked.");
     //retrieve the playerLobby object to verify that no time out has occurred
     final Session httpSession = request.session();
@@ -84,7 +86,7 @@ public class PostRequestResponseRoute implements Route
       switch (accept)
       {
         case "yes":
-          GameManager.startGame(oppPlayer, usernameStr);
+          gameManager.startGame(oppPlayer, usernameStr);
           response.redirect(WebServer.GAME_URL);
           break;
         case "no":

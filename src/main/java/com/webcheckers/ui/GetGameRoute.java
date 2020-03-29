@@ -31,6 +31,7 @@ public class GetGameRoute implements Route
   private String CURRENT_PLAYER = "currentUser";
   private String OPPONENT_PLAYER;
   private PlayerLobby lobby;
+  private GameManager gameManager;
 
   public GetGameRoute(TemplateEngine templateEngine, PlayerLobby lobby)
   {
@@ -45,6 +46,7 @@ public class GetGameRoute implements Route
 
   public Object handle(Request request, Response response)
   {
+    gameManager = new GameManager(lobby);
     LOG.config("GetGameRoute invoked");
     final Map<String, Object> vm = new HashMap<>();
     vm.put(GetHomeRoute.TITLE_ATTR, "Web Checkers");
@@ -53,7 +55,7 @@ public class GetGameRoute implements Route
     final Player player = httpSession.attribute(GetHomeRoute.PLAYER_KEY);
     if (player != null)
     {
-      GameManager.PLAYERS number = GameManager.getNumber(player.getUsername());
+      GameManager.PLAYERS number = gameManager.getNumber(player.getUsername());
       vm.put(CURRENT_PLAYER, player.getUsername());
       final Player opponent = lobby.getOpponent(player.getUsername());
       CheckerGame checkersGame;
