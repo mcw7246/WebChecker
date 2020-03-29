@@ -1,7 +1,7 @@
 package com.webcheckers.ui;
 
+import com.webcheckers.application.GameManager;
 import com.webcheckers.application.PlayerLobby;
-import com.webcheckers.application.StartGame;
 import com.webcheckers.model.Player;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -112,7 +112,7 @@ public class GetHomeRouteTest
 
 
         lobby.challenge(p1.getUsername(), p2.getUsername());
-        StartGame.startGame(p2.getUsername(), p1.getUsername());
+        GameManager.startGame(p2.getUsername(), p1.getUsername());
         assertTrue(p1.isInGame());
 
 

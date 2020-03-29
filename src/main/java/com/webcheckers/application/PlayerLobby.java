@@ -144,6 +144,7 @@ public class PlayerLobby
     return games.get(user);
   }
 
+  public Map<String, CheckerGame> getGames(){return games;}
   /**
    * Removes a potential challenger from the list of challengees.
    */

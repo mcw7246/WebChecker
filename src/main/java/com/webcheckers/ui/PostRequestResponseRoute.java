@@ -5,7 +5,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.logging.Logger;
 
-import com.webcheckers.application.StartGame;
+import com.webcheckers.application.GameManager;;
 import com.webcheckers.model.Player;
 //import jdk.nashorn.internal.objects.annotations.Getter;
 //import org.w3c.dom.css.ViewCSS;
@@ -84,7 +84,7 @@ public class PostRequestResponseRoute implements Route
       switch (accept)
       {
         case "yes":
-          StartGame.startGame(oppPlayer, usernameStr);
+          GameManager.startGame(oppPlayer, usernameStr);
           response.redirect(WebServer.GAME_URL);
           break;
         case "no":
