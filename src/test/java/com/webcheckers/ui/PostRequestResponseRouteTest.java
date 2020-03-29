@@ -31,8 +31,6 @@ public class PostRequestResponseRouteTest
 
   //Friendly Object (assumed to work 100% as expected)
   private PlayerLobby lobby;
-  private Player challengerP1;
-  private Player opponentP2;
 
   /**
    * Mock Object Attributes for testing.
@@ -44,6 +42,8 @@ public class PostRequestResponseRouteTest
   private Session session;
   private Response response;
   private TemplateEngine engine;
+  private Player challengerP1;
+  private Player opponentP2;
 
 
   /**
@@ -62,17 +62,19 @@ public class PostRequestResponseRouteTest
     when(request.session()).thenReturn(session);
     engine = mock(TemplateEngine.class);
     response = mock(Response.class);
+    challengerP1 = mock(Player.class);
+    opponentP2 = mock(Player.class);
 
     //Initialization directly with class is safe because PlayerLobby is friendly
     lobby = new PlayerLobby();
-    challengerP1 = new Player(lobby);
-    opponentP2 = new Player(lobby);
     //Add the players to the lobby
-    challengerP1.isValidUsername(PLAYER1);
-    opponentP2.isValidUsername(PLAYER2);
+    lobby.newPlayer(challengerP1);
+    lobby.newPlayer(opponentP2);
     //Store information in the mock session
     when(session.attribute(GetHomeRoute.PLAYER_LOBBY_KEY)).thenReturn(lobby);
     //Setup mock calls to player classes for retrieving usernames
+    when(challengerP1.getUsername()).thenReturn(PLAYER1);
+    when(opponentP2.getUsername()).thenReturn(PLAYER2);
     //Setup a game request between the two players
     lobby.challenge(PLAYER2, PLAYER1);
 
@@ -100,12 +102,11 @@ public class PostRequestResponseRouteTest
    * Test that when the player responds "yes" to a challenge, that they and their opponent
    * are put into a game, and removed from the available list of challengers.
    */
-  /*
   @Test
   public void opponent_accepts_challenge() {
     when(session.attribute(GetHomeRoute.PLAYER_KEY)).thenReturn(challengerP1);
-    when(session.attribute(GetHomeRoute.CHALLENGE_USER_KEY)).thenReturn(PLAYER2);
     when(request.queryParams(PostRequestResponseRoute.GAME_ACCEPT)).thenReturn("yes");
+    when(session.attribute(GetHomeRoute.CHALLENGE_USER_KEY)).thenReturn(PLAYER2);
 
     //Test is invoked
     CuT.handle(request, response);
@@ -116,7 +117,7 @@ public class PostRequestResponseRouteTest
     assertTrue(challengerP1.isInGame());
     assertTrue(opponentP2.isInGame());
   }
-  */
+
 
   /**
    * Test that when a player declines a challenge, both players are redirected to the homepage,
@@ -126,13 +127,15 @@ public class PostRequestResponseRouteTest
   public void opponent_declines_challenge() {
     when(session.attribute(GetHomeRoute.PLAYER_KEY)).thenReturn(challengerP1);
     when(request.queryParams(PostRequestResponseRoute.GAME_ACCEPT)).thenReturn("no");
+    when(session.attribute(GetHomeRoute.CHALLENGE_USER_KEY)).thenReturn(PLAYER2);
+    //lobby.startGame(PLAYER1, PLAYER2);
 
     //Test is invoked
     CuT.handle(request, response);
 
-    //Ensure that player acceptance was handled properly
+    //Ensure that player denial was handled properly
     assertTrue(lobby.getChallengers().contains(PLAYER1));
-    assertFalse(lobby.getChallengers().contains(PLAYER2));
+    assertTrue(lobby.getChallengers().contains(PLAYER2));
     assertFalse(challengerP1.isInGame());
     assertFalse(opponentP2.isInGame());
   }
