@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.logging.Logger;
 
+import com.webcheckers.application.StartGame;
 import com.webcheckers.model.Player;
 //import jdk.nashorn.internal.objects.annotations.Getter;
 //import org.w3c.dom.css.ViewCSS;
@@ -18,10 +19,7 @@ import spark.TemplateEngine;
 import static com.webcheckers.ui.GetHomeRoute.CHALLENGE_USER_KEY;
 import static spark.Spark.halt;
 
-import com.webcheckers.util.Message;
-
 import com.webcheckers.application.PlayerLobby;
-import com.webcheckers.ui.PostRequestGameRoute;
 
 /**
  * The {@code POST /requestResponse} route handler.
@@ -86,7 +84,7 @@ public class PostRequestResponseRoute implements Route
       switch (accept)
       {
         case "yes":
-          lobby.startGame(oppPlayer, usernameStr);
+          StartGame.startGame(oppPlayer, usernameStr);
           response.redirect(WebServer.GAME_URL);
           break;
         case "no":

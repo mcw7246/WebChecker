@@ -15,10 +15,6 @@ import java.util.*;
 public class PlayerLobby
 {
 
-  // An enum of players, player1 is the challenger and player2 is the victim.
-  public enum PLAYERS
-  {PLAYER1, PLAYER2}
-
   ;
 
   // Attributes
@@ -96,34 +92,9 @@ public class PlayerLobby
       return false;
     }
   }
-  /*
-  public boolean challenging(String challenger, String victim)
-  {
-    if (challenges.get(victim) != null &&
-            challenges.get(victim).equals(challenger))
-    {
-      return false;
-    }
-    if (challengers.contains(challenger))
-    {
-      return true;
-    } else
-    {
-      return false;
-    }
-  }
-*/
-  public PLAYERS getNumber(String username)
-  {
-    if (gamesChallenge.get(username) != null)
-    {
-      return PLAYERS.PLAYER1;
-    } else
-    {
-      return PLAYERS.PLAYER2;
-    }
-  }
 
+  public Map<String, String> getGamesChallenge(){return gamesChallenge;}
+  public Map<String, String> getGamesVictims(){return gamesVictims; }
   /**
    * Returns the set of all challengers
    *
@@ -160,27 +131,6 @@ public class PlayerLobby
   public Set<String> getInGame()
   {
     return inGame;
-  }
-
-  /**
-   * Starts games, where p1 is the person starting the challenge and p2 is the
-   * person accepting
-   *
-   * @param challenger player starting (challenger)
-   * @param victim player accepting (victim)
-   */
-  public void startGame(String challenger, String victim)
-  {
-    removeChallenger(challenger);
-    Player player1 = players.get(challenger);
-    Player player2 = players.get(victim);
-    player1.hasEnteredGame();
-    player2.hasEnteredGame();
-    gamesChallenge.put(challenger, victim);
-    gamesVictims.put(victim, challenger);
-    inGame.add(challenger);
-    inGame.add(victim);
-    games.put(challenger, new CheckerGame(player1, player2, new BoardView(true)));
   }
 
   /**

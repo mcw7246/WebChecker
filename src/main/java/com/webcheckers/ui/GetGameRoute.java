@@ -1,7 +1,7 @@
 package com.webcheckers.ui;
 
 import com.webcheckers.application.PlayerLobby;
-import com.webcheckers.application.PlayerLobby.PLAYERS;
+import com.webcheckers.application.StartGame;
 import com.webcheckers.model.CheckerGame;
 import com.webcheckers.model.Piece;
 import com.webcheckers.model.Player;
@@ -53,11 +53,11 @@ public class GetGameRoute implements Route
     final Player player = httpSession.attribute(GetHomeRoute.PLAYER_KEY);
     if (player != null)
     {
-      PLAYERS number = lobby.getNumber(player.getUsername());
+      StartGame.PLAYERS number = StartGame.getNumber(player.getUsername());
       vm.put(CURRENT_PLAYER, player.getUsername());
       final Player opponent = lobby.getOpponent(player.getUsername());
       CheckerGame checkersGame;
-      if (number == PLAYERS.PLAYER1)
+      if (number == StartGame.PLAYERS.PLAYER1)
       {
         checkersGame = lobby.getGame(player.getUsername());
       } else

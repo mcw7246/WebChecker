@@ -1,6 +1,7 @@
 package com.webcheckers.model;
 
 import com.webcheckers.application.PlayerLobby;
+import com.webcheckers.application.StartGame;
 import com.webcheckers.model.Player.UsernameResult;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -89,7 +90,7 @@ public class PlayerTest
     assertFalse(CuT.isInGame());
 
     lobby.challenge(GOOD_NAME, GOOD_NAME_2);
-    lobby.startGame(GOOD_NAME_2, GOOD_NAME);
+    StartGame.startGame(GOOD_NAME_2, GOOD_NAME);
 
     // Get the updated CuT.
     CuT = lobby.getOpponent(GOOD_NAME_2);

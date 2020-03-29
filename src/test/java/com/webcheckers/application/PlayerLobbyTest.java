@@ -2,8 +2,6 @@ package com.webcheckers.application;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import com.webcheckers.model.BoardView;
-import com.webcheckers.model.CheckerGame;
 import com.webcheckers.model.Player;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
@@ -16,7 +14,6 @@ import java.util.List;
 import java.util.Map;
 
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 /**
  * The {@code PlayerLobby}
@@ -136,7 +133,7 @@ public class PlayerLobbyTest
     *finish this method when start game is done
     */
    CuT.challenge(player2.getUsername(), player1.getUsername());
-   CuT.startGame(player1.getUsername(), player2.getUsername());
+   StartGame.startGame(player1.getUsername(), player2.getUsername());
    assertEquals(2, CuT.getInGame().size());
  }
 
@@ -158,7 +155,7 @@ public class PlayerLobbyTest
   @Test
   public void testStart_game(){
     CuT.challenge(player2.getUsername(), player1.getUsername());
-    CuT.startGame(player1.getUsername(), player2.getUsername());
+    StartGame.startGame(player1.getUsername(), player2.getUsername());
     assertEquals(2, CuT.getInGame().size());
   }
 
@@ -170,7 +167,7 @@ public class PlayerLobbyTest
   public void testGet_opponent_by_challenger()
   {
     CuT.challenge(player1.getUsername(), player2.getUsername());
-    CuT.startGame(player2.getUsername(), player1.getUsername());
+    StartGame.startGame(player2.getUsername(), player1.getUsername());
     assertEquals(player1, CuT.getOpponent(player2.getUsername()));
   }
 
@@ -181,7 +178,7 @@ public class PlayerLobbyTest
   public void testGet_opponent_by_victim()
   {
     CuT.challenge(player1.getUsername(), player2.getUsername());
-    CuT.startGame(player2.getUsername(), player1.getUsername());
+    StartGame.startGame(player2.getUsername(), player1.getUsername());
     assertEquals(player2, CuT.getOpponent(player1.getUsername()));
   }
 

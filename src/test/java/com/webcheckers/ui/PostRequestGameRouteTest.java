@@ -1,17 +1,16 @@
 package com.webcheckers.ui;
 
 import com.webcheckers.application.PlayerLobby;
+import com.webcheckers.application.StartGame;
 import com.webcheckers.model.Player;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
-import org.mockito.internal.matchers.Null;
 import spark.*;
 
 import java.util.Map;
 import java.util.Set;
 
-import static com.webcheckers.ui.PostRequestGameRoute.MESSAGE;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -191,7 +190,7 @@ public class PostRequestGameRouteTest
     when(engine.render(any(ModelAndView.class))).thenAnswer(testHelper.makeAnswer());
     //Place p1 and p2 inside a game.
     lobby.challenge(PLAYER2, PLAYER1);
-    lobby.startGame(PLAYER1, PLAYER2);
+    StartGame.startGame(PLAYER1, PLAYER2);
 
     //Current player is Player3
     when(session.attribute(GetHomeRoute.PLAYER_KEY)).thenReturn(other);
