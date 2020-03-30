@@ -37,29 +37,42 @@ This is a summary of the project.
 
 This section describes the features of the application.
 
-> _In this section you do not need to be exhaustive and list every
-> story.  Focus on top-level features from the Vision document and
-> maybe Epics and critical Stories._
+The webcheckers app follows the American rules of checkers. The main components
+ for the Webcheckers implementation is the ability to sign-in as a player
+ , start a game, and make a valid move. (For now).
 
 ### Definition of MVP
-> _Provide a simple description of the Minimum Viable Product._
+
+>
+The MVP is producing an application that implements the American rules of
+ webcheckers. It allows players to sign-in and challenge each other to a game.
 
 ### MVP Features
-> _Provide a list of top-level Epics and/or Stories of the MVP._
+
+Sign-in, Start game, Make a Move (Big stories of King and Jump as well), End the
+ Game, and Sign-out. 
 
 ### Roadmap of Enhancements
 > _Provide a list of top-level features in the order you plan to consider them._
 
+Sign-in, Make a Move (jump, then king), Sign-out and End the Game.
 
 ## Application Domain
 
 This section describes the application domain.
 
-![The WebCheckers Domain Model](domain-model-placeholder.png)
+![The WebCheckers Domain Model](swen-fwiends-domain-model.png)
 
 > _Provide a high-level overview of the domain for this application. You
 > can discuss the more important domain entities and their relationship
 > to each other._
+
+The domain of this application is a basic overview of the checkers game. A
+ checkers game is played on a board comprised of squares. Each square is
+  either white or red. The checkers are placed on the board, either white or
+   red, and either "kinged" or regular. The pieces move around the board by
+    either going to a valid space or jumping an opponent's piece as many
+     times as possible. A player plays the game of checkers.
 
 
 ## Architecture and Design
@@ -122,19 +135,32 @@ to get/send a game request.
 
 
 ### Model Tier
-> _Provide a summary of the Application tier of your architecture. This
-> section will follow the same instructions that are given for the UI
-> Tier above._
+The Model tier is responsible for managing the domain entities and domain logic.
+There are currently six classes in the Model tier: BoardView, CheckerGame, Piece,
+Player, Row, and Space. These classes work together in order to process user actions,
+effect changes to the model based on the user actions, and maintain the state of the
+model. Each class represents an entity in the model (ex: Piece represents a checker
+piece and its attributes describe if its a black/white piece, or a single/king).
+
+![The WebCheckers Entity Relationships](Entity-Relations.png)
+
+In the Model tier pictured above, there is a CheckerGame which serves as the wrapper 
+class for the model; in other words, it encompasses all aspects of the model. It contains 
+the two Players for the games as well as the board, represented by BoardView. BoardView 
+holds a List of 8 Rows. Each Row contains an ArrayList of 8 Spaces. The Spaces alternate
+in color depending on their index in the Row. A black Space may contain a Piece. A
+Piece could be either Red or White, and a Single or King. 
 
 ### Design Improvements
-> _Discuss design improvements that you would make if the project were
-> to continue. These improvement should be based on your direct
-> analysis of where there are problems in the code base which could be
-> addressed with design changes, and describe those suggested design
-> improvements. After completion of the Code metrics exercise, you
-> will also discuss the resutling metric measurements.  Indicate the
-> hot spots the metrics identified in your code base, and your
-> suggested design improvements to address those hot spots._
+If development were to continue on this product, there are a few areas
+in which our design could be further improved.  Some methods that were
+written could have likely been made more efficient, and the same could
+be said for some of the objects that were written.  In particular,
+more could be done to have higher cohesion and better seperation of
+responsibilities, especially within the routes that were defined, as
+well as within the piece, space, and row classes.
+
+Reviewing the code metrics,
 
 ## Testing
 > _This section will provide information about the testing performed
@@ -147,9 +173,31 @@ to get/send a game request.
 > have not had any testing yet. Highlight the issues found during
 > acceptance testing and if there are any concerns._
 
+So far three stories have passed all unit testing. These stories are the
+ Player sign-in, Start a Game, and Username Checking. The issues found in
+  testing were primarily dealing with analogous responses during requestGame
+   and with usernames starting with a number. Following an implementation of
+    unit testing these issues were found and taken care of. 
+
 ### Unit Testing and Code Coverage
 > _Discuss your unit testing strategy. Report on the code coverage
 > achieved from unit testing of the code base. Discuss the team's
 > coverage targets, why you selected those values, and how well your
 > code coverage met your targets. If there are any anomalies, discuss
 > those._
+
+The strategy for unit testing was to find the most complete (or what we
+ thought were complete) classes and begin testing with those. The most
+  thorough we wanted were the PlayerLobby and Player. Since the most
+   important part of Sprint 1 was dealing with the Players and signing-in
+   . Then we used other parts that we found essential. The coverage goals
+    were 80% throughout. For some (such as the UI-tier) it was difficult to
+     truly meet this goal since using mockito only gives us so much. The
+      actual tests have to be done in a demo style test.
+
+![WebCheckers Current Code Coverage](current-test-coverage-25-mar.png)
+
+As you can see the UI did not meet that goal. However, the application and
+ model did. (Application has a Jacoco calculation error, when the link is
+  clicked it actually shows 88%). This is because the GetGameRoute and
+   GetSignInRoute remain untested.

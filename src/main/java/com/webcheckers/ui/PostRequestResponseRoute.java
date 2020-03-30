@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.logging.Logger;
 
+import com.webcheckers.application.GameManager;;
 import com.webcheckers.model.Player;
 //import jdk.nashorn.internal.objects.annotations.Getter;
 //import org.w3c.dom.css.ViewCSS;
@@ -18,10 +19,7 @@ import spark.TemplateEngine;
 import static com.webcheckers.ui.GetHomeRoute.CHALLENGE_USER_KEY;
 import static spark.Spark.halt;
 
-import com.webcheckers.util.Message;
-
 import com.webcheckers.application.PlayerLobby;
-import com.webcheckers.ui.PostRequestGameRoute;
 
 /**
  * The {@code POST /requestResponse} route handler.
@@ -40,6 +38,7 @@ public class PostRequestResponseRoute implements Route
 
   private final PlayerLobby lobby;
   private final TemplateEngine templateEngine;
+  private GameManager gameManager;
 
   /**
    * Constructor for the {@code GET/game} route handler.
@@ -65,6 +64,7 @@ public class PostRequestResponseRoute implements Route
   @Override
   public String handle(Request request, Response response)
   {
+    gameManager = new GameManager(lobby);
     LOG.config("Post Request Response has been invoked.");
     //retrieve the playerLobby object to verify that no time out has occurred
     final Session httpSession = request.session();
@@ -86,7 +86,7 @@ public class PostRequestResponseRoute implements Route
       switch (accept)
       {
         case "yes":
-          lobby.startGame(oppPlayer, usernameStr);
+          gameManager.startGame(oppPlayer, usernameStr);
           response.redirect(WebServer.GAME_URL);
           break;
         case "no":
@@ -95,7 +95,6 @@ public class PostRequestResponseRoute implements Route
           break;
         //Act upon the player's response to a game request
       }
-      response.redirect(WebServer.HOME_URL);
       return null;
     } else
     {
@@ -110,9 +109,9 @@ public class PostRequestResponseRoute implements Route
    *
    * @param username the challenger's username.
    */
-  static private void removePlayer(String username)
+  private void removePlayer(String username)
   {
-    PlayerLobby.removeChallenger(username);
+    lobby.removeChallenger(username);
   }
 }
 

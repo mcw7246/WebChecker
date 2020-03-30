@@ -1,5 +1,6 @@
 package com.webcheckers.ui;
 
+import com.webcheckers.application.GameManager;
 import com.webcheckers.application.PlayerLobby;
 import com.webcheckers.model.Player;
 import spark.*;
@@ -58,6 +59,7 @@ public class PostRequestGameRoute implements Route
     LOG.config("PostRequestGame has been invoked");
     //retrieve the playerLobby object from which the usernames of logged in players can be retrieved
     final Session httpSession = request.session();
+    final GameManager gameManager = httpSession.attribute(GetHomeRoute.GAME_MANAGER_KEY);
     final PlayerLobby playerLobby =
             httpSession.attribute(GetHomeRoute.PLAYER_LOBBY_KEY);
     final Player player = httpSession.attribute(GetHomeRoute.PLAYER_KEY);
@@ -82,7 +84,7 @@ public class PostRequestGameRoute implements Route
                 " sent a challenge!");
         response.redirect(WebServer.HOME_URL);
         return null;
-      } else if (playerLobby.getInGame().contains(challengerStr))
+      } else if (gameManager.getInGame().contains(challengerStr))
       {
         httpSession.attribute(ERROR_MESSAGE_KEY, "Request not Sent! " +
                 challengerStr + " is already in a game.");
