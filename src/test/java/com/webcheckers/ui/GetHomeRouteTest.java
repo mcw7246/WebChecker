@@ -1,14 +1,11 @@
 package com.webcheckers.ui;
 
+import com.webcheckers.application.GameManager;
 import com.webcheckers.application.PlayerLobby;
 import com.webcheckers.model.Player;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import spark.*;
-
-import java.util.Map;
-import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
@@ -35,6 +32,7 @@ public class GetHomeRouteTest
      */
     private PlayerLobby lobby;
     private Player p1, p2;
+    private GameManager gameManager;
 
     /*
        Mock objects
@@ -59,6 +57,7 @@ public class GetHomeRouteTest
         p2.setUsername("Username2");
         lobby.newPlayer(p1);
         lobby.newPlayer(p2);
+        gameManager = new GameManager(lobby);
         //Create a unique CuT for each test.
         CuT = new GetHomeRoute(engine, lobby);
     }
@@ -115,7 +114,7 @@ public class GetHomeRouteTest
 
 
         lobby.challenge(p1.getUsername(), p2.getUsername());
-        lobby.startGame(p2.getUsername(), p1.getUsername());
+        gameManager.startGame(p2.getUsername(), p1.getUsername());
         assertTrue(p1.isInGame());
 
 

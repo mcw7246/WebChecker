@@ -7,6 +7,7 @@ import java.util.logging.Logger;
 
 import com.google.gson.Gson;
 
+import com.webcheckers.application.GameManager;
 import com.webcheckers.application.PlayerLobby;
 import com.webcheckers.model.Player;
 import spark.TemplateEngine;
@@ -69,6 +70,7 @@ public class WebServer
   private final TemplateEngine templateEngine;
   private final Gson gson;
   private final PlayerLobby playerLobby;
+  private final GameManager gameManager;
   //
   // Constructor
   //
@@ -89,6 +91,7 @@ public class WebServer
     this.templateEngine = templateEngine;
     this.gson = gson;
     playerLobby = new PlayerLobby();
+    gameManager = new GameManager(playerLobby);
   }
 
   //
@@ -150,7 +153,7 @@ public class WebServer
     post(REQUEST_GAME_URL, new PostRequestGameRoute(templateEngine));
     post(RESPONSE_GAME_URL, new PostRequestResponseRoute(templateEngine,
             playerLobby));
-    get(GAME_URL, new GetGameRoute(templateEngine, playerLobby));
+    get(GAME_URL, new GetGameRoute(templateEngine, playerLobby, gameManager));
     LOG.config("WebServer is initialized.");
   }
 
