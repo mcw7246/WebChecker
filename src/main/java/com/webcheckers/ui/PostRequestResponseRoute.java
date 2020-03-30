@@ -95,7 +95,6 @@ public class PostRequestResponseRoute implements Route
           break;
         //Act upon the player's response to a game request
       }
-      response.redirect(WebServer.HOME_URL);
       return null;
     } else
     {
