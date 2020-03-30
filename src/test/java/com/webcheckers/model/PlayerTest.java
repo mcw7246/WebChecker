@@ -36,11 +36,13 @@ public class PlayerTest
 
   // Friendly objects
   private PlayerLobby lobby;
+  private GameManager gameManager;
 
   @BeforeEach
   public void setup()
   {
     lobby = new PlayerLobby();
+    gameManager = new GameManager(lobby);
   }
 
   /**
@@ -90,10 +92,10 @@ public class PlayerTest
     assertFalse(CuT.isInGame());
 
     lobby.challenge(GOOD_NAME, GOOD_NAME_2);
-    GameManager.startGame(GOOD_NAME_2, GOOD_NAME);
+    gameManager.startGame(GOOD_NAME_2, GOOD_NAME);
 
     // Get the updated CuT.
-    CuT = lobby.getOpponent(GOOD_NAME_2);
+    CuT = gameManager.getOpponent(GOOD_NAME_2);
 
     assertTrue(CuT.isInGame());
   }

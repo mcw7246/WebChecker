@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.logging.Logger;
 
+import com.webcheckers.application.GameManager;
 import com.webcheckers.application.PlayerLobby;
 import com.webcheckers.model.Player;
 import spark.*;
@@ -33,6 +34,7 @@ public class GetHomeRoute implements Route
   static final String PLAYER_LOBBY_KEY = "player-lobby";
   static final String SIGN_IN_KEY = "signIn";
   static final String PLAYER_NUM_KEY = "playerNum";
+  static final String GAME_MANAGER_KEY = "gameManager";
   static final String CHALLENGE_USER_KEY = "challengeUser";
   static final String CURRENT_USER_ATTR = "currentUser";
   static final String CHALLENGED_KEY = "pendingChallenge";
@@ -71,6 +73,7 @@ public class GetHomeRoute implements Route
     final Map<String, Object> vm = new HashMap<>();
     vm.put(TITLE_ATTR, TITLE);
     Player player = httpSession.attribute(PLAYER_KEY);
+    GameManager gameManager = httpSession.attribute(GAME_MANAGER_KEY);
 
     String msg = httpSession.attribute(MESSAGE);
     if (msg != null)

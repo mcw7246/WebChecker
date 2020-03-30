@@ -110,9 +110,9 @@ public class PostRequestResponseRoute implements Route
    *
    * @param username the challenger's username.
    */
-  static private void removePlayer(String username)
+  private void removePlayer(String username)
   {
-    PlayerLobby.removeChallenger(username);
+    lobby.removeChallenger(username);
   }
 }
 

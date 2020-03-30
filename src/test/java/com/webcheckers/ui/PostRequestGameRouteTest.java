@@ -38,6 +38,7 @@ public class PostRequestGameRouteTest
 
   //friendly objects
   private PlayerLobby lobby;
+  private GameManager gameManager;
 
   // attributes holding mock objects
   private Request request;
@@ -60,6 +61,7 @@ public class PostRequestGameRouteTest
     receiver = mock(Player.class);
     other = mock(Player.class);
     lobby = new PlayerLobby();
+    gameManager = new GameManager(lobby);
     when(sender.getUsername()).thenReturn(PLAYER1);
     when(receiver.getUsername()).thenReturn(PLAYER2);
     // Have to add it to the lobby.
@@ -190,7 +192,7 @@ public class PostRequestGameRouteTest
     when(engine.render(any(ModelAndView.class))).thenAnswer(testHelper.makeAnswer());
     //Place p1 and p2 inside a game.
     lobby.challenge(PLAYER2, PLAYER1);
-    GameManager.startGame(PLAYER1, PLAYER2);
+    gameManager.startGame(PLAYER1, PLAYER2);
 
     //Current player is Player3
     when(session.attribute(GetHomeRoute.PLAYER_KEY)).thenReturn(other);
@@ -201,9 +203,9 @@ public class PostRequestGameRouteTest
 
     assertFalse(lobby.getChallengers().contains(PLAYER3));
     assertFalse(lobby.challenging(PLAYER3, PLAYER1));
-    assertTrue(lobby.getInGame().contains(PLAYER1));
-    assertTrue(lobby.getInGame().contains(PLAYER2));
-    assertFalse(lobby.getInGame().contains(PLAYER3));
+    assertTrue(gameManager.getInGame().contains(PLAYER1));
+    assertTrue(gameManager.getInGame().contains(PLAYER2));
+    assertFalse(gameManager.getInGame().contains(PLAYER3));
 
     //Do the same with challenging Player2, who is in a game with Player1
     when(request.queryParams(PostRequestGameRoute.REQUEST_VAL)).
@@ -212,9 +214,9 @@ public class PostRequestGameRouteTest
 
     assertFalse(lobby.getChallengers().contains(PLAYER3));
     assertFalse(lobby.challenging(PLAYER3, PLAYER1));
-    assertTrue(lobby.getInGame().contains(PLAYER1));
-    assertTrue(lobby.getInGame().contains(PLAYER2));
-    assertFalse(lobby.getInGame().contains(PLAYER3));
+    assertTrue(gameManager.getInGame().contains(PLAYER1));
+    assertTrue(gameManager.getInGame().contains(PLAYER2));
+    assertFalse(gameManager.getInGame().contains(PLAYER3));
   }
 
   @Test

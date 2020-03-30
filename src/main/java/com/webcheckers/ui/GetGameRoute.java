@@ -33,7 +33,7 @@ public class GetGameRoute implements Route
   private PlayerLobby lobby;
   private GameManager gameManager;
 
-  public GetGameRoute(TemplateEngine templateEngine, PlayerLobby lobby)
+  public GetGameRoute(TemplateEngine templateEngine, PlayerLobby lobby, GameManager gameManager)
   {
     //validate
     Objects.requireNonNull(templateEngine,
@@ -42,11 +42,11 @@ public class GetGameRoute implements Route
             "templateEngine must not be null");
     this.templateEngine = templateEngine;
     this.lobby = lobby;
+    this.gameManager = gameManager;
   }
 
   public Object handle(Request request, Response response)
   {
-    gameManager = new GameManager(lobby);
     LOG.config("GetGameRoute invoked");
     final Map<String, Object> vm = new HashMap<>();
     vm.put(GetHomeRoute.TITLE_ATTR, "Web Checkers");
@@ -57,14 +57,16 @@ public class GetGameRoute implements Route
     {
       GameManager.PLAYERS number = gameManager.getNumber(player.getUsername());
       vm.put(CURRENT_PLAYER, player.getUsername());
-      final Player opponent = lobby.getOpponent(player.getUsername());
+      final Player opponent = gameManager.getOpponent(player.getUsername());
       CheckerGame checkersGame;
       if (number == GameManager.PLAYERS.PLAYER1)
       {
-        checkersGame = lobby.getGame(player.getUsername());
+        int gameIdNum = gameManager.getGameIDNum(player.getUsername());
+        checkersGame = gameManager.getGame(gameIdNum);
       } else
       {
-        checkersGame = lobby.getGame(opponent.getUsername());
+        int gameIdNum = gameManager.getGameIDNum(opponent.getUsername());
+        checkersGame = gameManager.getGame(gameIdNum);
       }
       vm.put(VIEW_MODE, Player.ViewMode.PLAY);
 

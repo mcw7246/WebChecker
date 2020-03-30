@@ -126,16 +126,6 @@ public class PlayerLobbyTest
   /**
    *tests method getInGame()
    */
- @Test
-  public void testGet_in_game()
- {
-   /**
-    *finish this method when start game is done
-    */
-   CuT.challenge(player2.getUsername(), player1.getUsername());
-   GameManager.startGame(player1.getUsername(), player2.getUsername());
-   assertEquals(2, CuT.getInGame().size());
- }
 
  /**
   *Tests removeChallenger(String victim)
@@ -150,37 +140,8 @@ public class PlayerLobbyTest
   }
 
   /**
-   * tests starting a game
-   */
-  @Test
-  public void testStart_game(){
-    CuT.challenge(player2.getUsername(), player1.getUsername());
-    GameManager.startGame(player1.getUsername(), player2.getUsername());
-    assertEquals(2, CuT.getInGame().size());
-  }
-
-  /**
    * test retrieving the opponent by entering the challengers name
    */
-
-  @Test
-  public void testGet_opponent_by_challenger()
-  {
-    CuT.challenge(player1.getUsername(), player2.getUsername());
-    GameManager.startGame(player2.getUsername(), player1.getUsername());
-    assertEquals(player1, CuT.getOpponent(player2.getUsername()));
-  }
-
-  /**
-   * tests retrieving an opponent by entering the victim
-   */
-  @Test
-  public void testGet_opponent_by_victim()
-  {
-    CuT.challenge(player1.getUsername(), player2.getUsername());
-    GameManager.startGame(player2.getUsername(), player1.getUsername());
-    assertEquals(player2, CuT.getOpponent(player1.getUsername()));
-  }
 
   /**
    * test getting the list of usernames currently logged in
