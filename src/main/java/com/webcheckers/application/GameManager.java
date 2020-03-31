@@ -3,6 +3,7 @@ package com.webcheckers.application;
 import com.webcheckers.model.BoardView;
 import com.webcheckers.model.CheckerGame;
 import com.webcheckers.model.Player;
+import com.webcheckers.ui.GetGameRoute;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -11,7 +12,8 @@ import java.util.Set;
 
 public class GameManager{
 
-    private static Map<String, Integer> gameID = new HashMap<>();
+    private static Map<String, Integer> gameIDChallenger = new HashMap<>();
+    private static Map<String, Integer> gameIDVictim = new HashMap<>();
     private static int gameIDNum = 1;
 
     //map of the current games going on where the key is the GameID and the value is the CheckerGame associated with it
@@ -19,7 +21,8 @@ public class GameManager{
     private static Map<String,String> gamesVictim= new HashMap<>();
     private static Map<String,String> gamesChallenge = new HashMap<>();
     private static Set<String> inGame = new HashSet<>();
-
+    private boolean p1Turn = true;
+    private boolean p2Turn = false;
 
     private static PlayerLobby playerLobby;
     public GameManager(PlayerLobby lobby){
@@ -53,12 +56,20 @@ public class GameManager{
       getInGame().add(challenger);
       getInGame().add(victim);
       gameIDNum +=1;
-      gameID.put(challenger, gameIDNum);
+      gameIDChallenger.put(challenger, gameIDNum);
+      gameIDVictim.put(victim, gameIDNum);
       getGames().put(gameIDNum, new CheckerGame(player1, player2, new BoardView(true)));
     }// An enum of players, player1 is the challenger and player2 is the victim.
 
-    public int getGameID(String challenger){
-      return gameID.get(challenger);
+    //returns the gameID for the given player
+    public int getGameID(String player){
+      if (gameIDVictim.get(player) == null)
+      {
+        return gameIDChallenger.get(player);
+      }
+      else{
+        return gameIDVictim.get(player);
+      }
     }
 
     public CheckerGame getGame(int currentGameID){
@@ -87,8 +98,6 @@ public class GameManager{
       return playerLobby.getPlayers().get(gamesVictim.get(username));
     }
   }
-
-  public int getGameIDNum(String challenger){return gameID.get(challenger);}
     public enum PLAYERS
     {PLAYER1, PLAYER2}
 

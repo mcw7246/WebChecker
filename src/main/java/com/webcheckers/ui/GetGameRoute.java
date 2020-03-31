@@ -61,11 +61,11 @@ public class GetGameRoute implements Route
       CheckerGame checkersGame;
       if (number == GameManager.PLAYERS.PLAYER1)
       {
-        int gameIdNum = gameManager.getGameIDNum(player.getUsername());
+        int gameIdNum = gameManager.getGameID(player.getUsername());
         checkersGame = gameManager.getGame(gameIdNum);
       } else
       {
-        int gameIdNum = gameManager.getGameIDNum(opponent.getUsername());
+        int gameIdNum = gameManager.getGameID(opponent.getUsername());
         checkersGame = gameManager.getGame(gameIdNum);
       }
       vm.put(VIEW_MODE, Player.ViewMode.PLAY);

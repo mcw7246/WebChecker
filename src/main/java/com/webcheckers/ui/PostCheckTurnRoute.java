@@ -1,5 +1,6 @@
 package com.webcheckers.ui;
 
+import com.webcheckers.application.GameManager;
 import com.webcheckers.application.PlayerLobby;
 import com.webcheckers.model.CheckerGame;
 import com.webcheckers.model.Player;
@@ -13,24 +14,31 @@ import static spark.Spark.halt;
 public class PostCheckTurnRoute implements Route
 {
 
+  private final GameManager gameManager;
+  private final PlayerLobby playerLobby;
+
+
+
+  public PostCheckTurnRoute(final PlayerLobby playerLobby, final GameManager gameManager){
+    this.gameManager = gameManager;
+    this.playerLobby = playerLobby;
+  }
 
   @Override
   public Object handle(Request request, Response response) throws Exception
   {
     final Session httpSession = request.session();
-    final PlayerLobby lobby = httpSession.attribute(GetHomeRoute.PLAYER_LOBBY_KEY);
     final Player player = httpSession.attribute(GetHomeRoute.PLAYER_KEY);
-
-    if(lobby != null)
+    if(this.playerLobby != null)
     {
-      final CheckerGame game = lobby.getGame(player.getUsername());
+      int gameID = this.gameManager.getGameID(player.getUsername());
+      final CheckerGame game = this.gameManager.getGame(gameID);
       if (game == null)
       {
         response.redirect(WebServer.HOME_URL);
         halt();
         return null;
       }
-
     } else
     {
       response.redirect(WebServer.HOME_URL);

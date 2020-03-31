@@ -1,6 +1,7 @@
 package com.webcheckers.ui;
 
 import com.google.gson.Gson;
+import com.webcheckers.application.GameManager;
 import com.webcheckers.application.PlayerLobby;
 import com.webcheckers.model.CheckerGame;
 import com.webcheckers.model.Move;
@@ -29,15 +30,20 @@ public class PostValidateMoveRoute implements Route
     , INVALID_BACKWARDS, JUMP_OWN, INVALID_DIR}
 
   Gson gson = new Gson();
+  private final GameManager gameManager;
+  private final PlayerLobby lobby;
   private static final String ACTION_DATA = "actionData";
 
   private final TemplateEngine templateEngine;
 
-  PostValidateMoveRoute(final TemplateEngine templateEngine)
+  PostValidateMoveRoute(final TemplateEngine templateEngine, final GameManager gameManager, final PlayerLobby playerLobby)
   {
     Objects.requireNonNull(templateEngine, "templateEngine must not be" +
             "null");
+
     this.templateEngine = templateEngine;
+    this.lobby = playerLobby;
+    this.gameManager = gameManager;
   }
 
   /**
@@ -69,13 +75,15 @@ public class PostValidateMoveRoute implements Route
     final Session httpSession = request.session();
     final String moveStr = request.queryParams(ACTION_DATA);
     final Move move = gson.fromJson(moveStr, Move.class);
-    final PlayerLobby lobby = httpSession.attribute(GetHomeRoute.PLAYER_LOBBY_KEY);
     final Player player = httpSession.attribute(GetHomeRoute.PLAYER_KEY);
 
 
     if (lobby != null)
     {
-      final CheckerGame game = lobby.getGame(player.getUsername());
+      System.out.println(player.getUsername());
+      System.out.println(gameManager);
+      int gameID = gameManager.getGameID(player.getUsername());
+      final CheckerGame game = gameManager.getGame(gameID);
       if (game == null)
       {
         response.redirect(WebServer.HOME_URL);
