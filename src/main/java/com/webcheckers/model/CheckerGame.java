@@ -20,6 +20,10 @@ public class CheckerGame
    * The board
    */
   private BoardView board;
+  /**
+   * Who's turn it is, 1 or 2.
+   */
+  private int turn = 1;
 
   /**
    * Constructor

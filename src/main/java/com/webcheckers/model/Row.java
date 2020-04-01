@@ -28,20 +28,19 @@ public class Row implements Iterable<Space>
    * Constructor for row class
    *
    * @param index The index of the row
-   * @param first used in initializeBoard method for piece arrangement
    */
-  public Row(int index, boolean first)
+  public Row(int index)
   {
     this.index = index;
     this.squares = new ArrayList<Space>();
-    initializeBoard(first);
+    initializeBoard();
   }
 
   /**
    * Initializes the board with alternating b&w spaces
    * And arranges the pieces for the start of the game
    */
-  private void initializeBoard(boolean first)
+  private void initializeBoard()
   {
     boolean isBlackSpace;
     Piece red = new Piece(Piece.Color.RED, Piece.Type.SINGLE);
@@ -61,36 +60,23 @@ public class Row implements Iterable<Space>
       isBlackSpace = !isBlackSpace;
     }
 
-    placePieces(first, red, white);
+    placePieces(red, white);
   }
 
   /**
    * Helper method to place pieces on board
    *
-   * @param first whether player is first or not (determines arrangement of piece colors)
    * @param red   red piece
    * @param white white piece
    */
-  private void placePieces(boolean first, Piece red, Piece white)
+  private void placePieces(Piece red, Piece white)
   {
-    if (first)
+    if (index == DIMENSIONS - 1 || index == DIMENSIONS - 2)
     {
-      if (index == DIMENSIONS - 1 || index == DIMENSIONS - 2)
-      {
-        fillRow(red);
-      } else if (index == 0 || index == 1)
-      {
-        fillRow(white);
-      }
-    } else
+      fillRow(red);
+    } else if (index == 0 || index == 1)
     {
-      if (index == DIMENSIONS - 1 || index == DIMENSIONS - 2)
-      {
-        fillRow(white);
-      } else if (index == 0 || index == 1)
-      {
-        fillRow(red);
-      }
+      fillRow(white);
     }
   }
 

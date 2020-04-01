@@ -33,30 +33,15 @@ public class BoardView implements Iterable<Row>
    * BoardView Constructor
    * Initializes the board spaces
    *
-   * @param isFirst holds whether player is 1st (red) or not
    */
-  public BoardView(boolean isFirst)
+  public BoardView()
   {
     board = new ArrayList<Row>();
 
     for (int i = 0; i < DIMENSIONS; i++)
     {
-      board.add(new Row(i, isFirst));
+      board.add(new Row(i));
     }
-  }
-
-  /**
-   * Determines if move is valid or not
-   *
-   * @param startRow the row index of the current space
-   * @param landRow  the row index of the space the user wants to land on
-   * @param startCol the column index of the current space
-   * @param landCol  the column index of the space the user wants to land on
-   * @return whether the move is valid or not
-   */
-  public boolean isMoveValid(int startRow, int landRow, int startCol, int landCol)
-  {
-    return true;
   }
 
   @Override

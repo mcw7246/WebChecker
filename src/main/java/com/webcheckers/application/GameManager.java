@@ -20,7 +20,6 @@ public class GameManager{
     private static Map<String,String> gamesChallenge = new HashMap<>();
     private static Set<String> inGame = new HashSet<>();
 
-
     private static PlayerLobby playerLobby;
     public GameManager(PlayerLobby lobby){
       playerLobby = lobby;
