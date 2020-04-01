@@ -60,13 +60,14 @@ public class GameManager
     player2.makePlayer2();
     player1.hasEnteredGame();
     player2.hasEnteredGame();
-    getInGame().add(challenger);
-    getInGame().add(victim);
+    inGame.add(challenger);
+    inGame.add(victim);
     gameIDNum += 1;
     gameID.put(challenger, gameIDNum);
     gameID.put(victim, gameIDNum);
-    pairs.put(gameIDNum, new Pair<>(challenger, victim));
-    getGames().put(gameIDNum, new CheckerGame(player1, player2, new BoardView()));
+    Pair<String, String> pairToAdd = new Pair<>(challenger, victim);
+    this.pairs.put(gameIDNum, pairToAdd);
+    games.put(gameIDNum, new CheckerGame(player1, player2, new BoardView()));
   }
 
   /**

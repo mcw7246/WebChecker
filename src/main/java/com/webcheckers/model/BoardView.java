@@ -64,7 +64,7 @@ public class BoardView implements Iterable<Row>
 
     for (int i = 0; i < DIMENSIONS; i++)
     {
-      flippedBoard.add(board.get(DIMENSIONS-i));
+      flippedBoard.add(board.get(DIMENSIONS-1-i));
     }
 
     this.board = flippedBoard;

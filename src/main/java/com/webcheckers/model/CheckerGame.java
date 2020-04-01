@@ -17,6 +17,11 @@ public class CheckerGame
    */
   private Player PLAYER_TWO;
   /**
+   * flipped is true if white is on the bottom.
+   */
+  private boolean flipped = false;
+
+  /**
    * The board
    */
   private BoardView board;
@@ -65,9 +70,20 @@ public class CheckerGame
     return board;
   }
 
+  /**
+   * Returns whether the board is in a "flipped" mode or not.
+   *
+   * @return if white is on the bottom or not.
+   */
+  public boolean isFlipped()
+  {
+    return flipped;
+  }
+
   public BoardView getFlippedBoardView()
   {
     board.flip();
+    flipped = !flipped;
     return board;
   }
 }

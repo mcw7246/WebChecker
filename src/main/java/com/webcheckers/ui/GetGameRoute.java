@@ -33,7 +33,7 @@ public class GetGameRoute implements Route
   private PlayerLobby lobby;
   private GameManager gameManager;
 
-  public GetGameRoute(TemplateEngine templateEngine, PlayerLobby lobby, GameManager gameManager)
+  public GetGameRoute(TemplateEngine templateEngine, PlayerLobby lobby)
   {
     //validate
     Objects.requireNonNull(templateEngine,
@@ -42,7 +42,6 @@ public class GetGameRoute implements Route
             "templateEngine must not be null");
     this.templateEngine = templateEngine;
     this.lobby = lobby;
-    this.gameManager = gameManager;
   }
 
   public Object handle(Request request, Response response)
@@ -55,6 +54,7 @@ public class GetGameRoute implements Route
     final Player player = httpSession.attribute(GetHomeRoute.PLAYER_KEY);
     if (player != null)
     {
+      this.gameManager = httpSession.attribute(GetHomeRoute.GAME_MANAGER_KEY);
       GameManager.PLAYERS number = gameManager.getNumber(player.getUsername());
       vm.put(CURRENT_PLAYER, player.getUsername());
       final Player opponent = gameManager.getOpponent(player.getUsername());
@@ -73,7 +73,13 @@ public class GetGameRoute implements Route
       {
         vm.put(RED_PLAYER, opponent);
         vm.put(WHITE_PLAYER, player);
-        vm.put(GAME_BOARD, checkersGame.getFlippedBoardView());
+        if (checkersGame.isFlipped())
+        {
+          vm.put(GAME_BOARD, checkersGame.getBoardView());
+        } else
+        {
+          vm.put(GAME_BOARD, checkersGame.getFlippedBoardView());
+        }
         info("you are player2, white should be on the bottom");
       }
       vm.put(ACTIVE_COLOR, Piece.Color.RED);
