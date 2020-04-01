@@ -10,6 +10,12 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+/**
+ * Holds and manages all games once they start
+ *
+ * @author Austin Miller 'akm8654'
+ * @author Mikayla Wishart 'mcw7246'
+ */
 public class GameManager
 {
 
@@ -29,7 +35,7 @@ public class GameManager
     playerLobby = lobby;
   }
 
-  public static Set<String> getInGame()
+  public Set<String> getInGame()
   {
     return inGame;
   }
@@ -51,6 +57,7 @@ public class GameManager
     playerLobby.removeChallenger(challenger);
     Player player1 = playerLobby.getPlayers().get(challenger);
     Player player2 = playerLobby.getPlayers().get(victim);
+    player2.makePlayer2();
     player1.hasEnteredGame();
     player2.hasEnteredGame();
     getInGame().add(challenger);
@@ -84,6 +91,33 @@ public class GameManager
     return games.get(currentGameID);
   }
 
+  /**
+   * Returns the pairs of players.
+   *
+   * @return Pairs which is a Map.
+   */
+  public Map<Integer, Pair<String, String>> getPairs()
+  {
+    return pairs;
+  }
+
+  /**
+   * Finds the pair for the given gameID
+   *
+   * @param gameID an int of the gameID
+   * @return a Pair object with the strings of the victim and challengers.
+   */
+  public Pair<String, String> getPair(int gameID)
+  {
+    return pairs.get(gameID);
+  }
+
+  /**
+   * Gets the player number (As a PLAYERS)
+   *
+   * @param username the username to check
+   * @return A PLAYERS enum.
+   */
   public PLAYERS getNumber(String username)
   {
     Player play = playerLobby.getPlayers().get(username);
@@ -97,6 +131,12 @@ public class GameManager
     }
   }
 
+  /**
+   * Returns the opponent of a player.
+   *
+   * @param username the username of the player
+   * @return the opponent as a Player Object.
+   */
   public Player getOpponent(String username)
   {
     int id = getGameID(username);
