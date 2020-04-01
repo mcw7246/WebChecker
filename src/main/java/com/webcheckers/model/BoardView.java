@@ -8,7 +8,6 @@ import java.util.List;
  * The Board itself
  *
  * @author Zehra Amena Baig (zab1166)
- * @author Austin Miller (akm8654)
  */
 
 public class BoardView implements Iterable<Row>
@@ -34,38 +33,15 @@ public class BoardView implements Iterable<Row>
    * BoardView Constructor
    * Initializes the board spaces
    *
-   * @param isFirst holds whether player is 1st (red) or not
    */
-  public BoardView(boolean isFirst)
+  public BoardView()
   {
     board = new ArrayList<Row>();
 
     for (int i = 0; i < DIMENSIONS; i++)
     {
-      board.add(new Row(i, isFirst));
+      board.add(new Row(i));
     }
-  }
-
-  /**
-   * returns the board list.
-   *
-   * @return a list of rows.
-   */
-  public List<Row> getBoard(){
-    return this.board;
-  }
-
-  /**
-   * A helper function to find a space at the given indices.
-   *
-   * @param rowInt the row index
-   * @param cellInt the col (or cell) index
-   * @return a Space requested.
-   */
-  public Space getSpaceAt(int rowInt, int cellInt)
-  {
-    Row row = board.get(rowInt);
-    return row.getSpaceAt(cellInt);
   }
 
   @Override
