@@ -76,6 +76,7 @@ public class Player
 
     boolean userContains = Pattern.matches("[a-zA-Z0-9]+", username);
     boolean numContains = Pattern.compile("[0-9]").matcher(username).find();
+    boolean spaceContains = Pattern.compile(" ").matcher(username).find();
     String startNum = "[0-9]";
     if (!userContains || username.length() < 6 || username.length() > 25 ||
             Character.isDigit(username.charAt(0)) || !numContains)
@@ -90,6 +91,9 @@ public class Player
      */
     else
     {
+      if(spaceContains){
+        this.username = username.trim();
+      }
       //username already exists
       if (playerLobby.getUsernames().stream().anyMatch(p1 -> p1.equals(username)))
       {
