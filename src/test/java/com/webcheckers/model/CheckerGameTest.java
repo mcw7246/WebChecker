@@ -55,8 +55,9 @@ public class CheckerGameTest
         lobby = new PlayerLobby();
         player1 = new Player(lobby);
         player2 = new Player(lobby);
-        boardT = new BoardView(TRUE);
-        boardF = new BoardView(FALSE);
+        boardT = new BoardView();
+        boardF = boardT;
+        boardF.flip();
 
         player1.setUsername("a");
         player2.setUsername("b");

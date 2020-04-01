@@ -27,7 +27,7 @@ public class RowTest
          * Stateless component that actually test the functionality of the
          * {@link Row}
          */
-        Row CuT = new Row(0, true);
+        Row CuT = new Row(0);
         ArrayList<Space> spaces = CuT.getRow();
         assertEquals(new Space(0, false), spaces.get(0));
         assertEquals(new Space(1, true, WHITE), spaces.get(1));
@@ -42,21 +42,21 @@ public class RowTest
     @Test
     public void testForNull()
     {
-        Row CuT = new Row(0, true);
+        Row CuT = new Row(0);
         assertNotNull(CuT);
     }
 
     @Test
     public void testIndex()
     {
-        Row CuT = new Row(0, true);
+        Row CuT = new Row(0);
         assertEquals(0, CuT.getIndex());
     }
 
     @Test
     public void testValidSpaceAtIndex()
     {
-        Row CuT = new Row(0, true);
+        Row CuT = new Row(0);
         ArrayList<Space> spaces = CuT.getRow();
         assertFalse(spaces.get(2).isValidSpace());
         assertTrue(spaces.get(7).isValidSpace());

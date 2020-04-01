@@ -22,6 +22,7 @@ public class Player
   private String username;
   private PlayerLobby playerLobby;
   private boolean inGame = false;
+  private int playerNum = 1;
 
   /**
    * constructor for Player
@@ -31,6 +32,24 @@ public class Player
   public Player(PlayerLobby playerLobby)
   {
     this.playerLobby = playerLobby;
+  }
+
+  /**
+   * Updates the player into the second player.
+   */
+  public void makePlayer2()
+  {
+    this.playerNum = 2;
+  }
+
+  /**
+   * A getter for the player number.
+   *
+   * @return either 1 or 2 depending on if they challenged or were the victim.
+   */
+  public int getPlayerNum()
+  {
+    return playerNum;
   }
 
   /**

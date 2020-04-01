@@ -59,15 +59,8 @@ public class GetGameRoute implements Route
       vm.put(CURRENT_PLAYER, player.getUsername());
       final Player opponent = gameManager.getOpponent(player.getUsername());
       CheckerGame checkersGame;
-      if (number == GameManager.PLAYERS.PLAYER1)
-      {
-        int gameIdNum = gameManager.getGameID(player.getUsername());
-        checkersGame = gameManager.getGame(gameIdNum);
-      } else
-      {
-        int gameIdNum = gameManager.getGameID(opponent.getUsername());
-        checkersGame = gameManager.getGame(gameIdNum);
-      }
+      int gameIdNum = gameManager.getGameID(player.getUsername());
+      checkersGame = gameManager.getGame(gameIdNum);
       vm.put(VIEW_MODE, Player.ViewMode.PLAY);
 
       if (checkersGame.getRedPlayer().equals(player))

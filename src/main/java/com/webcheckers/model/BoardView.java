@@ -30,9 +30,20 @@ public class BoardView implements Iterable<Row>
   }
 
   /**
+   * Helper method to get the space at a specific row/cell
+   *
+   * @param row the row index
+   * @param cell the col index
+   * @return the space located at the given values.
+   */
+  public Space getSpaceAt(int row, int cell)
+  {
+    return board.get(row).getSpaceAt(cell);
+  }
+
+  /**
    * BoardView Constructor
    * Initializes the board spaces
-   *
    */
   public BoardView()
   {
@@ -42,6 +53,22 @@ public class BoardView implements Iterable<Row>
     {
       board.add(new Row(i));
     }
+  }
+
+  /**
+   * Updates the board so that the other player is on the bottom.
+   */
+  public void flip()
+  {
+    List<Row> flippedBoard = new ArrayList<Row>();
+
+    for (int i = 0; i < DIMENSIONS; i++)
+    {
+      flippedBoard.add(board.get(DIMENSIONS-i));
+    }
+
+    this.board = flippedBoard;
+
   }
 
   @Override
