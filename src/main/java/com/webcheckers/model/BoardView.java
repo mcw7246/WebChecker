@@ -4,55 +4,17 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-/**
- * The Board itself
- *
- * @author Zehra Amena Baig (zab1166)
- */
+import static com.webcheckers.model.Board.DIMENSIONS;
 
 public class BoardView implements Iterable<Row>
 {
-  /**
-   * The board's size
-   */
-  public static final int DIMENSIONS = 8;
-  /**
-   * The board itself
-   */
+  // The board itself
   private List<Row> board;
+  private boolean flipped = false;
 
-  /**
-   * enum for the result of a move
-   */
-  public enum Move
+  public BoardView(Board boardActual)
   {
-    SINGLE, MULTI, MOVE, INVALID, WIN
-  }
-
-  /**
-   * Helper method to get the space at a specific row/cell
-   *
-   * @param row the row index
-   * @param cell the col index
-   * @return the space located at the given values.
-   */
-  public Space getSpaceAt(int row, int cell)
-  {
-    return board.get(row).getSpaceAt(cell);
-  }
-
-  /**
-   * BoardView Constructor
-   * Initializes the board spaces
-   */
-  public BoardView()
-  {
-    board = new ArrayList<Row>();
-
-    for (int i = 0; i < DIMENSIONS; i++)
-    {
-      board.add(new Row(i));
-    }
+    this.board = boardActual.getBoard();
   }
 
   /**
@@ -61,14 +23,22 @@ public class BoardView implements Iterable<Row>
   public void flip()
   {
     List<Row> flippedBoard = new ArrayList<Row>();
-
     for (int i = 0; i < DIMENSIONS; i++)
     {
       flippedBoard.add(board.get(DIMENSIONS-1-i));
     }
-
     this.board = flippedBoard;
+    flipped = !flipped;
+  }
 
+  /**
+   * Returns whether white is on the bottom or not.
+   *
+   * @return true if white is on the bottom.
+   */
+  public boolean isFlipped()
+  {
+    return flipped;
   }
 
   @Override
@@ -76,5 +46,4 @@ public class BoardView implements Iterable<Row>
   {
     return board.iterator();
   }
-
 }

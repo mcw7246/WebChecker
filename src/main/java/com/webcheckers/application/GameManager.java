@@ -1,6 +1,6 @@
 package com.webcheckers.application;
 
-import com.webcheckers.model.BoardView;
+import com.webcheckers.model.Board;
 import com.webcheckers.model.CheckerGame;
 import com.webcheckers.model.Player;
 import javafx.util.Pair;
@@ -67,7 +67,7 @@ public class GameManager
     gameID.put(victim, gameIDNum);
     Pair<String, String> pairToAdd = new Pair<>(challenger, victim);
     this.pairs.put(gameIDNum, pairToAdd);
-    games.put(gameIDNum, new CheckerGame(player1, player2, new BoardView()));
+    games.put(gameIDNum, new CheckerGame(player1, player2, new Board()));
   }
 
   /**

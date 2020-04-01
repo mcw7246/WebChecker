@@ -16,15 +16,12 @@ public class CheckerGame
    * White Player
    */
   private Player PLAYER_TWO;
-  /**
-   * flipped is true if white is on the bottom.
-   */
-  private boolean flipped = false;
 
   /**
    * The board
    */
-  private BoardView board;
+  private Board board;
+
   /**
    * Who's turn it is, 1 or 2.
    */
@@ -33,7 +30,7 @@ public class CheckerGame
   /**
    * Constructor
    */
-  public CheckerGame(Player PLAYER_ONE, Player PLAYER_TWO, BoardView board)
+  public CheckerGame(Player PLAYER_ONE, Player PLAYER_TWO, Board board)
   {
     this.PLAYER_ONE = PLAYER_ONE;
     this.PLAYER_TWO = PLAYER_TWO;
@@ -61,29 +58,27 @@ public class CheckerGame
   }
 
   /**
-   * Returns the board view
+   * Gets the actual board (not just the view)
    *
-   * @return the board view
+   * @return the board.
    */
-  public BoardView getBoardView()
+  public Board getBoard()
   {
     return board;
   }
 
   /**
-   * Returns whether the board is in a "flipped" mode or not.
+   * Returns the board view
    *
-   * @return if white is on the bottom or not.
+   * @return the board view
    */
-  public boolean isFlipped()
+  public BoardView getBoardView(boolean flipped)
   {
-    return flipped;
-  }
-
-  public BoardView getFlippedBoardView()
-  {
-    board.flip();
-    flipped = !flipped;
-    return board;
+    BoardView view = new BoardView(board);
+    if (flipped)
+    {
+      view.flip();
+    }
+    return view;
   }
 }

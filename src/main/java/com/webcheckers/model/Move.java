@@ -2,7 +2,6 @@ package com.webcheckers.model;
 
 import com.webcheckers.ui.PostValidateMoveRoute.MoveStatus;
 
-import java.lang.Math.*;
 import java.util.Objects;
 
 /**
@@ -49,7 +48,7 @@ public class Move
    */
   public MoveStatus validateMove(CheckerGame game)
   {
-    BoardView board = game.getBoardView();
+    Board board = game.getBoard();
     Space startSpace = board.getSpaceAt(start.getRow(), start.getCell());
     Space endSpace = board.getSpaceAt(end.getRow(), end.getCell());
 

@@ -67,19 +67,13 @@ public class GetGameRoute implements Route
       {
         vm.put(RED_PLAYER, player);
         vm.put(WHITE_PLAYER, opponent);
-        vm.put(GAME_BOARD, checkersGame.getBoardView());
-        info("you are player 1, red should be on the bottom.");
+        vm.put(GAME_BOARD, checkersGame.getBoardView(false));
+        LOG.config("you are player 1, red should be on the bottom.");
       } else
       {
         vm.put(RED_PLAYER, opponent);
         vm.put(WHITE_PLAYER, player);
-        if (checkersGame.isFlipped())
-        {
-          vm.put(GAME_BOARD, checkersGame.getBoardView());
-        } else
-        {
-          vm.put(GAME_BOARD, checkersGame.getFlippedBoardView());
-        }
+        vm.put(GAME_BOARD, checkersGame.getBoardView(true));
         info("you are player2, white should be on the bottom");
       }
       vm.put(ACTIVE_COLOR, Piece.Color.RED);
