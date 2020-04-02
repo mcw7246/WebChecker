@@ -8,6 +8,9 @@ package com.webcheckers.model;
 
 public class Piece
 {
+
+
+
   /**
    * The color of the Piece
    */
@@ -43,6 +46,12 @@ public class Piece
   {
     this.color = color;
     this.type = type;
+  }
+
+  public Piece(Color color)
+  {
+    this.color = color;
+    this.type = Type.SINGLE;
   }
 
   /**

@@ -63,5 +63,4 @@ public class RowTest
         assertTrue(spaces.get(7).isValidSpace());
     }
 
-
 }

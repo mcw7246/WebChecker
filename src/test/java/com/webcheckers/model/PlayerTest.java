@@ -4,6 +4,7 @@ import com.webcheckers.application.GameManager;
 import com.webcheckers.application.PlayerLobby;
 import com.webcheckers.model.Player.UsernameResult;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -13,6 +14,7 @@ import static org.junit.jupiter.api.Assertions.*;
  *
  * @author Austin Miller 'akm8654'
  */
+@Tag("Model-tier")
 public class PlayerTest
 {
 

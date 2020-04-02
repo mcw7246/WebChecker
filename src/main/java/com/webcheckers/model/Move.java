@@ -84,24 +84,30 @@ public class Move
         }
         Piece jumpPiece = board.getSpaceAt(start.getRow() + (rowDiff / 2),
                 start.getCell() + (colDiff / 2)).getPiece();
-        if (jumpPiece.getColor().equals(piece.getColor()))
+        if (jumpPiece != null)
         {
-          return MoveStatus.JUMP_OWN;
-        } else if (Math.abs(rowDiff) != Math.abs(colDiff))
+          if (jumpPiece.getColor().equals(piece.getColor()))
+          {
+            return MoveStatus.JUMP_OWN;
+          } else if (Math.abs(rowDiff) != Math.abs(colDiff))
+          {
+            return MoveStatus.INVALID_DIR;
+          } else if (king)
+          {
+            return MoveStatus.VALID;
+          } else if (rowDiff > 0)
+          {
+            return MoveStatus.INVALID_BACKWARDS;
+          }
+        } else
         {
-          return MoveStatus.INVALID_DIR;
-        } else if (king)
-        {
-          return MoveStatus.VALID;
-        } else if (rowDiff < 0)
-        {
-          return MoveStatus.INVALID_BACKWARDS;
+          return MoveStatus.TOO_FAR;
         }
       }
       if (king)
       {
         return MoveStatus.VALID;
-      } else if (rowDiff < 0)
+      } else if (rowDiff > 0)
       {
         return MoveStatus.INVALID_BACKWARDS;
       }

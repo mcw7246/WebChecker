@@ -11,6 +11,8 @@ import spark.*;
 import java.util.Objects;
 
 import static com.webcheckers.ui.PostRequestGameRoute.MESSAGE;
+import static com.webcheckers.util.Message.error;
+import static com.webcheckers.util.Message.info;
 import static spark.Spark.halt;
 
 /**
@@ -77,6 +79,7 @@ public class PostValidateMoveRoute implements Route
   {
     final Session httpSession = request.session();
     final String moveStr = request.queryParams(ACTION_DATA);
+    System.out.println(moveStr);
     final Move move = gson.fromJson(moveStr, Move.class);
     final Player player = httpSession.attribute(GetHomeRoute.PLAYER_KEY);
 
@@ -89,7 +92,7 @@ public class PostValidateMoveRoute implements Route
       {
         response.redirect(WebServer.HOME_URL);
         halt();
-        return null;
+        return "Redirected Home";
       }
       MoveStatus moveValidity = move.validateMove(game);
       String msg = "";
@@ -100,7 +103,9 @@ public class PostValidateMoveRoute implements Route
           setErrorMsg(httpSession, msg);
           break;
         case VALID:
-          break;
+          msg = "Valid Move! Click submit to send";
+          game.makeMove(move);
+          return gson.toJson(info(msg));
         case OCCUPIED:
           msg = "Invalid Move: Space is already Occupied!";
           setErrorMsg(httpSession, msg);
@@ -130,7 +135,8 @@ public class PostValidateMoveRoute implements Route
           throw new IllegalStateException("Unexpected value: " + moveValidity);
       }
       System.out.println(msg);
-      return "Move Validated";
+      //Must return an invalid move
+      return gson.toJson(error(msg));
     } else
     {
       response.redirect(WebServer.HOME_URL);

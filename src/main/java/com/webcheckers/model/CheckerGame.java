@@ -47,6 +47,20 @@ public class CheckerGame
     return PLAYER_ONE;
   }
 
+  /** Makes a move for the game
+   *
+   * @param move the move to be made
+   */
+  public void makeMove(Move move)
+  {
+    Position start = move.getStart();
+    Position end = move.getEnd();
+
+    Piece piece = board.getSpaceAt(start.getRow(), start.getCell()).getPiece();
+    board.getSpaceAt(end.getRow(), end.getCell()).setPiece(piece);
+    board.getSpaceAt(start.getRow(), start.getCell()).setPiece(null);
+  }
+
   /**
    * Returns second (white) player
    *
