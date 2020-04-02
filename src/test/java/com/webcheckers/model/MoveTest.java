@@ -72,6 +72,40 @@ public class MoveTest
     //may not need it but I cannot figure out how to do it otherwise
     //assertEquals(Move.MoveStatus.INVALID_SPACE, move.validateMove(game));
     }
+  @Test
+  public void testGet_start(){
+    start = new Position(1,1);
+    end = new Position(2,2);
+
+    CuT = new Move(start, end);
+
+    assertEquals(start, CuT.getStart());
+    //assertEquals(start.getCell(), move.getEnd().getCell());
+  }
+
+  @Test
+  public void testGet_end(){
+    start = new Position(1, 1);
+    end = new Position(2, 2);
+
+    CuT = new Move(start, end);
+
+    assertEquals(end, CuT.getEnd());
+
+  }
+
+  @Test
+  public void testInvalid_Space(){
+    start = new Position(1, 1);
+    end = new Position(1, 2);
+
+    CuT = new Move(start, end);
+
+    assertFalse(endSpace.isValidSpace());
+    //validateMove is returning null
+    //CuT.validateMove(game);
+    assertEquals(Move.MoveStatus.INVALID_SPACE, CuT.getStatus());
+  }
 
   @Test
   public void testValidate_move_occupied()
@@ -84,5 +118,19 @@ public class MoveTest
     space.setPiece(new Piece(Piece.Color.WHITE, Piece.Type.SINGLE));
 
     assertFalse(endSpace.isValidSpace());
+  }
+
+  @Test
+  public void testValidate_move_same_space()
+  {
+    start = new Position(1, 1);
+    end = new Position(1, 1);
+    CuT = new Move(start, end);
+
+    assertEquals(start.getCell(), end.getCell());
+    assertEquals(start.getRow(), end.getRow());
+    Move.MoveStatus testStatus = move.validateMove(game);
+    ///assertEquals(testStatus, Move.MoveStatus.SAME_SPACE);
+    //assertTrue()
   }
 }

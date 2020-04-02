@@ -18,6 +18,7 @@ public class Move
   }
   private Position start;
   private Position end;
+  private MoveStatus status;
 
   public Move(Position start, Position end)
   {
@@ -74,16 +75,19 @@ public class Move
 
     if (!endSpace.isValidSpace()) //is the space the correct color?
     {
-      return MoveStatus.INVALID_SPACE;
+      status = MoveStatus.INVALID_SPACE;
+      return status;
     } else if (startSpace.equals(endSpace)) //is the space the same as the
     // start?
     {
-      return MoveStatus.SAME_SPACE;
+      status = MoveStatus.SAME_SPACE;
+      return status;
     } else
     {
       if (endSpace.getPiece() != null) // there's already a piece there!
       {
-        return MoveStatus.OCCUPIED;
+        status = MoveStatus.OCCUPIED;
+        return status;
       }
       if (Math.abs(rowDiff) > 1 || Math.abs(colDiff) > 1) //more than 1 by 1
       // away.
@@ -91,7 +95,8 @@ public class Move
         if (Math.abs(rowDiff) > 2 || Math.abs(colDiff) > 2) // more than 2
         // away in any direction.
         {
-          return MoveStatus.TOO_FAR;
+          status = MoveStatus.TOO_FAR;
+          return status;
         }
         Piece jumpPiece = board.getSpaceAt(start.getRow() + (rowDiff / 2),
                 start.getCell() + (colDiff / 2)).getPiece();
@@ -99,30 +104,42 @@ public class Move
         {
           if (jumpPiece.getColor().equals(piece.getColor()))
           {
-            return MoveStatus.JUMP_OWN;
+            status = MoveStatus.JUMP_OWN;
+            return status;
           } else if (Math.abs(rowDiff) != Math.abs(colDiff))
           {
-            return MoveStatus.INVALID_DIR;
+            status = MoveStatus.INVALID_DIR;
+            return status;
           } else if (king)
           {
-            return MoveStatus.VALID;
+            status = MoveStatus.VALID;
+            return status;
           } else if (colorFactor * rowDiff > 0)
           {
-            return MoveStatus.INVALID_BACKWARDS;
+            status = MoveStatus.INVALID_BACKWARDS;
+            return status;
           }
         } else
         {
-          return MoveStatus.TOO_FAR;
+          status = MoveStatus.TOO_FAR;
+          return status;
         }
       }
       if (king)
       {
-        return MoveStatus.VALID;
+        status = MoveStatus.VALID;
+        return status;
       } else if (colorFactor * rowDiff > 0)
       {
-        return MoveStatus.INVALID_BACKWARDS;
+        status = MoveStatus.INVALID_BACKWARDS;
+        return status;
       }
     }
-    return MoveStatus.VALID;
+    status = MoveStatus.VALID;
+    return status;
+  }
+
+  public MoveStatus getStatus(){
+    return status;
   }
 }

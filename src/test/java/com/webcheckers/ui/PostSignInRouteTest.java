@@ -97,6 +97,7 @@ public class PostSignInRouteTest
     testHelper.assertViewModelAttribute(GetHomeRoute.TITLE_ATTR, GetHomeRoute.TITLE);
 
   }
+
   @Test
   public void testTaken_username(){
     when(request.queryParams(eq(PostSignInRoute.USERNAME_PARAM))).thenReturn(TAKEN_USERNAME);
