@@ -56,7 +56,7 @@ public class Row implements Iterable<Space>
 
     for (int i = 0; i < DIMENSIONS; i++)
     {
-      squares.add(new Space(i, isBlackSpace));
+      squares.add(new Space(index, i, isBlackSpace));
       isBlackSpace = !isBlackSpace;
     }
 

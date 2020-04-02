@@ -27,16 +27,17 @@ public class RowTest
          * Stateless component that actually test the functionality of the
          * {@link Row}
          */
-        Row CuT = new Row(0);
+        int rowInd = 0;
+        Row CuT = new Row(rowInd);
         ArrayList<Space> spaces = CuT.getRow();
-        assertEquals(new Space(0, false), spaces.get(0));
-        assertEquals(new Space(1, true, WHITE), spaces.get(1));
-        assertEquals(new Space(2, false), spaces.get(2));
-        assertEquals(new Space(3, true, WHITE), spaces.get(3));
-        assertEquals(new Space(4, false), spaces.get(4));
-        assertEquals(new Space(5, true, WHITE), spaces.get(5));
-        assertEquals(new Space(6, false), spaces.get(6));
-        assertEquals(new Space(7, true, WHITE), spaces.get(7));
+        assertEquals(new Space(rowInd, 0, false), spaces.get(0));
+        assertEquals(new Space(rowInd, 1, true, WHITE), spaces.get(1));
+        assertEquals(new Space(rowInd, 2, false), spaces.get(2));
+        assertEquals(new Space(rowInd, 3, true, WHITE), spaces.get(3));
+        assertEquals(new Space(rowInd, 4, false), spaces.get(4));
+        assertEquals(new Space(rowInd, 5, true, WHITE), spaces.get(5));
+        assertEquals(new Space(rowInd, 6, false), spaces.get(6));
+        assertEquals(new Space(rowInd, 7, true, WHITE), spaces.get(7));
     }
 
     @Test

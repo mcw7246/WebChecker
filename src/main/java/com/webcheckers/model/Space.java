@@ -7,21 +7,34 @@ package com.webcheckers.model;
  */
 public class Space
 {
-  private final boolean isblackSpace;
+  private final boolean isBlack;
   private final int columnIndex;
+  private final int rowIndex;
   private Piece piece;
 
-  public Space(int columnIndex, boolean isblackSpace, Piece piece)
+  public Space(int rowIndex, int columnIndex, boolean isBlack, Piece piece)
   {
+    this.rowIndex = rowIndex;
     this.columnIndex = columnIndex;
-    this.isblackSpace = isblackSpace;
+    this.isBlack = isBlack;
     this.piece = piece;
   }
 
-  public Space(int columnIndex, boolean isblackSpace)
+  public Space(int rowIndex, int columnIndex, boolean isBlack)
   {
     this.columnIndex = columnIndex;
-    this.isblackSpace = isblackSpace;
+    this.isBlack = isBlack;
+    this.rowIndex = rowIndex;
+  }
+
+  /**
+   * Returns the row index
+   *
+   * @return an integer representing the row index
+   */
+  public int getRowIndex()
+  {
+    return rowIndex;
   }
 
   /**
@@ -42,7 +55,7 @@ public class Space
    */
   public boolean isValidSpace()
   {
-    return isblackSpace;
+    return isBlack;
   }
 
   /**
@@ -56,7 +69,7 @@ public class Space
   }
 
   public boolean isBlackSpace() {
-    return isblackSpace;
+    return isBlack;
   }
 
   /**
@@ -69,28 +82,16 @@ public class Space
     this.piece = piece;
   }
 
+  @Override
   public boolean equals(Object o)
   {
     if(o instanceof Space)
     {
       Space sp = (Space) o;
-      if((sp.getColumnIndex() == this.getColumnIndex()) && (sp.isValidSpace() == this.isValidSpace()))
+      if((sp.getColumnIndex() == this.getColumnIndex()) &&
+              (sp.isValidSpace() == this.isValidSpace()))
       {
-        if(!this.isValidSpace())
-        {
-          return true;
-        }
-        else
-        {
-          if((sp.getPiece().getColor() == this.getPiece().getColor()) && (sp.getPiece().getType() == this.getPiece().getType()))
-          {
-            return true;
-          }
-          else
-          {
-            return false;
-          }
-        }
+        return sp.getRowIndex() == this.rowIndex;
       }
     }
     return false;

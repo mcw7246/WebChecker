@@ -26,7 +26,8 @@ class SpaceTest
   private Piece piece;
 
   @BeforeEach
-  public void setup() {
+  public void setup()
+  {
     piece = mock(Piece.class);
     when(piece.getColor()).thenReturn(RED);
     when(piece.getType()).thenReturn(SINGLE);
@@ -39,7 +40,7 @@ class SpaceTest
   @Test
   public void testForNull()
   {
-    Space CuT = new Space(0, false, WHITE);
+    Space CuT = new Space(0, 0, false, WHITE);
     assertNotNull(CuT);
   }
 
@@ -47,7 +48,7 @@ class SpaceTest
   @Test
   public void getColumnIndex()
   {
-    Space CuT = new Space(0, false, WHITE);
+    Space CuT = new Space(0, 0, false, WHITE);
     assertEquals(0, CuT.getColumnIndex());
   }
 
@@ -56,18 +57,18 @@ class SpaceTest
    * If this test fails, then the isValidSpace test may also fail if the space's boolean is improperly represented.
    */
   @Test
-  public void isblackSpace() {
-    Space CuT = new Space(0, false, WHITE);
+  public void isblackSpace()
+  {
+    Space CuT = new Space(0, 0, false, WHITE);
     assertFalse(CuT.isBlackSpace());
   }
 
   //Ensure that the space is invalid when constructed as a white space, and valid when constructed as a black space.
-  //TODO update this and isBlackSpace test when space is updated to remove method redundancy
   @Test
   void isValidSpace()
   {
-    Space CuT1 = new Space(0, false, WHITE);
-    Space CuT2 = new Space(0, true, WHITE);
+    Space CuT1 = new Space(0, 0, false, WHITE);
+    Space CuT2 = new Space(0, 0, true, WHITE);
     assertFalse(CuT1.isValidSpace());
     assertTrue(CuT2.isValidSpace());
   }
@@ -76,7 +77,7 @@ class SpaceTest
   @Test
   void getPiece()
   {
-    Space CuT = new Space(0, false, WHITE);
+    Space CuT = new Space(0, 0, false, WHITE);
     assertEquals(WHITE, CuT.getPiece());
   }
 
@@ -84,7 +85,7 @@ class SpaceTest
   @Test
   void setPiece()
   {
-    Space CuT = new Space(0, false, WHITE);
+    Space CuT = new Space(0, 0, false, WHITE);
     CuT.setPiece(piece);
     assertEquals(piece, CuT.getPiece());
   }
@@ -93,8 +94,8 @@ class SpaceTest
   @Test
   void testEquals()
   {
-    Space CuT1 = new Space(0, false, WHITE);
-    Space CuT2 = new Space(0, false, WHITE);
+    Space CuT1 = new Space(0, 0, false, WHITE);
+    Space CuT2 = new Space(0, 0, false, WHITE);
     assertEquals(CuT1, CuT2);
   }
 }
