@@ -1,8 +1,6 @@
 package com.webcheckers.model;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 import static com.webcheckers.model.Board.DIMENSIONS;
 
@@ -22,12 +20,11 @@ public class BoardView implements Iterable<Row>
    */
   public void flip()
   {
-    List<Row> flippedBoard = new ArrayList<Row>();
-    for (int i = 0; i < DIMENSIONS; i++)
-    {
-      flippedBoard.add(board.get(DIMENSIONS-1-i));
+    Collections.reverse(board);
+
+    for(Row r: board){
+      Collections.reverse(r.getRow());
     }
-    this.board = flippedBoard;
     flipped = !flipped;
   }
 

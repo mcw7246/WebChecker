@@ -52,12 +52,13 @@ public class Move
    * @param game the game that is being played
    * @return a status based on what was found.
    */
-  public MoveStatus validateMove(CheckerGame game)
+  public MoveStatus validateMove(CheckerGame game )
   {
     Board board = game.getBoard();
     Space startSpace = board.getSpaceAt(start.getRow(), start.getCell());
     Space endSpace = board.getSpaceAt(end.getRow(), end.getCell());
 
+    System.out.println(board.getSpaceAt(startSpace.getRowIndex(), startSpace.getColumnIndex()));
     Piece piece = startSpace.getPiece();
     boolean king = piece.getType().equals(Piece.Type.KING);
 

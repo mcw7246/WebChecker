@@ -26,6 +26,9 @@ public class GetGameRoute implements Route
   public static final String VIEW_NAME = "game.ftl";
   public static final String GAME_BOARD = "board_actual";
 
+  private Player redPlayer;
+  private Player whitePlayer;
+
   //Attributes
   private static final Logger LOG = Logger.getLogger(GetHomeRoute.class.getName());
   private final TemplateEngine templateEngine;
@@ -56,18 +59,21 @@ public class GetGameRoute implements Route
       CheckerGame checkersGame;
       int gameIdNum = gameManager.getGameID(player.getUsername());
       checkersGame = gameManager.getGame(gameIdNum);
+      this.redPlayer = checkersGame.getRedPlayer();
+      this.whitePlayer = checkersGame.getWhitePlayer();
       vm.put(VIEW_MODE, Player.ViewMode.PLAY);
       session.attribute(GAME_BOARD, checkersGame.getBoard());
-      if (checkersGame.getRedPlayer().equals(player))
+      if (checkersGame.getRedPlayer().getUsername().equals(redPlayer.getUsername()))
       {
-        vm.put(RED_PLAYER, player);
-        vm.put(WHITE_PLAYER, opponent);
+        vm.put(RED_PLAYER, redPlayer);
+        vm.put(WHITE_PLAYER, whitePlayer);
         vm.put(GAME_BOARD_VIEW, checkersGame.getBoardView(false));
         LOG.config("you are player 1, red should be on the bottom.");
-      } else
+      }
+      if(checkersGame.getWhitePlayer().getUsername().equals(whitePlayer.getUsername()))
       {
-        vm.put(RED_PLAYER, opponent);
-        vm.put(WHITE_PLAYER, player);
+        vm.put(RED_PLAYER, redPlayer);
+        vm.put(WHITE_PLAYER, whitePlayer);
         vm.put(GAME_BOARD_VIEW, checkersGame.getBoardView(true));
         info("you are player2, white should be on the bottom");
       }

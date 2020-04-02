@@ -23,18 +23,6 @@ public class Board implements Iterable<Row>
   private List<Row> board;
 
   /**
-   * Helper method to get the space at a specific row/cell
-   *
-   * @param row the row index
-   * @param cell the col index
-   * @return the space located at the given values.
-   */
-  public Space getSpaceAt(int row, int cell)
-  {
-    return board.get(row).getSpaceAt(cell);
-  }
-
-  /**
    * BoardView Constructor
    * Initializes the board spaces
    */
@@ -53,6 +41,17 @@ public class Board implements Iterable<Row>
     this.board = board;
   }
 
+  /**
+   * Helper method to get the space at a specific row/cell
+   *
+   * @param row the row index
+   * @param cell the col index
+   * @return the space located at the given values.
+   */
+  public Space getSpaceAt(int row, int cell)
+  {
+    return board.get(row).getSpaceAt(cell);
+  }
   /**
    * Gives a copy of the board.
    *
