@@ -18,32 +18,35 @@ import static spark.Spark.halt;
  * track of each proposed move for a single turn in the user's game state. It
  * sends INFO if the move is valid and an ERROR if not. The text should say
  * why the move is invalid.
- *
+ * <p>
  * Query's Params for actionData Move (As a class).
  *
  * @author Austin Miller 'akm8654'
  */
 public class PostValidateMoveRoute implements Route
 {
-  /** All the types of moves */
-  public enum MoveStatus {INVALID_SPACE, VALID, OCCUPIED, TOO_FAR, SAME_SPACE
-    , INVALID_BACKWARDS, JUMP_OWN, INVALID_DIR}
+  /**
+   * All the types of moves
+   */
+  public enum MoveStatus
+  {
+    INVALID_SPACE, VALID, OCCUPIED, TOO_FAR, SAME_SPACE, INVALID_BACKWARDS, JUMP_OWN, INVALID_DIR
+  }
 
-  Gson gson = new Gson();
-  private final GameManager gameManager;
+  private GameManager gameManager;
   private final PlayerLobby lobby;
+  Gson gson = new Gson();
   private static final String ACTION_DATA = "actionData";
 
   private final TemplateEngine templateEngine;
 
-  PostValidateMoveRoute(final TemplateEngine templateEngine, final GameManager gameManager, final PlayerLobby playerLobby)
+  PostValidateMoveRoute(final TemplateEngine templateEngine,
+                        final PlayerLobby playerLobby)
   {
     Objects.requireNonNull(templateEngine, "templateEngine must not be" +
             "null");
-
     this.templateEngine = templateEngine;
     this.lobby = playerLobby;
-    this.gameManager = gameManager;
   }
 
   /**
@@ -77,11 +80,9 @@ public class PostValidateMoveRoute implements Route
     final Move move = gson.fromJson(moveStr, Move.class);
     final Player player = httpSession.attribute(GetHomeRoute.PLAYER_KEY);
 
-
     if (lobby != null)
     {
-      System.out.println(player.getUsername());
-      System.out.println(gameManager);
+      gameManager = httpSession.attribute(GetHomeRoute.GAME_MANAGER_KEY);
       int gameID = gameManager.getGameID(player.getUsername());
       final CheckerGame game = gameManager.getGame(gameID);
       if (game == null)
@@ -91,7 +92,7 @@ public class PostValidateMoveRoute implements Route
         return null;
       }
       MoveStatus moveValidity = move.validateMove(game);
-      String msg;
+      String msg = "";
       switch (moveValidity)
       {
         case INVALID_SPACE:
@@ -125,15 +126,16 @@ public class PostValidateMoveRoute implements Route
           msg = "Invalid Move: You must move diagonally!";
           setErrorMsg(httpSession, msg);
           break;
+        default:
+          throw new IllegalStateException("Unexpected value: " + moveValidity);
       }
-
-      response.redirect(WebServer.GAME_URL);
+      System.out.println(msg);
+      return "Move Validated";
     } else
     {
       response.redirect(WebServer.HOME_URL);
       halt();
+      return null;
     }
-    return null;
-
   }
 }

@@ -91,7 +91,7 @@ public class WebServer
     Objects.requireNonNull(gson, "gson must not be null");
     //
     this.templateEngine = templateEngine;
-    this.gson = gson;
+    this.gson = new Gson();
     playerLobby = new PlayerLobby();
     gameManager = new GameManager(playerLobby);
   }
@@ -158,8 +158,7 @@ public class WebServer
     get(GAME_URL, new GetGameRoute(templateEngine, playerLobby));
     post(CHECK_TURN_URL, new PostCheckTurnRoute(playerLobby, gameManager));
     get(GAME_URL, new GetGameRoute(templateEngine, playerLobby));
-    post(VALIDATE_MOVE_URL, new PostValidateMoveRoute(templateEngine, gameManager, playerLobby));
-    //
+    post(VALIDATE_MOVE_URL, new PostValidateMoveRoute(templateEngine, playerLobby));
     get(GAME_URL, new GetGameRoute(templateEngine, playerLobby));
     LOG.config("WebServer is initialized.");
   }

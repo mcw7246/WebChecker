@@ -77,12 +77,11 @@ public class GetGameRoute implements Route
         info("you are player2, white should be on the bottom");
       }
       vm.put(ACTIVE_COLOR, Piece.Color.RED);
-
       return templateEngine.render(new ModelAndView(vm, VIEW_NAME));
     } else
     {
       response.redirect(HOME_URL);
-      return null;
+      return "Home Redirect";
     }
   }
 }

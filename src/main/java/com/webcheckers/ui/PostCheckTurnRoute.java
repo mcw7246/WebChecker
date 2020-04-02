@@ -38,6 +38,9 @@ public class PostCheckTurnRoute implements Route
         response.redirect(WebServer.HOME_URL);
         halt();
         return null;
+      } else
+      {
+
       }
     } else
     {

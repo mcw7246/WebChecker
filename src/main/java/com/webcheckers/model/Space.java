@@ -76,7 +76,7 @@ public class Space
       Space sp = (Space) o;
       if((sp.getColumnIndex() == this.getColumnIndex()) && (sp.isValidSpace() == this.isValidSpace()))
       {
-        if(this.isValidSpace() == false)
+        if(!this.isValidSpace())
         {
           return true;
         }
