@@ -8,6 +8,8 @@ import com.webcheckers.model.Move;
 import com.webcheckers.model.Player;
 import spark.*;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import static com.webcheckers.ui.PostRequestGameRoute.MESSAGE;
@@ -36,7 +38,9 @@ public class PostValidateMoveRoute implements Route
   private final PlayerLobby lobby;
   Gson gson = new Gson();
   private static final String ACTION_DATA = "actionData";
+  public static final String MOVE_LIST_ID = "moves";
 
+  private List<Move> moves;
   private final TemplateEngine templateEngine;
 
   PostValidateMoveRoute(final TemplateEngine templateEngine,
@@ -57,6 +61,22 @@ public class PostValidateMoveRoute implements Route
   private void setErrorMsg(Session session, String message)
   {
     session.attribute(GetHomeRoute.ERROR_MESSAGE_KEY, message);
+  }
+
+  /**
+   * Adds a move to the list of moves stored in the session.
+   *
+   * @param move: the move that has been made
+   */
+  private void addMove(Session session, Move move)
+  {
+    moves = session.attribute(MOVE_LIST_ID);
+    if (moves == null)
+    {
+      moves = new ArrayList<Move>();
+    }
+    moves.add(move);
+    session.attribute(MOVE_LIST_ID, moves);
   }
 
   @Override
@@ -89,6 +109,7 @@ public class PostValidateMoveRoute implements Route
         case VALID:
           msg = "Valid Move! Click submit to send";
           game.makeMove(move);
+          addMove(httpSession, move);
           return gson.toJson(info(msg));
         case OCCUPIED:
           msg = "Invalid Move: Space is already Occupied!";

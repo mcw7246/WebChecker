@@ -29,7 +29,6 @@ public class PostSubmitTurnRoute implements Route
     final Session session = request.session();
     final Player player = session.attribute(GetHomeRoute.PLAYER_KEY);
     final Gson gson = new Gson();
-    PlayerLobby lobby = session.attribute(GetHomeRoute.PLAYER_LOBBY_KEY);
     GameManager manager = session.attribute(GetHomeRoute.GAME_MANAGER_KEY);
     if(player != null)
     {
