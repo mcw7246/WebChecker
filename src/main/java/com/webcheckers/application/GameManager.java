@@ -3,7 +3,6 @@ package com.webcheckers.application;
 import com.webcheckers.model.Board;
 import com.webcheckers.model.CheckerGame;
 import com.webcheckers.model.Player;
-import javafx.util.Pair;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -21,9 +20,9 @@ public class GameManager
 
   private static Map<String, Integer> gameID = new HashMap<>();
   private static int gameIDNum = 1;
-  //map where the gameID is the key and the Return is a Pair with the pair of
+  //map where the gameID is the key and the Return is a HashMap with the pair of
   // players.
-  private Map<Integer, Pair<String, String>> pairs = new HashMap<>();
+  private Map<Integer, HashMap<String, String>> pairs = new HashMap<>();
   //map of the current games going on where the key is the GameID and the value is the CheckerGame associated with it
   private static Map<Integer, CheckerGame> games = new HashMap<>();
   private static Set<String> inGame = new HashSet<>();
@@ -64,7 +63,8 @@ public class GameManager
     gameIDNum += 1;
     gameID.put(challenger, gameIDNum);
     gameID.put(victim, gameIDNum);
-    Pair<String, String> pairToAdd = new Pair<>(challenger, victim);
+    HashMap<String, String> pairToAdd = new HashMap<>();
+    pairToAdd.put(challenger, victim);
     this.pairs.put(gameIDNum, pairToAdd);
     games.put(gameIDNum, new CheckerGame(player1, player2, new Board()));
   }
@@ -107,7 +107,7 @@ public class GameManager
    *
    * @return Pairs which is a Map.
    */
-  public Map<Integer, Pair<String, String>> getPairs()
+  public Map<Integer, HashMap<String, String>> getPairs()
   {
     return pairs;
   }
@@ -118,7 +118,7 @@ public class GameManager
    * @param gameID an int of the gameID
    * @return a Pair object with the strings of the victim and challengers.
    */
-  public Pair<String, String> getPair(int gameID)
+  public HashMap<String, String> getPair(int gameID)
   {
     return pairs.get(gameID);
   }
@@ -151,13 +151,19 @@ public class GameManager
   public Player getOpponent(String username)
   {
     int id = getGameID(username);
-    Pair<String, String> pair = pairs.get(id);
-    if (pair.getKey().equals(username))
+    HashMap<String, String> pair = pairs.get(id);
+    //if the
+    if (pair.containsKey(username))
     {
-      return playerLobby.getPlayers().get(pair.getValue());
+      return playerLobby.getPlayers().get(pair.get(username));
     } else
     {
-      return playerLobby.getPlayers().get(pair.getKey());
+      for (String key: pair.keySet()) {
+        if (pair.get(key).equals(username)) {
+          return playerLobby.getPlayers().get(key);
+        }
+      }
+      return null;
     }
   }
 

@@ -2,7 +2,6 @@ package com.webcheckers.application;
 
 import com.webcheckers.model.CheckerGame;
 import com.webcheckers.model.Player;
-import javafx.util.Pair;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -63,7 +62,8 @@ public class GameManagerTest
     assertTrue(inGame.contains(P2_NAME));
     assertEquals(CuT.getGameID(P1_NAME), CuT.getGameID(P2_NAME));
 
-    Pair<String, String> pair = new Pair<>(P1_NAME, P2_NAME);
+    HashMap<String, String> pair = new HashMap<>();
+    pair.put(P1_NAME, P2_NAME);
     assertEquals(pair, CuT.getPair(CuT.getGameID(P1_NAME)));
   }
 
