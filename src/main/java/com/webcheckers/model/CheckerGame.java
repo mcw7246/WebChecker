@@ -38,6 +38,22 @@ public class CheckerGame
   }
 
   /**
+   * Get whose turn it is to go.
+   *
+   * @return the int of players turn.
+   */
+  public String getTurn()
+  {
+    if (turn == 1)
+    {
+      return PLAYER_ONE.getUsername();
+    } else
+    {
+      return PLAYER_TWO.getUsername();
+    }
+  }
+
+  /**
    * Returns first (red) player
    *
    * @return the red player
@@ -59,6 +75,15 @@ public class CheckerGame
     Piece piece = board.getSpaceAt(start.getRow(), start.getCell()).getPiece();
     board.getSpaceAt(end.getRow(), end.getCell()).setPiece(piece);
     board.getSpaceAt(start.getRow(), start.getCell()).setPiece(null);
+  }
+
+  /** A move has been made! Update the board!
+   *
+   * @param board the new board.
+   */
+  public void updateBoard(Board board)
+  {
+    this.board = board;
   }
 
   /**

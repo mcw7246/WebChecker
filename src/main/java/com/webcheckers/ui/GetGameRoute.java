@@ -22,26 +22,20 @@ public class GetGameRoute implements Route
   public static final String RED_PLAYER = "redPlayer";
   public static final String WHITE_PLAYER = "whitePlayer";
   public static final String ACTIVE_COLOR = "activeColor";
-  public static final String GAME_BOARD = "board";
+  public static final String GAME_BOARD_VIEW = "board";
   public static final String VIEW_NAME = "game.ftl";
+  public static final String GAME_BOARD = "board_actual";
 
   //Attributes
   private static final Logger LOG = Logger.getLogger(GetHomeRoute.class.getName());
   private final TemplateEngine templateEngine;
-  private String CURRENT_PLAYER = "currentUser";
-  private String OPPONENT_PLAYER;
-  private PlayerLobby lobby;
-  private GameManager gameManager;
 
-  public GetGameRoute(TemplateEngine templateEngine, PlayerLobby lobby)
+  public GetGameRoute(TemplateEngine templateEngine)
   {
     //validate
     Objects.requireNonNull(templateEngine,
             "templateEngine must not be null");
-    Objects.requireNonNull(templateEngine,
-            "templateEngine must not be null");
     this.templateEngine = templateEngine;
-    this.lobby = lobby;
   }
 
   public Object handle(Request request, Response response)
@@ -54,26 +48,27 @@ public class GetGameRoute implements Route
     final Player player = httpSession.attribute(GetHomeRoute.PLAYER_KEY);
     if (player != null)
     {
-      this.gameManager = httpSession.attribute(GetHomeRoute.GAME_MANAGER_KEY);
+      GameManager gameManager = httpSession.attribute(GetHomeRoute.GAME_MANAGER_KEY);
       GameManager.PLAYERS number = gameManager.getNumber(player.getUsername());
+      String CURRENT_PLAYER = "currentUser";
       vm.put(CURRENT_PLAYER, player.getUsername());
       final Player opponent = gameManager.getOpponent(player.getUsername());
       CheckerGame checkersGame;
       int gameIdNum = gameManager.getGameID(player.getUsername());
       checkersGame = gameManager.getGame(gameIdNum);
       vm.put(VIEW_MODE, Player.ViewMode.PLAY);
-
+      vm.put(GAME_BOARD, checkersGame.getBoard());
       if (checkersGame.getRedPlayer().equals(player))
       {
         vm.put(RED_PLAYER, player);
         vm.put(WHITE_PLAYER, opponent);
-        vm.put(GAME_BOARD, checkersGame.getBoardView(false));
+        vm.put(GAME_BOARD_VIEW, checkersGame.getBoardView(false));
         LOG.config("you are player 1, red should be on the bottom.");
       } else
       {
         vm.put(RED_PLAYER, opponent);
         vm.put(WHITE_PLAYER, player);
-        vm.put(GAME_BOARD, checkersGame.getBoardView(true));
+        vm.put(GAME_BOARD_VIEW, checkersGame.getBoardView(true));
         info("you are player2, white should be on the bottom");
       }
       vm.put(ACTIVE_COLOR, Piece.Color.RED);

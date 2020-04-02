@@ -27,7 +27,6 @@ public class GameManager
   //map of the current games going on where the key is the GameID and the value is the CheckerGame associated with it
   private static Map<Integer, CheckerGame> games = new HashMap<>();
   private static Set<String> inGame = new HashSet<>();
-
   private static PlayerLobby playerLobby;
 
   public GameManager(PlayerLobby lobby)
@@ -90,6 +89,17 @@ public class GameManager
   public CheckerGame getGame(int currentGameID)
   {
     return games.get(currentGameID);
+  }
+
+  /**
+   * A move has been made! Update the game.
+   *
+   * @param id the gameID
+   * @param game the new game.
+   */
+  public void updateGame(int id, CheckerGame game)
+  {
+    games.replace(id, game);
   }
 
   /**
