@@ -42,7 +42,7 @@ public class PostBackupMoveRoute implements Route
       List<Move> moves = session.attribute(PostValidateMoveRoute.MOVE_LIST_ID);
       if (moves == null || moves.isEmpty())
       {
-        return error("All moves have been backed up!");
+        return gson.toJson(error("All moves have been backed up!"));
       } else
       {
         for (int i = 0; i < moves.size() - 1; i++)
@@ -52,7 +52,7 @@ public class PostBackupMoveRoute implements Route
         moves.remove(moves.get(moves.size() - 1));
         session.attribute(PostValidateMoveRoute.MOVE_LIST_ID, moves);
         manager.updateGame(gameID, game);
-        return info("Backed up to last valid move");
+        return gson.toJson(info("Backed up to last valid move"));
       }
     } else
     {
