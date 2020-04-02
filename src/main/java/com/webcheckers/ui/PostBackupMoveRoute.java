@@ -25,6 +25,7 @@ import static spark.Spark.halt;
  */
 public class PostBackupMoveRoute implements Route
 {
+  private static final String LOCAL_ID = "local";
   private static final Logger LOG = Logger.getLogger(GetHomeRoute.class.getName());
 
   @Override
@@ -35,21 +36,18 @@ public class PostBackupMoveRoute implements Route
     final Player player = session.attribute(GetHomeRoute.PLAYER_KEY);
     final Gson gson = new Gson();
     GameManager manager = session.attribute(GetHomeRoute.GAME_MANAGER_KEY);
-    if(player != null)
+    if (player != null)
     {
       String username = player.getUsername();
       int gameID = manager.getGameID(username);
-      CheckerGame game = manager.getLocalGame(username);
+      CheckerGame game = manager.getGame(gameID);
       if (game == null)
       {
-        game = manager.getGame(gameID);
-        if (game == null)
-        {
-          response.redirect(WebServer.HOME_URL);
-          halt();
-          return "Redirected Home";
-        }
+        response.redirect(WebServer.HOME_URL);
+        halt();
+        return "Redirected Home";
       }
+      CheckerGame localGame = manager.makeClientSideGame(gameID, LOCAL_ID);
       List<Move> moves = session.attribute(PostValidateMoveRoute.MOVE_LIST_ID);
       if (moves == null || moves.isEmpty())
       {
@@ -58,11 +56,12 @@ public class PostBackupMoveRoute implements Route
       {
         for (int i = 0; i < moves.size() - 1; i++)
         {
-          game.makeMove(moves.get(i));
+          localGame.makeMove(moves.get(i));
         }
         moves.remove(moves.get(moves.size() - 1));
         session.attribute(PostValidateMoveRoute.MOVE_LIST_ID, moves);
         manager.makeClientSideGame(gameID, username);
+        manager.removeClientSideGame(LOCAL_ID);
         return gson.toJson(info("Backed up to last valid move"));
       }
     } else

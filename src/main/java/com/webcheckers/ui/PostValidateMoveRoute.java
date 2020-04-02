@@ -93,7 +93,6 @@ public class PostValidateMoveRoute implements Route
       String username = player.getUsername();
       int gameID = manager.getGameID(username);
       CheckerGame localGame = manager.getLocalGame(username);
-
       if (localGame == null)
       {
         //Create the local game if not already made.
@@ -106,10 +105,6 @@ public class PostValidateMoveRoute implements Route
         }
       }
 
-
-
-      System.out.println("End row: " + move.getEnd().getRow());
-      System.out.println("End Column: " + move.getEnd().getCell());
       Board gameBoard = localGame.getBoard();
       Space startSpace = gameBoard.getSpaceAt(move.getStart().getRow(), move.getStart().getCell());
       Space endSpace = gameBoard.getSpaceAt(move.getEnd().getRow(), move.getEnd().getCell());

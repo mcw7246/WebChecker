@@ -38,6 +38,19 @@ public class CheckerGame
   }
 
   /**
+   * Creates a copy of the checkergame from another.
+   *
+   * @param original: The original CheckerGame
+   */
+  public CheckerGame(CheckerGame original)
+  {
+    this.PLAYER_ONE = original.PLAYER_ONE;
+    this.PLAYER_TWO = original.PLAYER_TWO;
+    this.board = new Board(original.board.getBoard());
+    this.turn = original.turn;
+  }
+
+  /**
    * Get whose turn it is to go.
    *
    * @return the int of players turn.
@@ -60,10 +73,11 @@ public class CheckerGame
    */
   public Piece.Color getColor()
   {
-    if(turn == 1)
+    if (turn == 1)
     {
       return Piece.Color.RED;
-    } else {
+    } else
+    {
       return Piece.Color.WHITE;
     }
   }
@@ -78,7 +92,8 @@ public class CheckerGame
     return PLAYER_ONE;
   }
 
-  /** Makes a move for the game
+  /**
+   * Makes a move for the game
    *
    * @param move the move to be made
    */
@@ -100,7 +115,8 @@ public class CheckerGame
     turn = (turn % 2) + 1; //Switches between 2 and 1.
   }
 
-  /** A move has been made! Update the board!
+  /**
+   * A move has been made! Update the board!
    *
    * @param board the new board.
    */

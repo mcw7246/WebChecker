@@ -95,21 +95,30 @@ public class GameManager
   /**
    * Holds all the beginning client games do that only one person has a copy
    * of it.
-   * @param gameID the unique gameID of the game being played
+   *
+   * @param gameID   the unique gameID of the game being played
    * @param username the client that needs to hold the game
    * @return the checkerGame copy.
    */
   public CheckerGame makeClientSideGame(int gameID, String username)
   {
-    CheckerGame serverGame = getGame(gameID);
     if (clientSideGames.containsKey(username))
     {
-      clientSideGames.replace(username, serverGame);
-    } else
-    {
-      clientSideGames.put(username, serverGame);
+      removeClientSideGame(username);
     }
+    CheckerGame serverGame = new CheckerGame(getGame(gameID));
+    clientSideGames.put(username, serverGame);
     return clientSideGames.get(username);
+  }
+
+  /**
+   * Removes the client side game
+   *
+   * @param username: the key to be removed.
+   */
+  public void removeClientSideGame(String username)
+  {
+    clientSideGames.remove(username);
   }
 
   /**
@@ -126,7 +135,7 @@ public class GameManager
   /**
    * A move has been made! Update the game.
    *
-   * @param id the gameID
+   * @param id   the gameID
    * @param game the new game.
    */
   public void updateGame(int id, CheckerGame game)
@@ -190,8 +199,10 @@ public class GameManager
       return playerLobby.getPlayers().get(pair.get(username));
     } else
     {
-      for (String key: pair.keySet()) {
-        if (pair.get(key).equals(username)) {
+      for (String key : pair.keySet())
+      {
+        if (pair.get(key).equals(username))
+        {
           return playerLobby.getPlayers().get(key);
         }
       }
