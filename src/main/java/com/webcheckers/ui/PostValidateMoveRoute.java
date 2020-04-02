@@ -30,10 +30,7 @@ public class PostValidateMoveRoute implements Route
   /**
    * All the types of moves
    */
-  public enum MoveStatus
-  {
-    INVALID_SPACE, VALID, OCCUPIED, TOO_FAR, SAME_SPACE, INVALID_BACKWARDS, JUMP_OWN, INVALID_DIR
-  }
+
 
   private GameManager gameManager;
   private final PlayerLobby lobby;
@@ -94,7 +91,7 @@ public class PostValidateMoveRoute implements Route
         halt();
         return "Redirected Home";
       }
-      MoveStatus moveValidity = move.validateMove(game);
+      Move.MoveStatus moveValidity = move.validateMove(game);
       String msg = "";
       switch (moveValidity)
       {

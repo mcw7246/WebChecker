@@ -1,6 +1,6 @@
 package com.webcheckers.model;
 
-import com.webcheckers.ui.PostValidateMoveRoute.MoveStatus;
+
 
 import java.util.Objects;
 
@@ -11,6 +11,10 @@ import java.util.Objects;
  */
 public class Move
 {
+  public enum MoveStatus
+  {
+    INVALID_SPACE, VALID, OCCUPIED, TOO_FAR, SAME_SPACE, INVALID_BACKWARDS, JUMP_OWN, INVALID_DIR
+  }
   private Position start;
   private Position end;
 
