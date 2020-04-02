@@ -12,7 +12,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import static com.webcheckers.ui.PostRequestGameRoute.MESSAGE;
 import static com.webcheckers.util.Message.error;
 import static com.webcheckers.util.Message.info;
 import static spark.Spark.halt;
@@ -34,7 +33,7 @@ public class PostValidateMoveRoute implements Route
    */
 
 
-  private GameManager gameManager;
+  private GameManager manager;
   private final PlayerLobby lobby;
   Gson gson = new Gson();
   private static final String ACTION_DATA = "actionData";
@@ -89,16 +88,20 @@ public class PostValidateMoveRoute implements Route
     final Player player = httpSession.attribute(GetHomeRoute.PLAYER_KEY);
     if (lobby != null)
     {
-      gameManager = httpSession.attribute(GetHomeRoute.GAME_MANAGER_KEY);
-      int gameID = gameManager.getGameID(player.getUsername());
-      final CheckerGame game = gameManager.getGame(gameID);
-      CheckerGame localGame;
-      localGame = game;
+      manager = httpSession.attribute(GetHomeRoute.GAME_MANAGER_KEY);
+      String username = player.getUsername();
+      int gameID = manager.getGameID(username);
+      CheckerGame localGame = manager.getLocalGame(username);
       if (localGame == null)
       {
-        response.redirect(WebServer.HOME_URL);
-        halt();
-        return "Redirected Home";
+        //Create the local game if not already made.
+        localGame = manager.makeClientSideGame(gameID, username);
+        if (localGame == null)
+        {
+          response.redirect(WebServer.HOME_URL);
+          halt();
+          return "Redirected Home";
+        }
       }
       Move.MoveStatus moveValidity = move.validateMove(localGame);
       String msg = "";
@@ -147,7 +150,7 @@ public class PostValidateMoveRoute implements Route
     {
       response.redirect(WebServer.HOME_URL);
       halt();
-      return null;
+      return "Redirected Home";
     }
   }
 }

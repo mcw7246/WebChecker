@@ -26,6 +26,7 @@ public class GameManager
   //map of the current games going on where the key is the GameID and the value is the CheckerGame associated with it
   private static Map<Integer, CheckerGame> games = new HashMap<>();
   private static Set<String> inGame = new HashSet<>();
+  private static Map<String, CheckerGame> clientSideGames = new HashMap<>();
   private static PlayerLobby playerLobby;
 
   public GameManager(PlayerLobby lobby)
@@ -89,6 +90,37 @@ public class GameManager
   public CheckerGame getGame(int currentGameID)
   {
     return games.get(currentGameID);
+  }
+
+  /**
+   * Holds all the beginning client games do that only one person has a copy
+   * of it.
+   * @param gameID the unique gameID of the game being played
+   * @param username the client that needs to hold the game
+   * @return the checkerGame copy.
+   */
+  public CheckerGame makeClientSideGame(int gameID, String username)
+  {
+    CheckerGame serverGame = getGame(gameID);
+    if (clientSideGames.containsKey(username))
+    {
+      clientSideGames.replace(username, serverGame);
+    } else
+    {
+      clientSideGames.put(username, serverGame);
+    }
+    return clientSideGames.get(username);
+  }
+
+  /**
+   * Gets the local game for the designated player.
+   *
+   * @param username the players name that has the game.
+   * @return the client side CheckerGame.
+   */
+  public CheckerGame getLocalGame(String username)
+  {
+    return clientSideGames.get(username);
   }
 
   /**

@@ -37,8 +37,19 @@ public class PostBackupMoveRoute implements Route
     GameManager manager = session.attribute(GetHomeRoute.GAME_MANAGER_KEY);
     if(player != null)
     {
-      int gameID = manager.getGameID(player.getUsername());
-      final CheckerGame game = manager.getGame(gameID);
+      String username = player.getUsername();
+      int gameID = manager.getGameID(username);
+      CheckerGame game = manager.getLocalGame(username);
+      if (game == null)
+      {
+        game = manager.getGame(gameID);
+        if (game == null)
+        {
+          response.redirect(WebServer.HOME_URL);
+          halt();
+          return "Redirected Home";
+        }
+      }
       List<Move> moves = session.attribute(PostValidateMoveRoute.MOVE_LIST_ID);
       if (moves == null || moves.isEmpty())
       {
@@ -51,7 +62,7 @@ public class PostBackupMoveRoute implements Route
         }
         moves.remove(moves.get(moves.size() - 1));
         session.attribute(PostValidateMoveRoute.MOVE_LIST_ID, moves);
-        manager.updateGame(gameID, game);
+        manager.makeClientSideGame(gameID, username);
         return gson.toJson(info("Backed up to last valid move"));
       }
     } else
