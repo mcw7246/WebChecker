@@ -32,6 +32,16 @@ public class BoardView implements Iterable<Row>
   }
 
   /**
+   * Get's the abstract stuff.
+   *
+   * @return the list form of board.
+   */
+  public List<Row> getBoard()
+  {
+    return board;
+  }
+
+  /**
    * Returns whether white is on the bottom or not.
    *
    * @return true if white is on the bottom.

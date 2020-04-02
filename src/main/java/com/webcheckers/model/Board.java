@@ -48,6 +48,11 @@ public class Board implements Iterable<Row>
     }
   }
 
+  public Board(List<Row> board)
+  {
+    this.board = board;
+  }
+
   /**
    * Gives a copy of the board.
    *

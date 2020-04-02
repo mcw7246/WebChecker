@@ -44,11 +44,11 @@ public class GetGameRoute implements Route
     final Map<String, Object> vm = new HashMap<>();
     vm.put(GetHomeRoute.TITLE_ATTR, "Web Checkers");
 
-    final Session httpSession = request.session();
-    final Player player = httpSession.attribute(GetHomeRoute.PLAYER_KEY);
+    final Session session = request.session();
+    final Player player = session.attribute(GetHomeRoute.PLAYER_KEY);
     if (player != null)
     {
-      GameManager gameManager = httpSession.attribute(GetHomeRoute.GAME_MANAGER_KEY);
+      GameManager gameManager = session.attribute(GetHomeRoute.GAME_MANAGER_KEY);
       GameManager.PLAYERS number = gameManager.getNumber(player.getUsername());
       String CURRENT_PLAYER = "currentUser";
       vm.put(CURRENT_PLAYER, player.getUsername());
@@ -57,7 +57,7 @@ public class GetGameRoute implements Route
       int gameIdNum = gameManager.getGameID(player.getUsername());
       checkersGame = gameManager.getGame(gameIdNum);
       vm.put(VIEW_MODE, Player.ViewMode.PLAY);
-      vm.put(GAME_BOARD, checkersGame.getBoard());
+      session.attribute(GAME_BOARD, checkersGame.getBoard());
       if (checkersGame.getRedPlayer().equals(player))
       {
         vm.put(RED_PLAYER, player);
@@ -71,7 +71,7 @@ public class GetGameRoute implements Route
         vm.put(GAME_BOARD_VIEW, checkersGame.getBoardView(true));
         info("you are player2, white should be on the bottom");
       }
-      vm.put(ACTIVE_COLOR, Piece.Color.RED);
+      vm.put(ACTIVE_COLOR, checkersGame.getColor());
       return templateEngine.render(new ModelAndView(vm, VIEW_NAME));
     } else
     {

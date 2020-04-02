@@ -59,18 +59,6 @@ public class PostValidateMoveRoute implements Route
     session.attribute(GetHomeRoute.ERROR_MESSAGE_KEY, message);
   }
 
-  /**
-   * Helper method for setting the message on the game screen when a move
-   * is valid.
-   *
-   * @param session the HTTP session
-   * @param message the message to be sent.
-   */
-  private void setMsg(Session session, String message)
-  {
-    session.attribute(MESSAGE, message);
-  }
-
   @Override
   public String handle(Request request, Response response)
   {
@@ -79,7 +67,6 @@ public class PostValidateMoveRoute implements Route
     System.out.println(moveStr);
     final Move move = gson.fromJson(moveStr, Move.class);
     final Player player = httpSession.attribute(GetHomeRoute.PLAYER_KEY);
-
     if (lobby != null)
     {
       gameManager = httpSession.attribute(GetHomeRoute.GAME_MANAGER_KEY);
@@ -131,7 +118,6 @@ public class PostValidateMoveRoute implements Route
         default:
           throw new IllegalStateException("Unexpected value: " + moveValidity);
       }
-      System.out.println(msg);
       //Must return an invalid move
       return gson.toJson(error(msg));
     } else
