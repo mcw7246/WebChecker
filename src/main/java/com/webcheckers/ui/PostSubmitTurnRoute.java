@@ -35,8 +35,10 @@ public class PostSubmitTurnRoute implements Route
       int gameID = manager.getGameID(player.getUsername());
       final CheckerGame game = manager.getGame(gameID);
       Board board = session.attribute(GetGameRoute.GAME_BOARD);
+      //TODO: GAME LOGIC (were the moves that were made correct)
       game.updateBoard(board);
       manager.updateGame(gameID, game);
+      game.updateTurn();
       return gson.toJson(info("valid move"));
     } else
     {

@@ -90,6 +90,13 @@ public class CheckerGame
     Piece piece = board.getSpaceAt(start.getRow(), start.getCell()).getPiece();
     board.getSpaceAt(end.getRow(), end.getCell()).setPiece(piece);
     board.getSpaceAt(start.getRow(), start.getCell()).setPiece(null);
+  }
+
+  /**
+   * Switches the turn between 2 and 1.
+   */
+  public void updateTurn()
+  {
     turn = (turn % 2) + 1; //Switches between 2 and 1.
   }
 

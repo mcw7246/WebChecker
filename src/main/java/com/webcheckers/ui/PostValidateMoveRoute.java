@@ -92,13 +92,15 @@ public class PostValidateMoveRoute implements Route
       gameManager = httpSession.attribute(GetHomeRoute.GAME_MANAGER_KEY);
       int gameID = gameManager.getGameID(player.getUsername());
       final CheckerGame game = gameManager.getGame(gameID);
-      if (game == null)
+      CheckerGame localGame;
+      localGame = game;
+      if (localGame == null)
       {
         response.redirect(WebServer.HOME_URL);
         halt();
         return "Redirected Home";
       }
-      Move.MoveStatus moveValidity = move.validateMove(game);
+      Move.MoveStatus moveValidity = move.validateMove(localGame);
       String msg = "";
       switch (moveValidity)
       {
@@ -108,7 +110,7 @@ public class PostValidateMoveRoute implements Route
           break;
         case VALID:
           msg = "Valid Move! Click submit to send";
-          game.makeMove(move);
+          localGame.makeMove(move);
           addMove(httpSession, move);
           return gson.toJson(info(msg));
         case OCCUPIED:

@@ -13,7 +13,8 @@ public class Move
 {
   public enum MoveStatus
   {
-    INVALID_SPACE, VALID, OCCUPIED, TOO_FAR, SAME_SPACE, INVALID_BACKWARDS, JUMP_OWN, INVALID_DIR
+    INVALID_SPACE, VALID, OCCUPIED, TOO_FAR, SAME_SPACE,
+    INVALID_BACKWARDS, JUMP_OWN, INVALID_DIR
   }
   private Position start;
   private Position end;
