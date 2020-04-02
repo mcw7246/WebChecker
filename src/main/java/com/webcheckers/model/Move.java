@@ -62,6 +62,12 @@ public class Move
     Objects.requireNonNull(piece, "piece cannot be null at the start of a " +
             "move");
 
+    int colorFactor = 1;
+    if(piece.getColor() == Piece.Color.WHITE)
+    {
+      colorFactor = -colorFactor;
+    }
+
     int rowDiff = (end.getRow() - start.getRow());
     int colDiff = (end.getCell() - start.getCell());
 
@@ -99,7 +105,7 @@ public class Move
           } else if (king)
           {
             return MoveStatus.VALID;
-          } else if (rowDiff > 0)
+          } else if (colorFactor * rowDiff > 0)
           {
             return MoveStatus.INVALID_BACKWARDS;
           }
@@ -111,7 +117,7 @@ public class Move
       if (king)
       {
         return MoveStatus.VALID;
-      } else if (rowDiff > 0)
+      } else if (colorFactor * rowDiff > 0)
       {
         return MoveStatus.INVALID_BACKWARDS;
       }
