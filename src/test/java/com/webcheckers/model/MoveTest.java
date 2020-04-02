@@ -41,6 +41,7 @@ public class MoveTest
   Board board;
   Space startSpace;
   Space endSpace;
+  Move move;
 
   @BeforeEach
   public void setup()
@@ -50,6 +51,9 @@ public class MoveTest
     startSpace = mock(Space.class);
     endSpace = mock(Space.class);
     piece = new Piece(Piece.Color.RED);
+    move = mock(Move.class);
+    when(move.getStart()).thenReturn(start);
+    when(move.getEnd()).thenReturn(end);
     when(game.getBoard()).thenReturn(board);
     when(board.getSpaceAt(startRow, startCell)).thenReturn(startSpace);
     when(board.getSpaceAt(endRow, endCell)).thenReturn(endSpace);
@@ -63,6 +67,10 @@ public class MoveTest
     end = new Position(1,2);
     CuT = new Move(start, end);
     assertFalse(endSpace.isValidSpace());
+
+    //TODO change validateMove to have the start and end space (maybe)
+    //may not need it but I cannot figure out how to do it otherwise
+    //assertEquals(Move.MoveStatus.INVALID_SPACE, move.validateMove(game));
     }
 
   @Test
@@ -75,8 +83,6 @@ public class MoveTest
     Space space = new Space(2, 2, true);
     space.setPiece(new Piece(Piece.Color.WHITE, Piece.Type.SINGLE));
 
-    assertEquals(endSpace.isValidSpace(), false);
-
-
+    assertFalse(endSpace.isValidSpace());
   }
 }
