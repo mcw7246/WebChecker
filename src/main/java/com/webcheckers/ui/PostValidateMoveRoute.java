@@ -3,9 +3,7 @@ package com.webcheckers.ui;
 import com.google.gson.Gson;
 import com.webcheckers.application.GameManager;
 import com.webcheckers.application.PlayerLobby;
-import com.webcheckers.model.CheckerGame;
-import com.webcheckers.model.Move;
-import com.webcheckers.model.Player;
+import com.webcheckers.model.*;
 import spark.*;
 
 import java.util.ArrayList;
@@ -38,6 +36,8 @@ public class PostValidateMoveRoute implements Route
   Gson gson = new Gson();
   private static final String ACTION_DATA = "actionData";
   public static final String MOVE_LIST_ID = "moves";
+
+
 
   private List<Move> moves;
   private final TemplateEngine templateEngine;
@@ -84,6 +84,7 @@ public class PostValidateMoveRoute implements Route
     final Session httpSession = request.session();
     final String moveStr = request.queryParams(ACTION_DATA);
     System.out.println(moveStr);
+
     final Move move = gson.fromJson(moveStr, Move.class);
     final Player player = httpSession.attribute(GetHomeRoute.PLAYER_KEY);
     if (lobby != null)
@@ -92,6 +93,7 @@ public class PostValidateMoveRoute implements Route
       String username = player.getUsername();
       int gameID = manager.getGameID(username);
       CheckerGame localGame = manager.getLocalGame(username);
+
       if (localGame == null)
       {
         //Create the local game if not already made.
@@ -103,7 +105,15 @@ public class PostValidateMoveRoute implements Route
           return "Redirected Home";
         }
       }
-      Move.MoveStatus moveValidity = move.validateMove(localGame);
+
+
+
+      System.out.println("End row: " + move.getEnd().getRow());
+      System.out.println("End Column: " + move.getEnd().getCell());
+      Board gameBoard = localGame.getBoard();
+      Space startSpace = gameBoard.getSpaceAt(move.getStart().getRow(), move.getStart().getCell());
+      Space endSpace = gameBoard.getSpaceAt(move.getEnd().getRow(), move.getEnd().getCell());
+      Move.MoveStatus moveValidity = move.validateMove(localGame, startSpace, endSpace);
       String msg = "";
       switch (moveValidity)
       {

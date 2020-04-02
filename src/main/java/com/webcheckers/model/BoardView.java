@@ -2,6 +2,10 @@ package com.webcheckers.model;
 
 import java.util.*;
 
+/**
+ *
+ * @author Mikayla Wishart 'mcw7246'
+ */
 import static com.webcheckers.model.Board.DIMENSIONS;
 
 public class BoardView implements Iterable<Row>
@@ -20,8 +24,11 @@ public class BoardView implements Iterable<Row>
    */
   public void flip()
   {
+    //reverses the board along the x-axis (puts the red at the top and white on the bottom)
+    //pieces are now in the white spaces
     Collections.reverse(board);
 
+    //reverses the board along the y-axis(puts the pieces back in the black spaces)
     for(Row r: board){
       Collections.reverse(r.getRow());
     }
