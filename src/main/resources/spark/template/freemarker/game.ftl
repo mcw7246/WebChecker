@@ -88,7 +88,8 @@
     </div>
   </div>
 
-  <audio id="audio" src="http://www.soundjay.com/button/beep-07.mp3" autostart="false" ></audio>
+  <audio id="audio" src="https://www.soundjay.com/misc/sounds/squeeze-toy-5.mp3"
+         autostart="false" ></audio>
   
   <script data-main="/js/game/index" src="/js/require.js"></script>
   
