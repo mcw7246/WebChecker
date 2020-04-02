@@ -11,6 +11,7 @@ import spark.*;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.logging.Logger;
 
 import static com.webcheckers.util.Message.info;
 import static spark.Spark.halt;
@@ -18,18 +19,15 @@ import static spark.Spark.halt;
 public class PostCheckTurnRoute implements Route
 {
 
-  private PlayerLobby lobby;
-
-  public PostCheckTurnRoute(){
-  }
+  private static final Logger LOG = Logger.getLogger(GetHomeRoute.class.getName());
 
   @Override
-  public Object handle(Request request, Response response) throws Exception
+  public Object handle(Request request, Response response)
   {
+    LOG.config("PostCheckTurnRoute invoked");
     final Session httpSession = request.session();
     final Player player = httpSession.attribute(GetHomeRoute.PLAYER_KEY);
     final Gson gson = new Gson();
-    this.lobby = httpSession.attribute(GetHomeRoute.PLAYER_LOBBY_KEY);
     GameManager manager = httpSession.attribute(GetHomeRoute.GAME_MANAGER_KEY);
     if(player != null)
     {
@@ -37,6 +35,7 @@ public class PostCheckTurnRoute implements Route
       final CheckerGame game = manager.getGame(gameID);
       if (game.getTurn().equals(player.getUsername()))
       {
+        System.out.println("Turn: true");
         return gson.toJson(info("true"));
       } else
       {

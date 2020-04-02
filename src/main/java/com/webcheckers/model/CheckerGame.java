@@ -54,6 +54,21 @@ public class CheckerGame
   }
 
   /**
+   * Get active color
+   *
+   * @return the piece color of red or white if the turn is 1 or 2 respectively.
+   */
+  public Piece.Color getColor()
+  {
+    if(turn == 1)
+    {
+      return Piece.Color.RED;
+    } else {
+      return Piece.Color.WHITE;
+    }
+  }
+
+  /**
    * Returns first (red) player
    *
    * @return the red player
@@ -75,6 +90,7 @@ public class CheckerGame
     Piece piece = board.getSpaceAt(start.getRow(), start.getCell()).getPiece();
     board.getSpaceAt(end.getRow(), end.getCell()).setPiece(piece);
     board.getSpaceAt(start.getRow(), start.getCell()).setPiece(null);
+    turn = (turn % 2) + 1; //Switches between 2 and 1.
   }
 
   /** A move has been made! Update the board!
