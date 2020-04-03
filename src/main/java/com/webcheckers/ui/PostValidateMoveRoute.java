@@ -4,11 +4,13 @@ import com.google.gson.Gson;
 import com.webcheckers.application.GameManager;
 import com.webcheckers.application.PlayerLobby;
 import com.webcheckers.model.*;
-import spark.*;
+import spark.Request;
+import spark.Response;
+import spark.Route;
+import spark.Session;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 import static com.webcheckers.util.Message.error;
 import static com.webcheckers.util.Message.info;
@@ -27,27 +29,14 @@ import static spark.Spark.halt;
  */
 public class PostValidateMoveRoute implements Route
 {
-  /**
-   * All the types of moves
-   */
-
-
-  private GameManager manager;
   private final PlayerLobby lobby;
   Gson gson = new Gson();
   private static final String ACTION_DATA = "actionData";
   public static final String MOVE_LIST_ID = "moves";
 
 
-  private List<Move> moves;
-  private final TemplateEngine templateEngine;
-
-  PostValidateMoveRoute(final TemplateEngine templateEngine,
-                        final PlayerLobby playerLobby)
+  PostValidateMoveRoute(final PlayerLobby playerLobby)
   {
-    Objects.requireNonNull(templateEngine, "templateEngine must not be" +
-            "null");
-    this.templateEngine = templateEngine;
     this.lobby = playerLobby;
   }
 
@@ -69,10 +58,10 @@ public class PostValidateMoveRoute implements Route
    */
   private void addMove(Session session, Move move)
   {
-    moves = session.attribute(MOVE_LIST_ID);
+    List<Move> moves = session.attribute(MOVE_LIST_ID);
     if (moves == null)
     {
-      moves = new ArrayList<Move>();
+      moves = new ArrayList<>();
     }
     moves.add(move);
     session.attribute(MOVE_LIST_ID, moves);
@@ -88,7 +77,7 @@ public class PostValidateMoveRoute implements Route
     final Player player = httpSession.attribute(GetHomeRoute.PLAYER_KEY);
     if (lobby != null)
     {
-      manager = httpSession.attribute(GetHomeRoute.GAME_MANAGER_KEY);
+      GameManager manager = httpSession.attribute(GetHomeRoute.GAME_MANAGER_KEY);
       String username = player.getUsername();
       int gameID = manager.getGameID(username);
       CheckerGame localGame = manager.getLocalGame(username);
