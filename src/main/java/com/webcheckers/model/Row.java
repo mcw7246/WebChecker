@@ -74,10 +74,10 @@ public class Row implements Iterable<Space>
    */
   private void placePieces(Piece red, Piece white)
   {
-    if (index == DIMENSIONS - 1 || index == DIMENSIONS - 2)
+    if (index <= DIMENSIONS - 1 && index >= DIMENSIONS - 3)
     {
       fillRow(red);
-    } else if (index == 0 || index == 1)
+    } else if (index >= 0 && index <= 2)
     {
       fillRow(white);
     }
