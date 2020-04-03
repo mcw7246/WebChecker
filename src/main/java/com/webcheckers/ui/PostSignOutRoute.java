@@ -68,20 +68,22 @@ public class PostSignOutRoute implements Route
         {
             //System.out.println(playerLobby.getPlayers());
             playerLobby.removePlayer(this.player);
+            session.attribute(PLAYER_KEY, null);
             //System.out.println(playerLobby.getPlayers());
 
             //goes through the cases and submits the correct message/response
 
             //sign out then directs to the home page
             response.redirect(WebServer.HOME_URL);
+            return "Why isn't this working";
             //templateEngine.render(new ModelAndView(vm, VIEW_NAME));
         } else
         {
             // handle trying to sign out while not signed in
             response.redirect(WebServer.HOME_URL);
             halt();
+            return null;
         }
-        return null;
     }
 
     /**
