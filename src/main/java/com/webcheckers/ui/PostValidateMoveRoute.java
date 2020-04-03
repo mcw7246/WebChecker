@@ -107,8 +107,8 @@ public class PostValidateMoveRoute implements Route
       }
 
       Board gameBoard = localGame.getBoard();
-      int startCell = abs(move.getStart().getCell() - 7);
-      int endCell = abs(move.getEnd().getCell() - 7);
+      int startCell = abs(move.getStart().getCell());
+      int endCell = abs(move.getEnd().getCell());
       Space startSpace = gameBoard.getSpaceAt(move.getStart().getRow(), startCell);
       Space endSpace = gameBoard.getSpaceAt(move.getEnd().getRow(), endCell);
       Move.MoveStatus moveValidity = move.validateMove(localGame, startSpace, endSpace);

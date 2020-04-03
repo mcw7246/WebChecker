@@ -88,7 +88,7 @@ public class GetGameRoute implements Route
         vm.put(RED_PLAYER, redPlayer);
         vm.put(WHITE_PLAYER, whitePlayer);
         BoardView bV = new BoardView(game.getBoard());
-        if (first){ bV.flip(); }
+        bV.flip();
         vm.put(GAME_BOARD_VIEW, bV);
         LOG.config(game.getWhitePlayer().getUsername() + " is player2, white " +
                 "should" +
