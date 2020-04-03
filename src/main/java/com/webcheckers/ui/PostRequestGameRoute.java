@@ -105,13 +105,12 @@ public class PostRequestGameRoute implements Route
         }
       }
       response.redirect(WebServer.HOME_URL);
-      return null;
     } else
     {
       response.redirect(WebServer.HOME_URL);
       halt();
-      return null;
     }
+    return null;
   }
 
 }

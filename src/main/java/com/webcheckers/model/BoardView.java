@@ -1,47 +1,58 @@
 package com.webcheckers.model;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 /**
- * The Board itself
  *
- * @author Zehra Amena Baig (zab1166)
+ * @author Mikayla Wishart 'mcw7246'
  */
+import static com.webcheckers.model.Board.DIMENSIONS;
 
 public class BoardView implements Iterable<Row>
 {
-  /**
-   * The board's size
-   */
-  public static final int DIMENSIONS = 8;
-  /**
-   * The board itself
-   */
+  // The board itself
   private List<Row> board;
+  private boolean flipped = false;
 
-  /**
-   * enum for the result of a move
-   */
-  public enum Move
+  public BoardView(Board boardActual)
   {
-    SINGLE, MULTI, MOVE, INVALID, WIN
+    this.board = new ArrayList<>(boardActual.getBoard());
   }
 
   /**
-   * BoardView Constructor
-   * Initializes the board spaces
-   *
+   * Updates the board so that the other player is on the bottom.
    */
-  public BoardView()
+  public void flip()
   {
-    board = new ArrayList<Row>();
+    //reverses the board along the x-axis (puts the red at the top and white on the bottom)
+    //pieces are now in the white spaces
+    Collections.reverse(board);
 
-    for (int i = 0; i < DIMENSIONS; i++)
-    {
-      board.add(new Row(i));
+    //reverses the board along the y-axis(puts the pieces back in the black spaces)
+    for(Row r: board){
+      Collections.reverse(r.getRow());
     }
+    flipped = !flipped;
+  }
+
+  /**
+   * Get's the abstract stuff.
+   *
+   * @return the list form of board.
+   */
+  public List<Row> getBoard()
+  {
+    return board;
+  }
+
+  /**
+   * Returns whether white is on the bottom or not.
+   *
+   * @return true if white is on the bottom.
+   */
+  public boolean isFlipped()
+  {
+    return flipped;
   }
 
   @Override
@@ -49,5 +60,4 @@ public class BoardView implements Iterable<Row>
   {
     return board.iterator();
   }
-
 }

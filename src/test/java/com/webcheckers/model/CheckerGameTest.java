@@ -1,7 +1,6 @@
 package com.webcheckers.model;
 
 import com.webcheckers.application.PlayerLobby;
-import com.webcheckers.model.Player.UsernameResult;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -14,7 +13,7 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 public class CheckerGameTest
 {
-
+/**
     /**
      * CheckerGame can be summarized as:
      *
@@ -29,7 +28,7 @@ public class CheckerGameTest
      *   +  getBoardView          BoardView
      *   +  getFlippedBoardView   BoardView
      */
-
+/**
     private static final boolean TRUE = true;
     private static final boolean FALSE = false;
 
@@ -39,7 +38,7 @@ public class CheckerGameTest
      * <p>
      * Stateless component that actually test the functionality of the
      * {@link CheckerGame}
-     */
+
     private CheckerGame CuT;
 
     // Friendly objects
@@ -47,6 +46,7 @@ public class CheckerGameTest
     private Player player2;
     private BoardView boardT;
     private BoardView boardF;
+    private Board board;
     private PlayerLobby lobby;
 
     @BeforeEach
@@ -55,8 +55,9 @@ public class CheckerGameTest
         lobby = new PlayerLobby();
         player1 = new Player(lobby);
         player2 = new Player(lobby);
-        boardT = new BoardView(TRUE);
-        boardF = new BoardView(FALSE);
+        board = new Board();
+        boardT = new BoardView(board);
+        boardF = new BoardView(board);
 
         player1.setUsername("a");
         player2.setUsername("b");
@@ -68,7 +69,7 @@ public class CheckerGameTest
 
     /**
      * Tests that the main constrcutor works without failure.
-     */
+
     @Test
     public void ctor_withArg()
     {
@@ -78,7 +79,7 @@ public class CheckerGameTest
 
     /**
      * Tests that the getRedPlayer method returns the red player and not the white player
-     */
+
     @Test
     public void testGetRedPlayer()
     {
@@ -90,7 +91,7 @@ public class CheckerGameTest
 
     /**
      * Tests that the getWhitePlayer method returns the white player and not the red player
-     */
+
     @Test
     public void testGetWhitePlayer()
     {
@@ -102,23 +103,24 @@ public class CheckerGameTest
 
     /**
      * Tests getBoardView
-     */
+
     @Test
     public void testGetBoardView()
     {
         CuT = new CheckerGame(player1,player2,boardT);
-        assertEquals(CuT.getBoardView(),boardT);
-        assertNotEquals(CuT.getBoardView(),boardF);
-        assertNotEquals(CuT.getFlippedBoardView(),boardT);
+        assertEquals(CuT.getBoardView(true),boardT);
+        assertNotEquals(CuT.getBoardView(true),boardF);
+        assertNotEquals(CuT.getBoardView(false),boardT);
     }
 
     /**
      * Tests getFlippedBoardView
-     */
+
     @Test
     public void testGetFlippedBoardView()
     {
         CuT = new CheckerGame(player1,player2,boardT);
-        assertNotEquals(CuT.getFlippedBoardView(),boardT);
+        assertNotEquals(CuT.getBoardView(false),boardT);
     }
+    */
 }
