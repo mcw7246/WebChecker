@@ -36,6 +36,16 @@ public class Row implements Iterable<Space>
     initializeBoard();
   }
 
+  public Row(Row oldRow)
+  {
+    this.index = oldRow.index;
+    this.squares = new ArrayList<>();
+    for (int i = 0; i < DIMENSIONS; i++ )
+    {
+      squares.add(new Space(oldRow.getSpaceAt(i)));
+    }
+  }
+
   /**
    * Initializes the board with alternating b&w spaces
    * And arranges the pieces for the start of the game
@@ -43,8 +53,6 @@ public class Row implements Iterable<Space>
   private void initializeBoard()
   {
     boolean isBlackSpace;
-    Piece red = new Piece(Piece.Color.RED, Piece.Type.SINGLE);
-    Piece white = new Piece(Piece.Color.WHITE, Piece.Type.SINGLE);
 
     if (index % 2 == 1)
     {
@@ -60,7 +68,8 @@ public class Row implements Iterable<Space>
       isBlackSpace = !isBlackSpace;
     }
 
-    placePieces(red, white);
+    placePieces(new Piece(Piece.Color.RED, Piece.Type.SINGLE),
+            new Piece(Piece.Color.WHITE, Piece.Type.SINGLE));
   }
 
   /**

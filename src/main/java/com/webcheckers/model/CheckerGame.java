@@ -46,7 +46,7 @@ public class CheckerGame
   {
     this.PLAYER_ONE = original.PLAYER_ONE;
     this.PLAYER_TWO = original.PLAYER_TWO;
-    this.board = new Board(original.board.getBoard());
+    this.board = new Board(original.board);
     this.turn = original.turn;
   }
 

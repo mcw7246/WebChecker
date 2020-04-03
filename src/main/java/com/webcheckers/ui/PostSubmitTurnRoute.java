@@ -48,6 +48,7 @@ public class PostSubmitTurnRoute implements Route
       //TODO: GAME LOGIC (were the moves that were made correct)
       //game.updateBoard(board);
       manager.updateGame(gameID, game);
+      manager.removeClientSideGame(player.getUsername());
       game.updateTurn();
       return gson.toJson(info("valid move"));
     } else

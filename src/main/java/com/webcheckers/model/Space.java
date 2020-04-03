@@ -28,6 +28,26 @@ public class Space
   }
 
   /**
+   * Copy constructor
+   *
+   * @param oldSpace the space to be copied.
+   */
+  public Space(Space oldSpace)
+  {
+    this.columnIndex = oldSpace.columnIndex;
+    this.rowIndex = oldSpace.rowIndex;
+    this.isBlack = oldSpace.isBlack;
+    Piece piece = oldSpace.getPiece();
+    if (piece != null)
+    {
+      this.piece = new Piece(piece);
+    } else
+    {
+      this.piece = null;
+    }
+  }
+
+  /**
    * Returns the row index
    *
    * @return an integer representing the row index

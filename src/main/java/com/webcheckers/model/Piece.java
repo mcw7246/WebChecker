@@ -55,6 +55,17 @@ public class Piece
   }
 
   /**
+   * A copy constructor for piece.
+   *
+   * @param piece the piece to be copied.
+   */
+  public Piece(Piece piece)
+  {
+    this.color = piece.color;
+    this.type = piece.type;
+  }
+
+  /**
    * Returns the color
    *
    * @return the color of the current piece

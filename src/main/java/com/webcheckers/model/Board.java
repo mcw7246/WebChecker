@@ -36,9 +36,30 @@ public class Board implements Iterable<Row>
     }
   }
 
-  public Board(List<Row> board)
+  /**
+   * Copy Constructor for Board
+   *
+   * @param oldBoard the board to be copied.
+   */
+  public Board(Board oldBoard)
   {
-    this.board = board;
+    board = new ArrayList<>();
+
+    for (int i = 0; i < DIMENSIONS; i ++)
+    {
+      board.add(new Row(oldBoard.getRowAt(i)));
+    }
+  }
+
+  /**
+   * Helper method to get the row at the specified index.
+   *
+   * @param rowIndex the index to get the row at
+   * @return the row at the given index.
+   */
+  public Row getRowAt(int rowIndex)
+  {
+    return board.get(rowIndex);
   }
 
   /**
