@@ -10,7 +10,6 @@ public class Piece
 {
 
 
-
   /**
    * The color of the Piece
    */

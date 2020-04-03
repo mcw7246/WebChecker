@@ -79,7 +79,7 @@ public class PostRequestResponseRouteTest
     lobby.challenge(PLAYER2, PLAYER1);
 
     //Create a unique CuT for each test.
-    CuT = new PostRequestResponseRoute(engine, lobby);
+    CuT = new PostRequestResponseRoute(lobby);
   }
 
   /**

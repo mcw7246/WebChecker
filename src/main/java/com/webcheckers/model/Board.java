@@ -28,7 +28,7 @@ public class Board implements Iterable<Row>
    */
   public Board()
   {
-    board = new ArrayList<Row>();
+    board = new ArrayList<>();
 
     for (int i = 0; i < DIMENSIONS; i++)
     {
@@ -45,7 +45,7 @@ public class Board implements Iterable<Row>
   {
     board = new ArrayList<>();
 
-    for (int i = 0; i < DIMENSIONS; i ++)
+    for (int i = 0; i < DIMENSIONS; i++)
     {
       board.add(new Row(oldBoard.getRowAt(i)));
     }
@@ -65,7 +65,7 @@ public class Board implements Iterable<Row>
   /**
    * Helper method to get the space at a specific row/cell
    *
-   * @param row the row index
+   * @param row  the row index
    * @param cell the col index
    * @return the space located at the given values.
    */
@@ -73,6 +73,7 @@ public class Board implements Iterable<Row>
   {
     return board.get(row).getSpaceAt(cell);
   }
+
   /**
    * Gives a copy of the board.
    *

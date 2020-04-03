@@ -88,7 +88,8 @@ public class Space
     return piece;
   }
 
-  public boolean isBlackSpace() {
+  public boolean isBlackSpace()
+  {
     return isBlack;
   }
 
@@ -105,10 +106,10 @@ public class Space
   @Override
   public boolean equals(Object o)
   {
-    if(o instanceof Space)
+    if (o instanceof Space)
     {
       Space sp = (Space) o;
-      if((sp.getColumnIndex() == this.getColumnIndex()) &&
+      if ((sp.getColumnIndex() == this.getColumnIndex()) &&
               (sp.isValidSpace() == this.isValidSpace()))
       {
         return sp.getRowIndex() == this.rowIndex;

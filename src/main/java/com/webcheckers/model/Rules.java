@@ -6,5 +6,4 @@ package com.webcheckers.model;
 public class Rules
 {
   public static final int BOARD_SIZE = 8;
-
 }

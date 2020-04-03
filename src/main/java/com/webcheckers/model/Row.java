@@ -32,7 +32,7 @@ public class Row implements Iterable<Space>
   public Row(int index)
   {
     this.index = index;
-    this.squares = new ArrayList<Space>();
+    this.squares = new ArrayList<>();
     initializeBoard();
   }
 
@@ -40,7 +40,7 @@ public class Row implements Iterable<Space>
   {
     this.index = oldRow.index;
     this.squares = new ArrayList<>();
-    for (int i = 0; i < DIMENSIONS; i++ )
+    for (int i = 0; i < DIMENSIONS; i++)
     {
       squares.add(new Space(oldRow.getSpaceAt(i)));
     }
@@ -54,13 +54,7 @@ public class Row implements Iterable<Space>
   {
     boolean isBlackSpace;
 
-    if (index % 2 == 1)
-    {
-      isBlackSpace = true;
-    } else
-    {
-      isBlackSpace = false;
-    }
+    isBlackSpace = index % 2 == 1;
 
     for (int i = 0; i < DIMENSIONS; i++)
     {

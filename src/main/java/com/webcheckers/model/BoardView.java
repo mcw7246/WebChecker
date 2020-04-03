@@ -18,7 +18,7 @@ public class BoardView implements Iterable<Row>
   public List<Row> makeCopyOfBoard(List<Row> board)
   {
     List<Row> newBoard = new ArrayList<>();
-    for(int i = 0; i < DIMENSIONS; i++)
+    for (int i = 0; i < DIMENSIONS; i++)
     {
       newBoard.add(new Row(board.get(i)));
     }
@@ -35,7 +35,8 @@ public class BoardView implements Iterable<Row>
     Collections.reverse(board);
 
     //reverses the board along the y-axis(puts the pieces back in the black spaces)
-    for(Row r: board){
+    for (Row r : board)
+    {
       Collections.reverse(r.getRow());
     }
     flipped = !flipped;
