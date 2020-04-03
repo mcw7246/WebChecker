@@ -61,10 +61,10 @@ public class GetGameRoute implements Route
       boolean first;
       try {
         first = session.attribute(IS_FIRST);
-        session.attribute(IS_FIRST, false);
       } catch (NullPointerException e)
       {
         first = true;
+        session.attribute(IS_FIRST, false);
       }
       CheckerGame game;
       int gameIdNum = gameManager.getGameID(player.getUsername());
@@ -77,8 +77,8 @@ public class GetGameRoute implements Route
       {
         vm.put(RED_PLAYER, redPlayer);
         vm.put(WHITE_PLAYER, whitePlayer);
-        BoardView bV = game.getBoardView();
-        if (first){ bV.flip(); }
+        BoardView bV = new BoardView(game.getBoard());
+        //if (first){ bV.flip(); }
         vm.put(GAME_BOARD_VIEW, bV);
         LOG.config(game.getRedPlayer().getUsername() + " is player 1, red " +
                 "should be on the bottom.");
@@ -87,7 +87,7 @@ public class GetGameRoute implements Route
       {
         vm.put(RED_PLAYER, redPlayer);
         vm.put(WHITE_PLAYER, whitePlayer);
-        BoardView bV = game.getBoardView();
+        BoardView bV = new BoardView(game.getBoard());
         if (first){ bV.flip(); }
         vm.put(GAME_BOARD_VIEW, bV);
         LOG.config(game.getWhitePlayer().getUsername() + " is player2, white " +

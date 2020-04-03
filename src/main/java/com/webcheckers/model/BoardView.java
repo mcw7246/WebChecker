@@ -16,7 +16,7 @@ public class BoardView implements Iterable<Row>
 
   public BoardView(Board boardActual)
   {
-    this.board = boardActual.getBoard();
+    this.board = new ArrayList<>(boardActual.getBoard());
   }
 
   /**

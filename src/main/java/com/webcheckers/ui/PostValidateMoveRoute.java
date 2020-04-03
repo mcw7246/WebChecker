@@ -12,6 +12,7 @@ import java.util.Objects;
 
 import static com.webcheckers.util.Message.error;
 import static com.webcheckers.util.Message.info;
+import static java.lang.Math.abs;
 import static spark.Spark.halt;
 
 /**
@@ -106,8 +107,10 @@ public class PostValidateMoveRoute implements Route
       }
 
       Board gameBoard = localGame.getBoard();
-      Space startSpace = gameBoard.getSpaceAt(move.getStart().getRow(), move.getStart().getCell());
-      Space endSpace = gameBoard.getSpaceAt(move.getEnd().getRow(), move.getEnd().getCell());
+      int startCell = abs(move.getStart().getCell() - 7);
+      int endCell = abs(move.getEnd().getCell() - 7);
+      Space startSpace = gameBoard.getSpaceAt(move.getStart().getRow(), startCell);
+      Space endSpace = gameBoard.getSpaceAt(move.getEnd().getRow(), endCell);
       Move.MoveStatus moveValidity = move.validateMove(localGame, startSpace, endSpace);
       String msg = "";
       switch (moveValidity)
