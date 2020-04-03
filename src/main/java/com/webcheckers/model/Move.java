@@ -14,7 +14,7 @@ public class Move
   public enum MoveStatus
   {
     INVALID_SPACE, VALID, OCCUPIED, TOO_FAR, SAME_SPACE,
-    INVALID_BACKWARDS, JUMP_OWN, INVALID_DIR
+    INVALID_BACKWARDS, JUMP_OWN, INVALID_DIR, JUMP
   }
 
   private Position start;
@@ -99,8 +99,9 @@ public class Move
           status = MoveStatus.TOO_FAR;
           return status;
         }
-        Piece jumpPiece = board.getSpaceAt(start.getRow() + (rowDiff / 2),
-                start.getCell() + (colDiff / 2)).getPiece();
+        Space jumpSpace = board.getSpaceAt(start.getRow() + (rowDiff / 2),
+                start.getCell() + (colDiff / 2));
+        Piece jumpPiece = jumpSpace.getPiece();
         if (jumpPiece != null)
         {
           if (jumpPiece.getColor().equals(piece.getColor()))
@@ -118,6 +119,12 @@ public class Move
           } else if (colorFactor * rowDiff > 0)
           {
             status = MoveStatus.INVALID_BACKWARDS;
+            return status;
+          }
+          else if(!jumpPiece.getColor().equals(piece.getColor()))
+          {
+            status = MoveStatus.JUMP;
+            game.addJumpedPieces(jumpSpace);
             return status;
           }
         } else

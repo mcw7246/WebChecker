@@ -122,6 +122,11 @@ public class PostValidateMoveRoute implements Route
           localGame.makeMove(move);
           addMove(httpSession, move);
           return gson.toJson(info(msg));
+        case JUMP:
+          msg = "Jump Move! Wow you're an asshole";
+          localGame.makeMove(move);
+          addMove(httpSession, move);
+          return gson.toJson(info(msg));
         case OCCUPIED:
           msg = "Invalid Move: Space is already Occupied!";
           setErrorMsg(httpSession, msg);
