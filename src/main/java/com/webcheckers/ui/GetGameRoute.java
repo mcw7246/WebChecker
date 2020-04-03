@@ -2,6 +2,7 @@ package com.webcheckers.ui;
 
 import com.webcheckers.application.GameManager;
 import com.webcheckers.application.PlayerLobby;
+import com.webcheckers.model.BoardView;
 import com.webcheckers.model.CheckerGame;
 import com.webcheckers.model.Piece;
 import com.webcheckers.model.Player;
@@ -25,6 +26,7 @@ public class GetGameRoute implements Route
   public static final String GAME_BOARD_VIEW = "board";
   public static final String VIEW_NAME = "game.ftl";
   public static final String GAME_BOARD = "board_actual";
+  public static final String IS_FIRST = "isFirst";
 
   private Player redPlayer;
   private Player whitePlayer;
@@ -49,35 +51,51 @@ public class GetGameRoute implements Route
 
     final Session session = request.session();
     final Player player = session.attribute(GetHomeRoute.PLAYER_KEY);
+
     if (player != null)
     {
       GameManager gameManager = session.attribute(GetHomeRoute.GAME_MANAGER_KEY);
-      GameManager.PLAYERS number = gameManager.getNumber(player.getUsername());
       String CURRENT_PLAYER = "currentUser";
-      vm.put(CURRENT_PLAYER, player.getUsername());
-      final Player opponent = gameManager.getOpponent(player.getUsername());
-      CheckerGame checkersGame;
+      String username = player.getUsername();
+      vm.put(CURRENT_PLAYER, username);
+      boolean first;
+      try {
+        first = session.attribute(IS_FIRST);
+        session.attribute(IS_FIRST, false);
+      } catch (NullPointerException e)
+      {
+        first = true;
+      }
+      CheckerGame game;
       int gameIdNum = gameManager.getGameID(player.getUsername());
-      checkersGame = gameManager.getGame(gameIdNum);
-      this.redPlayer = checkersGame.getRedPlayer();
-      this.whitePlayer = checkersGame.getWhitePlayer();
+      game = gameManager.getGame(gameIdNum);
+      this.redPlayer = game.getRedPlayer();
+      this.whitePlayer = game.getWhitePlayer();
       vm.put(VIEW_MODE, Player.ViewMode.PLAY);
-      session.attribute(GAME_BOARD, checkersGame.getBoard());
-      if (checkersGame.getRedPlayer().getUsername().equals(redPlayer.getUsername()))
+      session.attribute(GAME_BOARD, game.getBoard());
+      if (game.getRedPlayer().getUsername().equals(username))
       {
         vm.put(RED_PLAYER, redPlayer);
         vm.put(WHITE_PLAYER, whitePlayer);
-        vm.put(GAME_BOARD_VIEW, checkersGame.getBoardView(false));
-        LOG.config("you are player 1, red should be on the bottom.");
+        BoardView bV = game.getBoardView();
+        if (first){ bV.flip(); }
+        vm.put(GAME_BOARD_VIEW, bV);
+        LOG.config(game.getRedPlayer().getUsername() + " is player 1, red " +
+                "should be on the bottom.");
       }
-      if(checkersGame.getWhitePlayer().getUsername().equals(whitePlayer.getUsername()))
+      if(game.getWhitePlayer().getUsername().equals(username))
       {
         vm.put(RED_PLAYER, redPlayer);
         vm.put(WHITE_PLAYER, whitePlayer);
-        vm.put(GAME_BOARD_VIEW, checkersGame.getBoardView(true));
-        info("you are player2, white should be on the bottom");
+        BoardView bV = game.getBoardView();
+        if (first){ bV.flip(); }
+        vm.put(GAME_BOARD_VIEW, bV);
+        LOG.config(game.getWhitePlayer().getUsername() + " is player2, white " +
+                "should" +
+                " " +
+                "be on the bottom");
       }
-      vm.put(ACTIVE_COLOR, checkersGame.getColor());
+      vm.put(ACTIVE_COLOR, game.getColor());
       return templateEngine.render(new ModelAndView(vm, VIEW_NAME));
     } else
     {

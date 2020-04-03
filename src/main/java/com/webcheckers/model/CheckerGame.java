@@ -150,13 +150,8 @@ public class CheckerGame
    *
    * @return the board view
    */
-  public BoardView getBoardView(boolean flipped)
+  public BoardView getBoardView()
   {
-    BoardView view = new BoardView(board);
-    if (flipped)
-    {
-      view.flip();
-    }
-    return view;
+    return new BoardView(board);
   }
 }
