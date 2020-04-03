@@ -1,10 +1,8 @@
 package com.webcheckers.ui;
 
 import com.webcheckers.application.GameManager;
-import com.webcheckers.application.PlayerLobby;
 import com.webcheckers.model.BoardView;
 import com.webcheckers.model.CheckerGame;
-import com.webcheckers.model.Piece;
 import com.webcheckers.model.Player;
 import spark.*;
 
@@ -14,7 +12,6 @@ import java.util.Objects;
 import java.util.logging.Logger;
 
 import static com.webcheckers.ui.WebServer.HOME_URL;
-import static com.webcheckers.util.Message.info;
 
 public class GetGameRoute implements Route
 {
@@ -26,10 +23,6 @@ public class GetGameRoute implements Route
   public static final String GAME_BOARD_VIEW = "board";
   public static final String VIEW_NAME = "game.ftl";
   public static final String GAME_BOARD = "board_actual";
-  public static final String IS_FIRST = "isFirst";
-
-  private Player redPlayer;
-  private Player whitePlayer;
 
   //Attributes
   private static final Logger LOG = Logger.getLogger(GetHomeRoute.class.getName());
@@ -58,19 +51,12 @@ public class GetGameRoute implements Route
       String CURRENT_PLAYER = "currentUser";
       String username = player.getUsername();
       vm.put(CURRENT_PLAYER, username);
-      boolean first;
-      try {
-        first = session.attribute(IS_FIRST);
-      } catch (NullPointerException e)
-      {
-        first = true;
-        session.attribute(IS_FIRST, false);
-      }
+
       CheckerGame game;
       int gameIdNum = gameManager.getGameID(player.getUsername());
       game = gameManager.getGame(gameIdNum);
-      this.redPlayer = game.getRedPlayer();
-      this.whitePlayer = game.getWhitePlayer();
+      Player redPlayer = game.getRedPlayer();
+      Player whitePlayer = game.getWhitePlayer();
       vm.put(VIEW_MODE, Player.ViewMode.PLAY);
       session.attribute(GAME_BOARD, game.getBoard());
       if (game.getRedPlayer().getUsername().equals(username))
@@ -78,17 +64,16 @@ public class GetGameRoute implements Route
         vm.put(RED_PLAYER, redPlayer);
         vm.put(WHITE_PLAYER, whitePlayer);
         BoardView bV = new BoardView(game.getBoard());
-        //if (first){ bV.flip(); }
         vm.put(GAME_BOARD_VIEW, bV);
         LOG.config(game.getRedPlayer().getUsername() + " is player 1, red " +
                 "should be on the bottom.");
       }
-      if(game.getWhitePlayer().getUsername().equals(username))
+      if (game.getWhitePlayer().getUsername().equals(username))
       {
         vm.put(RED_PLAYER, redPlayer);
         vm.put(WHITE_PLAYER, whitePlayer);
         BoardView bV = new BoardView(game.getBoard());
-        if (first){ bV.flip(); }
+        bV.flip();
         vm.put(GAME_BOARD_VIEW, bV);
         LOG.config(game.getWhitePlayer().getUsername() + " is player2, white " +
                 "should" +

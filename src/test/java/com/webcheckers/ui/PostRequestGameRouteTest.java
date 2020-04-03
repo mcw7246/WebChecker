@@ -74,7 +74,7 @@ public class PostRequestGameRouteTest
     when(other.getUsername()).thenReturn(PLAYER3);
 
     //Create a unique CuT for each test.
-    CuT = new PostRequestGameRoute(engine);
+    CuT = new PostRequestGameRoute();
   }
 
   /**

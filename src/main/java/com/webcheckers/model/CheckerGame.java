@@ -116,16 +116,6 @@ public class CheckerGame
   }
 
   /**
-   * A move has been made! Update the board!
-   *
-   * @param board the new board.
-   */
-  public void updateBoard(Board board)
-  {
-    this.board = board;
-  }
-
-  /**
    * Returns second (white) player
    *
    * @return the white player
@@ -145,13 +135,4 @@ public class CheckerGame
     return board;
   }
 
-  /**
-   * Returns the board view
-   *
-   * @return the board view
-   */
-  public BoardView getBoardView()
-  {
-    return new BoardView(board);
-  }
 }

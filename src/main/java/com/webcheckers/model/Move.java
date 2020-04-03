@@ -1,7 +1,6 @@
 package com.webcheckers.model;
 
 
-
 import java.util.Objects;
 
 /**
@@ -17,9 +16,9 @@ public class Move
     INVALID_SPACE, VALID, OCCUPIED, TOO_FAR, SAME_SPACE,
     INVALID_BACKWARDS, JUMP_OWN, INVALID_DIR
   }
+
   private Position start;
   private Position end;
-  private MoveStatus status;
 
   public Move(Position start, Position end)
   {
@@ -66,7 +65,7 @@ public class Move
             "move");
 
     int colorFactor = 1;
-    if(piece.getColor() == Piece.Color.WHITE)
+    if (piece.getColor() == Piece.Color.WHITE)
     {
       colorFactor = -colorFactor;
     }
@@ -74,6 +73,7 @@ public class Move
     int rowDiff = (end.getRow() - start.getRow());
     int colDiff = (end.getCell() - start.getCell());
 
+    MoveStatus status;
     if (!endSpace.isValidSpace()) //is the space the correct color?
     {
       status = MoveStatus.INVALID_SPACE;
@@ -137,10 +137,6 @@ public class Move
       }
     }
     status = MoveStatus.VALID;
-    return status;
-  }
-
-  public MoveStatus getStatus(){
     return status;
   }
 }

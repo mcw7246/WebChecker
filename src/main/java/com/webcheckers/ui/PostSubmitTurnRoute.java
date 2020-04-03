@@ -2,8 +2,8 @@ package com.webcheckers.ui;
 
 import com.google.gson.Gson;
 import com.webcheckers.application.GameManager;
-import com.webcheckers.application.PlayerLobby;
-import com.webcheckers.model.*;
+import com.webcheckers.model.CheckerGame;
+import com.webcheckers.model.Player;
 import spark.Request;
 import spark.Response;
 import spark.Route;
@@ -25,12 +25,13 @@ public class PostSubmitTurnRoute implements Route
 {
 
   @Override
-  public Object handle(Request request, Response response){
+  public Object handle(Request request, Response response)
+  {
     final Session session = request.session();
     final Player player = session.attribute(GetHomeRoute.PLAYER_KEY);
     final Gson gson = new Gson();
     GameManager manager = session.attribute(GetHomeRoute.GAME_MANAGER_KEY);
-    if(player != null)
+    if (player != null)
     {
       int gameID = manager.getGameID(player.getUsername());
       CheckerGame game = manager.getLocalGame(player.getUsername());

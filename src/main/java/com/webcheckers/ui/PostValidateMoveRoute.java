@@ -39,7 +39,6 @@ public class PostValidateMoveRoute implements Route
   public static final String MOVE_LIST_ID = "moves";
 
 
-
   private List<Move> moves;
   private final TemplateEngine templateEngine;
 
@@ -84,7 +83,6 @@ public class PostValidateMoveRoute implements Route
   {
     final Session httpSession = request.session();
     final String moveStr = request.queryParams(ACTION_DATA);
-    System.out.println(moveStr);
 
     final Move move = gson.fromJson(moveStr, Move.class);
     final Player player = httpSession.attribute(GetHomeRoute.PLAYER_KEY);
@@ -107,12 +105,12 @@ public class PostValidateMoveRoute implements Route
       }
 
       Board gameBoard = localGame.getBoard();
-      int startCell = abs(move.getStart().getCell() - 7);
-      int endCell = abs(move.getEnd().getCell() - 7);
+      int startCell = abs(move.getStart().getCell());
+      int endCell = abs(move.getEnd().getCell());
       Space startSpace = gameBoard.getSpaceAt(move.getStart().getRow(), startCell);
       Space endSpace = gameBoard.getSpaceAt(move.getEnd().getRow(), endCell);
       Move.MoveStatus moveValidity = move.validateMove(localGame, startSpace, endSpace);
-      String msg = "";
+      String msg;
       switch (moveValidity)
       {
         case INVALID_SPACE:

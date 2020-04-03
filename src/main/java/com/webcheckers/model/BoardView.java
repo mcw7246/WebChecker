@@ -2,10 +2,6 @@ package com.webcheckers.model;
 
 import java.util.*;
 
-/**
- *
- * @author Mikayla Wishart 'mcw7246'
- */
 import static com.webcheckers.model.Board.DIMENSIONS;
 
 public class BoardView implements Iterable<Row>
@@ -16,7 +12,17 @@ public class BoardView implements Iterable<Row>
 
   public BoardView(Board boardActual)
   {
-    this.board = new ArrayList<>(boardActual.getBoard());
+    this.board = makeCopyOfBoard(boardActual.getBoard());
+  }
+
+  public List<Row> makeCopyOfBoard(List<Row> board)
+  {
+    List<Row> newBoard = new ArrayList<>();
+    for (int i = 0; i < DIMENSIONS; i++)
+    {
+      newBoard.add(new Row(board.get(i)));
+    }
+    return newBoard;
   }
 
   /**
@@ -29,7 +35,8 @@ public class BoardView implements Iterable<Row>
     Collections.reverse(board);
 
     //reverses the board along the y-axis(puts the pieces back in the black spaces)
-    for(Row r: board){
+    for (Row r : board)
+    {
       Collections.reverse(r.getRow());
     }
     flipped = !flipped;
@@ -43,16 +50,6 @@ public class BoardView implements Iterable<Row>
   public List<Row> getBoard()
   {
     return board;
-  }
-
-  /**
-   * Returns whether white is on the bottom or not.
-   *
-   * @return true if white is on the bottom.
-   */
-  public boolean isFlipped()
-  {
-    return flipped;
   }
 
   @Override

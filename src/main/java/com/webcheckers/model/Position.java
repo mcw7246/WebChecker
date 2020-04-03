@@ -16,18 +16,20 @@ public class Position
    * Creates a position object using a given row and cell, if they are out of
    * bounds then
    *
-   * @param row the row index of the position.
+   * @param row  the row index of the position.
    * @param cell the cell index of the position.
    */
-  public Position(int row, int cell){
-    if(row > MAX_ROW){
+  public Position(int row, int cell)
+  {
+    if (row > MAX_ROW)
+    {
       this.row = -1; //error
     } else
     {
       this.row = row;
     }
 
-    if(cell > MAX_CELL)
+    if (cell > MAX_CELL)
     {
       this.cell = -1;
     } else

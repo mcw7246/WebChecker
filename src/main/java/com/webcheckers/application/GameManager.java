@@ -39,11 +39,6 @@ public class GameManager
     return inGame;
   }
 
-  public static Map<Integer, CheckerGame> getGames()
-  {
-    return games;
-  }
-
   /**
    * Starts games, where p1 is the person starting the challenge and p2 is the
    * person accepting
@@ -144,16 +139,6 @@ public class GameManager
   }
 
   /**
-   * Returns the pairs of players.
-   *
-   * @return Pairs which is a Map.
-   */
-  public Map<Integer, HashMap<String, String>> getPairs()
-  {
-    return pairs;
-  }
-
-  /**
    * Finds the pair for the given gameID
    *
    * @param gameID an int of the gameID
@@ -162,25 +147,6 @@ public class GameManager
   public HashMap<String, String> getPair(int gameID)
   {
     return pairs.get(gameID);
-  }
-
-  /**
-   * Gets the player number (As a PLAYERS)
-   *
-   * @param username the username to check
-   * @return A PLAYERS enum.
-   */
-  public PLAYERS getNumber(String username)
-  {
-    Player play = playerLobby.getPlayers().get(username);
-    int num = play.getPlayerNum();
-    if (num == 1)
-    {
-      return PLAYERS.PLAYER1;
-    } else
-    {
-      return PLAYERS.PLAYER2;
-    }
   }
 
   /**
@@ -209,8 +175,5 @@ public class GameManager
       return null;
     }
   }
-
-  public enum PLAYERS
-  {PLAYER1, PLAYER2}
 
 }

@@ -72,12 +72,8 @@ public class WebServer
   //
 
   private final TemplateEngine templateEngine;
-  private final Gson gson;
   private final PlayerLobby playerLobby;
   private final GameManager gameManager;
-  //
-  // Constructor
-  //
 
   /**
    * The constructor for the Web Server.
@@ -93,7 +89,6 @@ public class WebServer
     Objects.requireNonNull(gson, "gson must not be null");
     //
     this.templateEngine = templateEngine;
-    this.gson = new Gson();
     playerLobby = new PlayerLobby();
     gameManager = new GameManager(playerLobby);
   }
@@ -154,9 +149,8 @@ public class WebServer
     //Shows signin page
     get(SIGNIN_URL, new GetSignInRoute(templateEngine));
     post(SIGNIN_URL, new PostSignInRoute(templateEngine, playerLobby));
-    post(REQUEST_GAME_URL, new PostRequestGameRoute(templateEngine));
-    post(RESPONSE_GAME_URL, new PostRequestResponseRoute(templateEngine,
-            playerLobby));
+    post(REQUEST_GAME_URL, new PostRequestGameRoute());
+    post(RESPONSE_GAME_URL, new PostRequestResponseRoute(playerLobby));
     get(GAME_URL, new GetGameRoute(templateEngine));
     post(CHECK_TURN_URL, new PostCheckTurnRoute());
     post(VALIDATE_MOVE_URL, new PostValidateMoveRoute(templateEngine, playerLobby));
