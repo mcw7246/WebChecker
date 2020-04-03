@@ -9,6 +9,7 @@ import spark.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.logging.Logger;
 
 import static com.webcheckers.util.Message.error;
 import static com.webcheckers.util.Message.info;
@@ -27,10 +28,7 @@ import static spark.Spark.halt;
  */
 public class PostValidateMoveRoute implements Route
 {
-  /**
-   * All the types of moves
-   */
-
+  private static final Logger LOG = Logger.getLogger(GetHomeRoute.class.getName());
 
   private GameManager manager;
   private final PlayerLobby lobby;
@@ -84,6 +82,7 @@ public class PostValidateMoveRoute implements Route
     final Session httpSession = request.session();
     final String moveStr = request.queryParams(ACTION_DATA);
 
+    LOG.config("Validating move: " + moveStr);
     final Move move = gson.fromJson(moveStr, Move.class);
     final Player player = httpSession.attribute(GetHomeRoute.PLAYER_KEY);
     if (lobby != null)

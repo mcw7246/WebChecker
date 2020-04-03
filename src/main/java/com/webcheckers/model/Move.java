@@ -74,11 +74,13 @@ public class Move
     int colDiff = (end.getCell() - start.getCell());
 
     MoveStatus status;
+
     if (!endSpace.isValidSpace()) //is the space the correct color?
     {
       status = MoveStatus.INVALID_SPACE;
       return status;
-    } else if (startSpace.equals(endSpace)) //is the space the same as the
+    } else if (startSpace.equals(endSpace)) //is the space
+      // the same as the
     // start?
     {
       status = MoveStatus.SAME_SPACE;

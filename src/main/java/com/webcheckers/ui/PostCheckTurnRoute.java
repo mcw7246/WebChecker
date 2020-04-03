@@ -22,7 +22,6 @@ public class PostCheckTurnRoute implements Route
   @Override
   public Object handle(Request request, Response response)
   {
-    LOG.config("PostCheckTurnRoute invoked");
     final Session httpSession = request.session();
     final Player player = httpSession.attribute(GetHomeRoute.PLAYER_KEY);
     final Gson gson = new Gson();
