@@ -46,7 +46,7 @@ public class PostSubmitTurnRoute implements Route
           return "Redirected Home";
         }
       }
-      //Board board = session.attribute(GetGameRoute.GAME_BOARD);
+      //Board board = game.getBoard();
       //TODO: GAME LOGIC (were the moves that were made correct)
       //game.updateBoard(board);
       Space jumpSpace;

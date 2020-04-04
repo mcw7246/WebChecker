@@ -37,15 +37,8 @@ public class PostValidateMoveRoute implements Route
   public static final String MOVE_LIST_ID = "moves";
 
 
-  private List<Move> moves;
-  private final TemplateEngine templateEngine;
-
-  PostValidateMoveRoute(final TemplateEngine templateEngine,
-                        final PlayerLobby playerLobby)
+  PostValidateMoveRoute(final PlayerLobby playerLobby)
   {
-    Objects.requireNonNull(templateEngine, "templateEngine must not be" +
-            "null");
-    this.templateEngine = templateEngine;
     this.lobby = playerLobby;
   }
 
@@ -67,10 +60,10 @@ public class PostValidateMoveRoute implements Route
    */
   private void addMove(Session session, Move move)
   {
-    moves = session.attribute(MOVE_LIST_ID);
+    List<Move> moves = session.attribute(MOVE_LIST_ID);
     if (moves == null)
     {
-      moves = new ArrayList<Move>();
+      moves = new ArrayList<>();
     }
     moves.add(move);
     session.attribute(MOVE_LIST_ID, moves);
@@ -87,7 +80,7 @@ public class PostValidateMoveRoute implements Route
     final Player player = httpSession.attribute(GetHomeRoute.PLAYER_KEY);
     if (lobby != null)
     {
-      manager = httpSession.attribute(GetHomeRoute.GAME_MANAGER_KEY);
+      GameManager manager = httpSession.attribute(GetHomeRoute.GAME_MANAGER_KEY);
       String username = player.getUsername();
       int gameID = manager.getGameID(username);
       CheckerGame localGame = manager.getLocalGame(username);
