@@ -43,17 +43,6 @@ public class PostValidateMoveRoute implements Route
   }
 
   /**
-   * Helper method for setting the error message on teh game screen
-   *
-   * @param session: the HTTP session
-   * @param message: the message to be sent.
-   */
-  private void setErrorMsg(Session session, String message)
-  {
-    session.attribute(GetHomeRoute.ERROR_MESSAGE_KEY, message);
-  }
-
-  /**
    * Adds a move to the list of moves stored in the session.
    *
    * @param move: the move that has been made
@@ -107,11 +96,9 @@ public class PostValidateMoveRoute implements Route
       {
         case INVALID_SPACE:
           msg = "Invalid Move: Space is the wrong color!";
-          setErrorMsg(httpSession, msg);
           break;
         case ALREADY_MOVED:
           msg = "Already Moved: Already moved a piece!";
-          setErrorMsg(httpSession, msg);
           break;
         case VALID:
           localGame.setMoved(true);
@@ -126,28 +113,22 @@ public class PostValidateMoveRoute implements Route
           return gson.toJson(info(msg));
         case OCCUPIED:
           msg = "Invalid Move: Space is already Occupied!";
-          setErrorMsg(httpSession, msg);
           break;
         case TOO_FAR:
           msg = "Invalid Move: Space is too far away!";
-          setErrorMsg(httpSession, msg);
           break;
         case SAME_SPACE:
           msg = "Invalid Move: The Space you've tried to move to is the same " +
                   "one!";
-          setErrorMsg(httpSession, msg);
           break;
         case INVALID_BACKWARDS:
           msg = "Invalid Move: You aren't kinged yet! You must move forward!";
-          setErrorMsg(httpSession, msg);
           break;
         case JUMP_OWN:
           msg = "Invalid Move: You're attempting to jump your own piece!";
-          setErrorMsg(httpSession, msg);
           break;
         case INVALID_DIR:
           msg = "Invalid Move: You must move diagonally!";
-          setErrorMsg(httpSession, msg);
           break;
         default:
           throw new IllegalStateException("Unexpected value: " + moveValidity);
