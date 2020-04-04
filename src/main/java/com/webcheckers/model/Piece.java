@@ -4,6 +4,10 @@ package com.webcheckers.model;
  * Each piece on the board
  *
  * @author Zehra Amena Baig (zab1166)
+ *
+ *
+ * Added functionality for King
+ * @author Sean Bergen (sdb2139)
  */
 
 public class Piece
@@ -83,6 +87,13 @@ public class Piece
   {
     return this.type;
   }
+
+  /**
+   * Sets the type of the piece (Single or King)
+   *
+   * @param type the new type of the piece
+   */
+  public void setType(Type type) {this.type = type;}
 
 
 }
