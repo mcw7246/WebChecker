@@ -127,7 +127,7 @@ public class PostValidateMoveRoute implements Route
           addMove(httpSession, move);
           return gson.toJson(info(msg));
         case JUMP:
-          msg = "Jump Move! Wow you're an asshole";
+          msg = "Jump Move! Click submit to send.";
           localGame.makeMove(move);
           addMove(httpSession, move);
           return gson.toJson(info(msg));
