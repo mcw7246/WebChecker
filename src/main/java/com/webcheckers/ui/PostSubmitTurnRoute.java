@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.webcheckers.application.GameManager;
 import com.webcheckers.model.CheckerGame;
 import com.webcheckers.model.Player;
+import com.webcheckers.model.Space;
 import spark.Request;
 import spark.Response;
 import spark.Route;
@@ -46,8 +47,13 @@ public class PostSubmitTurnRoute implements Route
         }
       }
       //Board board = game.getBoard();
-      //TODO: GAME LOGIC (were the moves that were made correct)
+      //TODO: REQUIRED MOVE.
       //game.updateBoard(board);
+      Space jumpSpace;
+      while((jumpSpace = game.getJumpedPiece()) != null)
+      {
+        jumpSpace.setPiece(null);
+      }
       manager.updateGame(gameID, game);
       manager.removeClientSideGame(player.getUsername());
       game.updateTurn();

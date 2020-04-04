@@ -4,13 +4,12 @@ import com.google.gson.Gson;
 import com.webcheckers.application.GameManager;
 import com.webcheckers.application.PlayerLobby;
 import com.webcheckers.model.*;
-import spark.Request;
-import spark.Response;
-import spark.Route;
-import spark.Session;
+import spark.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.logging.Logger;
 
 import static com.webcheckers.util.Message.error;
 import static com.webcheckers.util.Message.info;
@@ -29,6 +28,9 @@ import static spark.Spark.halt;
  */
 public class PostValidateMoveRoute implements Route
 {
+  private static final Logger LOG = Logger.getLogger(GetHomeRoute.class.getName());
+
+  private GameManager manager;
   private final PlayerLobby lobby;
   Gson gson = new Gson();
   private static final String ACTION_DATA = "actionData";
@@ -38,17 +40,6 @@ public class PostValidateMoveRoute implements Route
   PostValidateMoveRoute(final PlayerLobby playerLobby)
   {
     this.lobby = playerLobby;
-  }
-
-  /**
-   * Helper method for setting the error message on teh game screen
-   *
-   * @param session: the HTTP session
-   * @param message: the message to be sent.
-   */
-  private void setErrorMsg(Session session, String message)
-  {
-    session.attribute(GetHomeRoute.ERROR_MESSAGE_KEY, message);
   }
 
   /**
@@ -73,6 +64,7 @@ public class PostValidateMoveRoute implements Route
     final Session httpSession = request.session();
     final String moveStr = request.queryParams(ACTION_DATA);
 
+    LOG.config("Validating move: " + moveStr);
     final Move move = gson.fromJson(moveStr, Move.class);
     final Player player = httpSession.attribute(GetHomeRoute.PLAYER_KEY);
     if (lobby != null)
@@ -104,37 +96,39 @@ public class PostValidateMoveRoute implements Route
       {
         case INVALID_SPACE:
           msg = "Invalid Move: Space is the wrong color!";
-          setErrorMsg(httpSession, msg);
+          break;
+        case ALREADY_MOVED:
+          msg = "Already Moved: Already moved a piece!";
           break;
         case VALID:
+          localGame.setMoved(true);
           msg = "Valid Move! Click submit to send";
+          localGame.makeMove(move);
+          addMove(httpSession, move);
+          return gson.toJson(info(msg));
+        case JUMP:
+          msg = "Jump Move! Click submit to send.";
           localGame.makeMove(move);
           addMove(httpSession, move);
           return gson.toJson(info(msg));
         case OCCUPIED:
           msg = "Invalid Move: Space is already Occupied!";
-          setErrorMsg(httpSession, msg);
           break;
         case TOO_FAR:
           msg = "Invalid Move: Space is too far away!";
-          setErrorMsg(httpSession, msg);
           break;
         case SAME_SPACE:
           msg = "Invalid Move: The Space you've tried to move to is the same " +
                   "one!";
-          setErrorMsg(httpSession, msg);
           break;
         case INVALID_BACKWARDS:
           msg = "Invalid Move: You aren't kinged yet! You must move forward!";
-          setErrorMsg(httpSession, msg);
           break;
         case JUMP_OWN:
           msg = "Invalid Move: You're attempting to jump your own piece!";
-          setErrorMsg(httpSession, msg);
           break;
         case INVALID_DIR:
           msg = "Invalid Move: You must move diagonally!";
-          setErrorMsg(httpSession, msg);
           break;
         default:
           throw new IllegalStateException("Unexpected value: " + moveValidity);

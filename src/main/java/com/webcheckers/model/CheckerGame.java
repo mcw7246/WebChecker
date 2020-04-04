@@ -1,5 +1,8 @@
 package com.webcheckers.model;
 
+import java.util.EmptyStackException;
+import java.util.Stack;
+
 /**
  * Wrapper class for model
  *
@@ -27,6 +30,10 @@ public class CheckerGame
    */
   private int turn = 1;
 
+  private Stack<Space> jumpedPieces;
+
+  private boolean moved = false;
+
   /**
    * Constructor
    */
@@ -35,6 +42,7 @@ public class CheckerGame
     this.PLAYER_ONE = PLAYER_ONE;
     this.PLAYER_TWO = PLAYER_TWO;
     this.board = board;
+    jumpedPieces = new Stack<Space>();
   }
 
   /**
@@ -48,6 +56,7 @@ public class CheckerGame
     this.PLAYER_TWO = original.PLAYER_TWO;
     this.board = new Board(original.board);
     this.turn = original.turn;
+    jumpedPieces = new Stack<Space>();
   }
 
   /**
@@ -133,6 +142,32 @@ public class CheckerGame
   public Board getBoard()
   {
     return board;
+  }
+
+  public void addJumpedPieces(Space space)
+  {
+    jumpedPieces.push(space);
+  }
+
+  public Space getJumpedPiece()
+  {
+    try
+    {
+        return jumpedPieces.pop();
+    }catch(EmptyStackException ese) {
+      System.err.println("(CheckerGame.java) Stack empty");
+      return null;
+    }
+  }
+
+  public boolean hasMoved()
+  {
+    return moved;
+  }
+
+  public void setMoved(boolean moved)
+  {
+    this.moved = moved;
   }
 
 }
