@@ -14,7 +14,7 @@ public class Move
   public enum MoveStatus
   {
     INVALID_SPACE, VALID, OCCUPIED, TOO_FAR, SAME_SPACE,
-    INVALID_BACKWARDS, JUMP_OWN, INVALID_DIR, JUMP
+    INVALID_BACKWARDS, JUMP_OWN, INVALID_DIR, JUMP, ALREADY_MOVED
   }
 
   private Position start;
@@ -116,7 +116,7 @@ public class Move
             return status;
           } else if (king)
           {
-            status = MoveStatus.VALID;
+            status = game.hasMoved() ? MoveStatus.ALREADY_MOVED : MoveStatus.VALID;
             return status;
           } else if (colorFactor * rowDiff > 0)
           {
@@ -137,7 +137,7 @@ public class Move
       }
       if (king)
       {
-        status = MoveStatus.VALID;
+        status = game.hasMoved() ? MoveStatus.ALREADY_MOVED : MoveStatus.VALID;
         return status;
       } else if (colorFactor * rowDiff > 0)
       {
@@ -145,7 +145,7 @@ public class Move
         return status;
       }
     }
-    status = MoveStatus.VALID;
+    status = game.hasMoved() ? MoveStatus.ALREADY_MOVED : MoveStatus.VALID;
     return status;
   }
 }
