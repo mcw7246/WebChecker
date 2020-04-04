@@ -93,9 +93,10 @@ public class PostSubmitTurnRouteTest
   public void home_redirect_noPlayer()
   {
     when(session.attribute(GetHomeRoute.PLAYER_KEY)).thenReturn(null);
+    String returned = "";
     try
     {
-      CuT.handle(request, response);
+      returned = CuT.handle(request, response).toString();
       fail("Home found a game somehow and did not halt.");
     } catch (spark.HaltException e)
     {
