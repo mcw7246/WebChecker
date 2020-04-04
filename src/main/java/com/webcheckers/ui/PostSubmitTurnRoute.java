@@ -47,7 +47,7 @@ public class PostSubmitTurnRoute implements Route
         }
       }
       //Board board = game.getBoard();
-      //TODO: GAME LOGIC (were the moves that were made correct)
+      //TODO: REQUIRED MOVE.
       //game.updateBoard(board);
       Space jumpSpace;
       while((jumpSpace = game.getJumpedPiece()) != null)

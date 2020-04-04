@@ -89,7 +89,8 @@ public class PostRequestGameRouteTest
     {
       CuT.handle(request, response);
       fail("Home found a lobby and did not halt.\n");
-    }catch (spark.HaltException e){
+    } catch (spark.HaltException e)
+    {
       // Test passed.
     }
   }
@@ -163,12 +164,13 @@ public class PostRequestGameRouteTest
     lobby.challenge(PLAYER1, newPlayer.getUsername());
     //Current player is Player3
     when(session.attribute(GetHomeRoute.PLAYER_KEY)).thenReturn(other);
-    for(String s: lobby.getChallengers()){
+    for (String s : lobby.getChallengers())
+    {
       System.out.println(s);
     }
     //Challenging Player2 as well.
     //when(request.queryParams(PostRequestGameRoute.REQUEST_VAL)).
-            //thenReturn(PLAYER2);
+    //thenReturn(PLAYER2);
     CuT.handle(request, response);
 
     //assertFalse(lobby.getChallengers().contains(PLAYER3));
@@ -196,63 +198,61 @@ public class PostRequestGameRouteTest
     //assertTrue(lobby.getChallengers().contains(PLAYER1));
   }
 /**
-  @Test
-  public void challenge_in_game()
-  {
-    //Initialize
-    final TemplateEngineTest testHelper = new TemplateEngineTest();
-    when(engine.render(any(ModelAndView.class))).thenAnswer(testHelper.makeAnswer());
-    //Place p1 and p2 inside a game.
-    lobby.challenge(PLAYER2, PLAYER1);
-    gameManager.startGame(PLAYER1, PLAYER2);
+ @Test public void challenge_in_game()
+ {
+ //Initialize
+ final TemplateEngineTest testHelper = new TemplateEngineTest();
+ when(engine.render(any(ModelAndView.class))).thenAnswer(testHelper.makeAnswer());
+ //Place p1 and p2 inside a game.
+ lobby.challenge(PLAYER2, PLAYER1);
+ gameManager.startGame(PLAYER1, PLAYER2);
 
-    //Current player is Player3
-    when(session.attribute(GetHomeRoute.PLAYER_KEY)).thenReturn(other);
-    //Challenging Player1, who is in a game with Player2.
-    when(request.queryParams(PostRequestGameRoute.REQUEST_VAL)).
-            thenReturn(PLAYER1);
-    CuT.handle(request, response);
+ //Current player is Player3
+ when(session.attribute(GetHomeRoute.PLAYER_KEY)).thenReturn(other);
+ //Challenging Player1, who is in a game with Player2.
+ when(request.queryParams(PostRequestGameRoute.REQUEST_VAL)).
+ thenReturn(PLAYER1);
+ CuT.handle(request, response);
 
-    assertFalse(lobby.getChallengers().contains(PLAYER3));
-    assertFalse(lobby.challenging(PLAYER3, PLAYER1));
-    assertTrue(gameManager.getInGame().contains(PLAYER1));
-    assertTrue(gameManager.getInGame().contains(PLAYER2));
-    assertFalse(gameManager.getInGame().contains(PLAYER3));
+ assertFalse(lobby.getChallengers().contains(PLAYER3));
+ assertFalse(lobby.challenging(PLAYER3, PLAYER1));
+ assertTrue(gameManager.getInGame().contains(PLAYER1));
+ assertTrue(gameManager.getInGame().contains(PLAYER2));
+ assertFalse(gameManager.getInGame().contains(PLAYER3));
 
-    //Do the same with challenging Player2, who is in a game with Player1
-    when(request.queryParams(PostRequestGameRoute.REQUEST_VAL)).
-            thenReturn(PLAYER2);
-    CuT.handle(request, response);
+ //Do the same with challenging Player2, who is in a game with Player1
+ when(request.queryParams(PostRequestGameRoute.REQUEST_VAL)).
+ thenReturn(PLAYER2);
+ CuT.handle(request, response);
 
-    assertFalse(lobby.getChallengers().contains(PLAYER3));
-    assertFalse(lobby.challenging(PLAYER3, PLAYER1));
-    assertTrue(gameManager.getInGame().contains(PLAYER1));
-    assertTrue(gameManager.getInGame().contains(PLAYER2));
-    assertFalse(gameManager.getInGame().contains(PLAYER3));
-  }
+ assertFalse(lobby.getChallengers().contains(PLAYER3));
+ assertFalse(lobby.challenging(PLAYER3, PLAYER1));
+ assertTrue(gameManager.getInGame().contains(PLAYER1));
+ assertTrue(gameManager.getInGame().contains(PLAYER2));
+ assertFalse(gameManager.getInGame().contains(PLAYER3));
+ }
 
-  @Test
-  public void send_another_challenge()
-  {
-    //Initialize
-    final TemplateEngineTest testHelper = new TemplateEngineTest();
-    when(engine.render(any(ModelAndView.class))).thenAnswer(testHelper.makeAnswer());
-    //Set up one challenge
-    lobby.challenge(PLAYER2, PLAYER1);
+ @Test public void send_another_challenge()
+ {
+ //Initialize
+ final TemplateEngineTest testHelper = new TemplateEngineTest();
+ when(engine.render(any(ModelAndView.class))).thenAnswer(testHelper.makeAnswer());
+ //Set up one challenge
+ lobby.challenge(PLAYER2, PLAYER1);
 
-    //Current player is Player1
-    when(session.attribute(GetHomeRoute.PLAYER_KEY)).thenReturn(other);
-    //Challenging Player3
-    when(request.queryParams(PostRequestGameRoute.REQUEST_VAL)).
-            thenReturn(PLAYER3);
+ //Current player is Player1
+ when(session.attribute(GetHomeRoute.PLAYER_KEY)).thenReturn(other);
+ //Challenging Player3
+ when(request.queryParams(PostRequestGameRoute.REQUEST_VAL)).
+ thenReturn(PLAYER3);
 
-    CuT.handle(request, response);
+ CuT.handle(request, response);
 
-    Map<String, String> challenges = lobby.getChallenges();
-    Set<String> challengers = lobby.getChallengers();
+ Map<String, String> challenges = lobby.getChallenges();
+ Set<String> challengers = lobby.getChallengers();
 
-    assertTrue(lobby.getChallengers().contains(PLAYER1));
-    assertFalse(lobby.challenging(PLAYER1, PLAYER3));
-    assertTrue(lobby.challenging(PLAYER1, PLAYER2));
-  }*/
+ assertTrue(lobby.getChallengers().contains(PLAYER1));
+ assertFalse(lobby.challenging(PLAYER1, PLAYER3));
+ assertTrue(lobby.challenging(PLAYER1, PLAYER2));
+ }*/
 }
