@@ -43,7 +43,6 @@ public class PostSubmitTurnRoute implements Route
         {
           response.redirect(WebServer.HOME_URL);
           halt();
-          return "Redirected Home";
         }
       }
       //Board board = game.getBoard();
@@ -62,8 +61,8 @@ public class PostSubmitTurnRoute implements Route
     {
       response.redirect(WebServer.HOME_URL);
       halt();
-      return "Redirected Home";
     }
+    return "Redirected Home";
   }
 
 }

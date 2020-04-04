@@ -164,10 +164,6 @@ public class PostRequestGameRouteTest
     lobby.challenge(PLAYER1, newPlayer.getUsername());
     //Current player is Player3
     when(session.attribute(GetHomeRoute.PLAYER_KEY)).thenReturn(other);
-    for (String s : lobby.getChallengers())
-    {
-      System.out.println(s);
-    }
     //Challenging Player2 as well.
     //when(request.queryParams(PostRequestGameRoute.REQUEST_VAL)).
     //thenReturn(PLAYER2);
