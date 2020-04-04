@@ -73,24 +73,21 @@ public class Move
     int rowDiff = (end.getRow() - start.getRow());
     int colDiff = (end.getCell() - start.getCell());
 
-    MoveStatus status;
+    MoveStatus status = null;
 
     if (!endSpace.isValidSpace()) //is the space the correct color?
     {
       status = MoveStatus.INVALID_SPACE;
-      return status;
     } else if (startSpace.equals(endSpace)) //is the space
       // the same as the
     // start?
     {
       status = MoveStatus.SAME_SPACE;
-      return status;
     } else
     {
       if (endSpace.getPiece() != null) // there's already a piece there!
       {
         status = MoveStatus.OCCUPIED;
-        return status;
       }
       if (Math.abs(rowDiff) > 1 || Math.abs(colDiff) > 1) //more than 1 by 1
       // away.
@@ -99,7 +96,6 @@ public class Move
         // away in any direction.
         {
           status = MoveStatus.TOO_FAR;
-          return status;
         }
         Space jumpSpace = board.getSpaceAt(start.getRow() + (rowDiff / 2),
                 start.getCell() + (colDiff / 2));
@@ -109,43 +105,33 @@ public class Move
           if (jumpPiece.getColor().equals(piece.getColor()))
           {
             status = MoveStatus.JUMP_OWN;
-            return status;
-          } else if (Math.abs(rowDiff) != Math.abs(colDiff))
-          {
-            status = MoveStatus.INVALID_DIR;
-            return status;
           } else if (king)
           {
             status = game.hasMoved() ? MoveStatus.ALREADY_MOVED : MoveStatus.VALID;
-            return status;
           } else if (colorFactor * rowDiff > 0)
           {
             status = MoveStatus.INVALID_BACKWARDS;
-            return status;
           }
           else if(!jumpPiece.getColor().equals(piece.getColor()))
           {
             status = MoveStatus.JUMP;
             game.addJumpedPieces(jumpSpace);
-            return status;
           }
         } else
         {
           status = MoveStatus.TOO_FAR;
-          return status;
         }
       }
       if (king)
       {
         status = game.hasMoved() ? MoveStatus.ALREADY_MOVED : MoveStatus.VALID;
-        return status;
       } else if (colorFactor * rowDiff > 0)
       {
         status = MoveStatus.INVALID_BACKWARDS;
-        return status;
+
       }
     }
-    status = game.hasMoved() ? MoveStatus.ALREADY_MOVED : MoveStatus.VALID;
+    //status = game.hasMoved() ? MoveStatus.ALREADY_MOVED : MoveStatus.VALID;
     return status;
   }
 }

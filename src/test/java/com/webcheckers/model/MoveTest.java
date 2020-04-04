@@ -30,6 +30,8 @@ public class MoveTest
   int startCell = 0;
   int endRow = 0;
   int endCell = 0;
+  int rowDiff;
+  int colDiff;
 
   //Friendly Objects
   Position start;
@@ -49,7 +51,7 @@ public class MoveTest
   public void setup()
   {
     game = mock(CheckerGame.class);
-    board = mock(Board.class);
+    board = new Board();
     //startSpace = mock(Space.class);
     //endSpace = mock(Space.class);
     redPiece = new Piece(Piece.Color.RED);
@@ -58,8 +60,8 @@ public class MoveTest
     when(move.getStart()).thenReturn(start);
     when(move.getEnd()).thenReturn(end);
     when(game.getBoard()).thenReturn(board);
-    when(board.getSpaceAt(startRow, startCell)).thenReturn(startSpace);
-    when(board.getSpaceAt(endRow, endCell)).thenReturn(endSpace);
+    //when(board.getSpaceAt(startRow, startCell)).thenReturn(startSpace);
+    //when(board.getSpaceAt(endRow, endCell)).thenReturn(endSpace);
     //when(startSpace.getPiece()).thenReturn(piece);
   }
 
@@ -104,6 +106,7 @@ public class MoveTest
 
   @Test
   public void testSame_Space(){
+    //-------------------------WORKING----------------------------------------
     start = new Position(0, 1);
     end = new Position(0, 1);
     startSpace = new Space(0, 1, true, redPiece);
@@ -120,11 +123,12 @@ public class MoveTest
 
   @Test
   public void testOccupied_space(){
+    //------------------------WORKING--------------------------------------------
     start = new Position(0, 1);
     end = new Position(1, 0);
-    Piece testPiece = new Piece(Piece.Color.RED, Piece.Type.SINGLE);
+    Piece testPiece = new Piece(Piece.Color.WHITE, Piece.Type.SINGLE);
 
-    startSpace = new Space(0, 1, true);
+    startSpace = new Space(0, 1, true, whitePiece);
     endSpace = new Space(1, 0, true, testPiece);
 
     endSpace.setPiece(testPiece);
@@ -133,10 +137,110 @@ public class MoveTest
     CuT = new Move(start, end);
 
     status = CuT.validateMove(game, startSpace, endSpace);
-    //assertNotNull(endSpace.getPiece());
-    System.out.println(status);
-    //assertEquals(Move.MoveStatus.OCCUPIED, CuT.validateMove(game, startSpace, endSpace));
+    assertNotNull(endSpace.getPiece());
+    assertEquals(Move.MoveStatus.OCCUPIED, CuT.validateMove(game, startSpace, endSpace));
 
   }
 
+  @Test
+  public void testValidate_Too_Far(){
+    //---------------------WORKING--------------------------------
+    start = new Position(2, 3);
+    end = new Position(4,1);
+    rowDiff = end.getRow() - start.getRow();
+    colDiff = end.getCell()- start.getCell();
+    Space middleSpace = board.getSpaceAt(start.getRow() + (rowDiff/2), start.getCell() + (colDiff/2));
+    startSpace = new Space(0, 1, true, whitePiece);
+    endSpace = new Space(4,5, true, null );
+    assertNull(endSpace.getPiece());
+
+    assertNull(middleSpace.getPiece());
+
+    CuT = new Move(start, end);
+
+    status = CuT.validateMove(game, startSpace, endSpace);
+    assertEquals(Move.MoveStatus.TOO_FAR, status);
+  }
+
+  @Test
+  public void testValidate_jump_own_piece(){
+    //--------------------------WORKING----------------------------------
+    start = new Position(0, 1);
+    end = new Position(2, 3);
+    Piece testPiece = new Piece(Piece.Color.WHITE, Piece.Type.SINGLE);
+
+    Space middleSpace = new Space(1, 2, true, testPiece);
+    startSpace = new Space(0, 1, true, whitePiece);
+    endSpace = new Space(2, 3, true);
+
+    assertNull(endSpace.getPiece());
+    assertNotNull(middleSpace.getPiece());
+
+    CuT = new Move(start, end);
+    status = CuT.validateMove(game, startSpace, endSpace);
+
+    assertEquals(Move.MoveStatus.JUMP_OWN, status);
+  }
+
+
+  @Test
+  public void testJump(){
+    start = new Position(3, 0);
+    end = new Position(5, 2);
+
+    rowDiff = end.getRow() - start.getRow();
+    colDiff = end.getCell() - start.getCell();
+
+    Space middleSpace = board.getSpaceAt(4, 1);
+    middleSpace.setPiece(redPiece);
+    startSpace = new Space(start.getRow(), start.getCell(), true, whitePiece);
+    endSpace = new Space(end.getRow(), end.getCell(), true);
+
+    assertNotNull(middleSpace.getPiece());
+    CuT = new Move(start, end);
+    status = CuT.validateMove(game, startSpace, endSpace);
+
+    assertEquals(Move.MoveStatus.JUMP, status);
+  }
+
+  @Test
+  public void testInvalid_backwards(){
+    start = new Position(5, 2);
+    end = new Position(3, 0);
+
+    rowDiff = end.getRow() - start.getRow();
+    colDiff = end.getCell() - start.getCell();
+
+    Space middleSpace = board.getSpaceAt(start.getRow() + (rowDiff/2), start.getCell() + (colDiff/2));
+    middleSpace.setPiece(redPiece);
+    startSpace = new Space(start.getRow(), start.getCell(), true, whitePiece);
+    endSpace = new Space(end.getRow(), end.getCell(), true);
+
+    assertNotNull(middleSpace.getPiece());
+    CuT = new Move(start, end);
+    status = CuT.validateMove(game, startSpace, endSpace);
+
+    System.out.println(status);
+
+    assertEquals(Move.MoveStatus.INVALID_BACKWARDS, status);
+  }
+
+  @Test
+  public void testValid_King(){
+    start = new Position(5, 2);
+    end = new Position(3, 0);
+
+    rowDiff = end.getRow() - start.getRow();
+    colDiff = end.getCell() - start.getCell();
+
+    Space middleSpace = board.getSpaceAt(start.getRow() + (rowDiff/2), start.getCell() + (colDiff/2));
+    middleSpace.setPiece(redPiece);
+    whitePiece.setType(Piece.Type.KING);
+    startSpace = new Space(start.getRow(), start.getCell(), true, whitePiece);
+    endSpace = new Space(end.getRow(), end.getCell(), true);
+
+    CuT = new Move(start, end);
+    status = CuT.validateMove(game, startSpace, endSpace);
+    assertEquals(Move.MoveStatus.VALID, status);
+  }
 }
