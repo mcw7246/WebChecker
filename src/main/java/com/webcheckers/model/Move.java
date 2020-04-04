@@ -79,8 +79,7 @@ public class Move
     {
       status = MoveStatus.INVALID_SPACE;
     } else if (startSpace.equals(endSpace)) //is the space
-      // the same as the
-    // start?
+      // the same as the start?
     {
       status = MoveStatus.SAME_SPACE;
     } else
@@ -111,8 +110,7 @@ public class Move
           } else if (colorFactor * rowDiff > 0)
           {
             status = MoveStatus.INVALID_BACKWARDS;
-          }
-          else if(!jumpPiece.getColor().equals(piece.getColor()))
+          } else if (!jumpPiece.getColor().equals(piece.getColor()))
           {
             status = MoveStatus.JUMP;
             game.addJumpedPieces(jumpSpace);
@@ -128,10 +126,11 @@ public class Move
       } else if (colorFactor * rowDiff > 0)
       {
         status = MoveStatus.INVALID_BACKWARDS;
-
+      } else
+      {
+        status = MoveStatus.VALID;
       }
     }
-    //status = game.hasMoved() ? MoveStatus.ALREADY_MOVED : MoveStatus.VALID;
     return status;
   }
 }
