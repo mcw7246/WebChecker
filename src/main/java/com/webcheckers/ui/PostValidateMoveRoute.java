@@ -117,7 +117,12 @@ public class PostValidateMoveRoute implements Route
           msg = "Invalid Move: Space is the wrong color!";
           setErrorMsg(httpSession, msg);
           break;
+        case ALREADY_MOVED:
+          msg = "Already Moved: Already moved a piece!";
+          setErrorMsg(httpSession, msg);
+          break;
         case VALID:
+          localGame.setMoved(true);
           msg = "Valid Move! Click submit to send";
           localGame.makeMove(move);
           addMove(httpSession, move);

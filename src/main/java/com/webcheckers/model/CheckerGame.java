@@ -32,6 +32,8 @@ public class CheckerGame
 
   private Stack<Space> jumpedPieces;
 
+  private boolean moved = false;
+
   /**
    * Constructor
    */
@@ -156,6 +158,16 @@ public class CheckerGame
       System.err.println("(CheckerGame.java) Stack empty");
       return null;
     }
+  }
+
+  public boolean hasMoved()
+  {
+    return moved;
+  }
+
+  public void setMoved(boolean moved)
+  {
+    this.moved = moved;
   }
 
 }

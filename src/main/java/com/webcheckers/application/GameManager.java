@@ -135,6 +135,7 @@ public class GameManager
    */
   public void updateGame(int id, CheckerGame game)
   {
+    game.setMoved(false);
     games.replace(id, game);
   }
 
