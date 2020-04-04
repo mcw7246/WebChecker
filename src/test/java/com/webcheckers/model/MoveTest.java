@@ -129,15 +129,13 @@ public class MoveTest
 
     endSpace.setPiece(testPiece);
     //TODO fix the error (something inside the Move class
-/**
+
     CuT = new Move(start, end);
 
+    status = CuT.validateMove(game, startSpace, endSpace);
     //assertNotNull(endSpace.getPiece());
-
-    CuT.validateMove(game, startSpace, endSpace);
-    status = CuT.getStatus();
-    assertEquals(Move.MoveStatus.OCCUPIED, status);
-*/
+    System.out.println(status);
+    //assertEquals(Move.MoveStatus.OCCUPIED, CuT.validateMove(game, startSpace, endSpace));
 
   }
 
