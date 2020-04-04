@@ -1,6 +1,5 @@
 package com.webcheckers.model;
 
-import static com.webcheckers.model.Rules.BOARD_SIZE;
 
 /**
  * Holds the position of a piece.
@@ -9,6 +8,7 @@ public class Position
 {
   private int row; // from 0 to 7
   private int cell; //col from 0 to 7
+  public static final int BOARD_SIZE = 8;
   private static final int MAX_ROW = BOARD_SIZE - 1;
   private static final int MAX_CELL = BOARD_SIZE - 1;
 
