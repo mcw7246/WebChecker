@@ -8,12 +8,7 @@ import spark.Response;
 import spark.Route;
 import spark.Session;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Stack;
-
-import java.util.ArrayList;
+import java.util.*;
 
 import static com.webcheckers.util.Message.error;
 import static com.webcheckers.util.Message.info;
@@ -155,6 +150,28 @@ public class PostSubmitTurnRoute implements Route
               }
             }
             while (!validMoves.empty());
+          }
+          //stores row then cols.
+          Map<Integer, Integer> startPos = new HashMap<>();
+          for (Move move : moves)
+          {
+            Position start = move.getStart();
+            Position end = move.getEnd();
+            try
+            {
+              int cell = startPos.get(end.getRow());
+              if(cell == end.getCell())
+              {
+                return gson.toJson(error("You doubled back on yourself. That is" +
+                        " corrupt monarchy! And that is not allowed here!"));
+              } else
+              {
+                startPos.put(start.getRow(), start.getCell());
+              }
+            } catch (NullPointerException e)
+            {
+              startPos.put(start.getRow(), start.getCell());
+            }
           }
         }
       } else {
