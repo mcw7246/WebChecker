@@ -9,7 +9,6 @@ import spark.Route;
 import spark.Session;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import static com.webcheckers.util.Message.info;
 import static spark.Spark.halt;
@@ -22,6 +21,10 @@ import static spark.Spark.halt;
  * page using a 'GET /game' URL.
  *
  * @author Austin Miller 'akm8654'
+ *
+ *
+ * Added functionality for King
+ * @author Mario Castano 'mac3186'
  */
 public class PostSubmitTurnRoute implements Route
 {
