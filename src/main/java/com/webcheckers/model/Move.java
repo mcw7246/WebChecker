@@ -19,6 +19,7 @@ public class Move
 
   private Position start;
   private Position end;
+  private RequiredMove reqMove;
 
   public Move(Position start, Position end)
   {
@@ -126,11 +127,12 @@ public class Move
       } else if (colorFactor * rowDiff > 0)
       {
         status = MoveStatus.INVALID_BACKWARDS;
-      } else
+      } else if(status == null)
       {
         status = MoveStatus.VALID;
       }
     }
     return status;
   }
+
 }
