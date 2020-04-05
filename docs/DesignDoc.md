@@ -58,7 +58,7 @@ Sign-in, Start game, Make a Move (Big stories of Move and Jump as well), End the
 ### Roadmap of Enhancements
 > _Provide a list of top-level features in the order you plan to consider them._
 
-Sign-in, Make a Move (jump, then king), Sign-out and End the Game.
+Sign-in, Make a Move (move, jump, then king), Sign-out and End the Game.
 
 ## Application Domain
 
