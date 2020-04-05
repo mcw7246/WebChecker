@@ -133,18 +133,6 @@ public class RequireMove
               moves.push(new Move(startPos, endPos, Move.MoveStatus.JUMP));
             }
           }
-          //Check other direction... the 4 is to go 4 spaces away to check.
-          if (validDimension(colCheck -= 4 * colorFactor))
-          {
-            checkSpace = board.getSpaceAt(rowCheck, colCheck);
-            if (isAvailableSpace(checkSpace, color).
-                    equals(SPACE_STATUS.FREE))
-            {
-              Position endPos = new Position(rowCheck, colCheck);
-              //Adds to list with the status of jump!
-              moves.push(new Move(startPos, endPos, Move.MoveStatus.JUMP));
-            }
-          }
         }
         break;
       case FREE:
