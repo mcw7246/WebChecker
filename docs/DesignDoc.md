@@ -25,6 +25,9 @@ This is a summary of the project.
 > _Provide a very brief statement about the project and the most
 > important user group and user goals._
 
+To create a high quality WebCheckers product following the American Rules of
+ Checkers in a web application to delight Gary and Ivana.
+
 ### Glossary and Acronyms
 > _Provide a table of terms and acronyms._
 
