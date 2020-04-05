@@ -31,16 +31,9 @@ public class PostValidateMoveRoute implements Route
   private static final Logger LOG = Logger.getLogger(GetHomeRoute.class.getName());
 
   private GameManager manager;
-  private final PlayerLobby lobby;
   Gson gson = new Gson();
-  private static final String ACTION_DATA = "actionData";
+  public static final String ACTION_DATA = "actionData";
   public static final String MOVE_LIST_ID = "moves";
-
-
-  PostValidateMoveRoute(final PlayerLobby playerLobby)
-  {
-    this.lobby = playerLobby;
-  }
 
   /**
    * Adds a move to the list of moves stored in the session.
@@ -61,15 +54,15 @@ public class PostValidateMoveRoute implements Route
   @Override
   public String handle(Request request, Response response)
   {
-    final Session httpSession = request.session();
+    final Session session = request.session();
     final String moveStr = request.queryParams(ACTION_DATA);
 
     LOG.config("Validating move: " + moveStr);
     final Move move = gson.fromJson(moveStr, Move.class);
-    final Player player = httpSession.attribute(GetHomeRoute.PLAYER_KEY);
-    if (lobby != null)
+    final Player player = session.attribute(GetHomeRoute.PLAYER_KEY);
+    if (player != null)
     {
-      GameManager manager = httpSession.attribute(GetHomeRoute.GAME_MANAGER_KEY);
+      GameManager manager = session.attribute(GetHomeRoute.GAME_MANAGER_KEY);
       String username = player.getUsername();
       int gameID = manager.getGameID(username);
       CheckerGame localGame = manager.getLocalGame(username);
@@ -104,12 +97,12 @@ public class PostValidateMoveRoute implements Route
           localGame.setMoved(true);
           msg = "Valid Move! Click submit to send";
           localGame.makeMove(move);
-          addMove(httpSession, move);
+          addMove(session, move);
           return gson.toJson(info(msg));
         case JUMP:
           msg = "Jump Move! Click submit to send.";
           localGame.makeMove(move);
-          addMove(httpSession, move);
+          addMove(session, move);
           return gson.toJson(info(msg));
         case OCCUPIED:
           msg = "Invalid Move: Space is already Occupied!";

@@ -126,7 +126,7 @@ public class Move
       } else if (colorFactor * rowDiff > 0)
       {
         status = MoveStatus.INVALID_BACKWARDS;
-      } else
+      } else if (status == null)
       {
         status = MoveStatus.VALID;
       }

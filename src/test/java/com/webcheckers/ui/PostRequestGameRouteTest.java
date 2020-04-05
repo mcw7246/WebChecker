@@ -8,9 +8,6 @@ import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import spark.*;
 
-import java.util.Map;
-import java.util.Set;
-
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -30,7 +27,7 @@ public class PostRequestGameRouteTest
   private static final String PLAYER3 = "Player3";
 
   /**
-   * The component-under-rest (CuT).
+   * The component-under-test (CuT).
    * <p>
    * This is a stateless component so the only one needed.
    * The {@link Player} component is considered a "friendly" dependency.
@@ -39,7 +36,7 @@ public class PostRequestGameRouteTest
 
   //friendly objects
   private PlayerLobby lobby;
-  private GameManager gameManager;
+  private GameManager manager;
 
   // attributes holding mock objects
   private Request request;
@@ -62,7 +59,7 @@ public class PostRequestGameRouteTest
     receiver = mock(Player.class);
     other = mock(Player.class);
     lobby = new PlayerLobby();
-    gameManager = new GameManager(lobby);
+    manager = new GameManager(lobby);
     when(sender.getUsername()).thenReturn(PLAYER1);
     when(receiver.getUsername()).thenReturn(PLAYER2);
     // Have to add it to the lobby.
@@ -111,7 +108,7 @@ public class PostRequestGameRouteTest
 
     lobby.challenge(receiver.getUsername(), sender.getUsername());
 
-    gameManager.startGame(sender.getUsername(), receiver.getUsername());
+    manager.startGame(sender.getUsername(), receiver.getUsername());
     // Invoke Test
     CuT.handle(request, response);
 
