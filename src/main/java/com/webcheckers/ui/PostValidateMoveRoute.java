@@ -120,9 +120,6 @@ public class PostValidateMoveRoute implements Route
         case JUMP_OWN:
           msg = "Invalid Move: You're attempting to jump your own piece!";
           break;
-        case INVALID_DIR:
-          msg = "Invalid Move: You must move diagonally!";
-          break;
         default:
           throw new IllegalStateException("Unexpected value: " + moveValidity);
       }

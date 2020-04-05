@@ -51,6 +51,8 @@ public class PostValidateMoveRouteTest
           "diagonally!";
   private static final int START_ROW = 5;
   private static final int START_COL = 0;
+  private static final Piece.Color color = Piece.Color.RED;
+  private static final Piece.Color oppColor = Piece.Color.WHITE;
 
   /*
   The component under test (CuT)
@@ -100,7 +102,7 @@ public class PostValidateMoveRouteTest
     when(manager.getGameID(PLAYER1)).thenReturn(GAMEID);
     when(manager.getLocalGame(PLAYER1)).thenReturn(game);
     startSpace = new Space(START_ROW, START_COL, true,
-            new Piece(Piece.Color.RED));
+            new Piece(color));
     when(game.getBoard()).thenReturn(board);
     when(board.getSpaceAt(START_ROW, START_COL)).thenReturn(startSpace);
     endSpace = new Space(4, 1, true);
@@ -114,10 +116,11 @@ public class PostValidateMoveRouteTest
    * @param endCol the col to be changed.
    * @return the updated String.
    */
-  public String changeMoveStr(int endRow, int endCol)
+  public void changeMoveStr(int endRow, int endCol)
   {
-    return "{\"start\":{\"row\":5,\"cell\":0}," +
+    String change = "{\"start\":{\"row\":5,\"cell\":0}," +
             "\"end\":{\"row\":" + endRow + ",\"cell\":" + endCol + " }}";
+    when(request.queryParams(ACTION_DATA)).thenReturn(change);
   }
 
   @Test
@@ -172,6 +175,73 @@ public class PostValidateMoveRouteTest
     endSpace = new Space(endRow, endCol, true);
     when(board.getSpaceAt(endRow, endCol)).thenReturn(endSpace);
     assertEquals(gson.toJson(error(ALREADY_MOVED)), CuT.handle(request,
+            response));
+  }
+
+  @Test
+  public void invalid_Space()
+  {
+    endRow = 4;
+    endCol = 1;
+    endSpace = new Space(endRow, endCol, false);
+    when(board.getSpaceAt(endRow, endCol)).thenReturn(endSpace);
+    assertEquals(gson.toJson(error(INVALID_SPACE)), CuT.handle(request,
+            response));
+  }
+
+  @Test
+  public void jump_no_king()
+  {
+    endRow = 3;
+    endCol = 2;
+    endSpace = new Space(endRow, endCol, true);
+    changeMoveStr(endRow, endCol);
+    Space jumpSpace = new
+            Space(endRow + 1, endCol - 1, true);
+    when(board.getSpaceAt(endRow, endCol)).thenReturn(endSpace);
+    when(board.getSpaceAt(endRow + 1, endCol - 1)).thenReturn(jumpSpace);
+    //TOO FAR
+    assertEquals(gson.toJson(error(TOO_FAR)), CuT.handle(request, response));
+    //ADD PIECE OWN
+    jumpSpace.setPiece(new Piece(color));
+    assertEquals(gson.toJson(error(JUMP_OWN)), CuT.handle(request, response));
+    //ADD PIECE ENEMY
+    jumpSpace.setPiece(new Piece(oppColor));
+    assertEquals(gson.toJson(info(JUMP)), CuT.handle(request, response));
+  }
+
+  @Test
+  public void occupied()
+  {
+    endRow = 4;
+    endCol = 1;
+    endSpace = new Space(endRow, endCol, true, new Piece(color));
+    when(board.getSpaceAt(endRow, endCol)).thenReturn(endSpace);
+    assertEquals(gson.toJson(error(OCCUPIED)), CuT.handle(request,
+            response));
+  }
+
+  @Test
+  public void same_space()
+  {
+    endRow = START_ROW;
+    endCol = START_COL;
+    endSpace = new Space(endRow, endCol, true, new Piece(color));
+    changeMoveStr(endRow, endCol);
+    when(board.getSpaceAt(endRow, endCol)).thenReturn(endSpace);
+    assertEquals(gson.toJson(error(SAME_SPACE)), CuT.handle(request,
+            response));
+  }
+
+  @Test
+  public void invalid_backwards()
+  {
+    endRow = 6;
+    endCol = 1;
+    endSpace = new Space(endRow, endCol, true);
+    changeMoveStr(endRow, endCol);
+    when(board.getSpaceAt(endRow, endCol)).thenReturn(endSpace);
+    assertEquals(gson.toJson(error(INVALID_BACKWARDS)), CuT.handle(request,
             response));
   }
 
