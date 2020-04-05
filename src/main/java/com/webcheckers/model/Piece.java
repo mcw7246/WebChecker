@@ -8,6 +8,7 @@ package com.webcheckers.model;
  *
  * Added functionality for King
  * @author Sean Bergen (sdb2139)
+ * @author Mario Castano (mac3186)
  */
 
 public class Piece
@@ -94,6 +95,5 @@ public class Piece
    * @param type the new type of the piece
    */
   public void setType(Type type) {this.type = type;}
-
 
 }

@@ -57,4 +57,23 @@ public class Position
   {
     return cell;
   }
+
+  /**
+   * Used to compare two position objects.
+   * @param other The other (should be) position object to compare to this one.
+   * @return true only if the compared object is not null, is an instance of Position,
+   * and the row and cell attributes of both positions are equal in value.
+   */
+  @Override
+  public boolean equals(Object other)
+  {
+    if(other != null)
+    {
+      if(other instanceof Position)
+      {
+        return this.getRow() == ((Position) other).getRow() && this.getCell() == ((Position) other).getCell();
+      }
+    }
+    return false;
+  }
 }

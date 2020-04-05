@@ -13,6 +13,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Stack;
 
+import java.util.ArrayList;
+
 import static com.webcheckers.util.Message.info;
 import static spark.Spark.halt;
 
@@ -24,6 +26,10 @@ import static spark.Spark.halt;
  * page using a 'GET /game' URL.
  *
  * @author Austin Miller 'akm8654'
+ *
+ *
+ * Added functionality for King
+ * @author Mario Castano 'mac3186'
  * @author Mikayla Wishart 'mcw7246'
  */
 public class PostSubmitTurnRoute implements Route
@@ -48,8 +54,28 @@ public class PostSubmitTurnRoute implements Route
         {
           response.redirect(WebServer.HOME_URL);
           halt();
+          return "Redirected Home";
         }
       }
+      //TODO: GAME LOGIC (were the moves that were made correct)
+      //Once moves are validated, king any pieces that made it to the edge of the board
+      final ArrayList<Move> moves = session.attribute(PostValidateMoveRoute.MOVE_LIST_ID);
+      final Position lastPos = moves.get(moves.size() -1).getEnd();
+      final int lastMoveColumn = lastPos.getCell();
+      if(
+        //lastMove.getEnd().getRow() == 0
+          lastPos.equals(new Position(0, lastMoveColumn))
+          && game.getColor() == Piece.Color.RED)
+      {
+        game.getBoard().kingPieceAt(lastPos);
+      }
+      else if(
+        lastPos.equals(new Position(7, lastMoveColumn))
+        && game.getColor() == Piece.Color.WHITE)
+      {
+        game.getBoard().kingPieceAt(lastPos);
+      }
+      //Once all pieces are made kings, and all moves made are validated, update the server (GameManager) copy
       //Board board = game.getBoard();
       //TODO: REQUIRED MOVE.
       /**see if the person made a jump
