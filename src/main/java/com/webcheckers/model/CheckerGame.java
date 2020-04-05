@@ -67,6 +67,6 @@ public class CheckerGame
 
   public BoardView getFlippedBoardView()
   {
-    return new BoardView(false);
+    return new BoardView();
   }
 }

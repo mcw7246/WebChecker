@@ -53,7 +53,7 @@ public class GameManager{
       getInGame().add(victim);
       gameIDNum +=1;
       gameID.put(challenger, gameIDNum);
-      getGames().put(gameIDNum, new CheckerGame(player1, player2, new BoardView(true)));
+      getGames().put(gameIDNum, new CheckerGame(player1, player2, new BoardView()));
     }// An enum of players, player1 is the challenger and player2 is the victim.
 
     public int getGameID(String challenger){
