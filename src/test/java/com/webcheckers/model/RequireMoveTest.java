@@ -39,4 +39,6 @@ public class RequireMoveTest
     assertEquals(new ArrayList<>(), validMoves.get(Move.MoveStatus.JUMP));
     assertEquals(7, validMoves.get(Move.MoveStatus.VALID).size());
   }
+
+
 }

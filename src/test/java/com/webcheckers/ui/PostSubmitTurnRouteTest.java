@@ -124,4 +124,20 @@ public class PostSubmitTurnRouteTest
             response));
     assertNull(jumpSpace.getPiece());
   }
+
+  @Test public void test_king_multi_jump(){
+    when(manager.getLocalGame(player.getUsername())).thenReturn(game);
+    Space jumpSpace2 = new Space(2, 3, true, new Piece(Piece.Color.WHITE));
+
+    jumpSpace = new Space(1, 2, true, new Piece(Piece.Color.WHITE));
+    game.addJumpedPieces(jumpSpace2);
+    game.addJumpedPieces(jumpSpace);
+
+    assertEquals(gson.toJson(info("valid move")), CuT.handle(request, response));
+    assertNull(jumpSpace2.getPiece());
+
+  }
+
 }
+
+
