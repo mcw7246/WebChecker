@@ -4,7 +4,7 @@ import java.util.*;
 
 import static com.webcheckers.model.Board.DIMENSIONS;
 
-public class BoardView implements Iterable<Row>
+public class   BoardView implements Iterable<Row>
 {
   // The board itself
   private List<Row> board;

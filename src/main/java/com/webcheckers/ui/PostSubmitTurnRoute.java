@@ -2,12 +2,13 @@ package com.webcheckers.ui;
 
 import com.google.gson.Gson;
 import com.webcheckers.application.GameManager;
-import com.webcheckers.model.CheckerGame;
-import com.webcheckers.model.Player;
+import com.webcheckers.model.*;
 import spark.Request;
 import spark.Response;
 import spark.Route;
 import spark.Session;
+
+import java.util.List;
 
 import static com.webcheckers.util.Message.info;
 import static spark.Spark.halt;
@@ -48,6 +49,25 @@ public class PostSubmitTurnRoute implements Route
       //Board board = game.getBoard();
       //TODO: GAME LOGIC (were the moves that were made correct)
       //game.updateBoard(board);
+      //Once moves are validated, king any pieces that made it to the edge of the board
+      final List<Move> moves = session.attribute(PostValidateMoveRoute.MOVE_LIST_ID);
+      final Position lastPos = moves.get(moves.size() -1).getEnd();
+      final int lastMoveColumn = lastPos.getCell();
+      if(
+        //lastMove.getEnd().getRow() == 0
+          lastPos.equals(new Position(0, lastMoveColumn))
+          && game.getColor() == Piece.Color.RED)
+      {
+        game.getBoard().kingPieceAt(lastPos);
+      }
+      else if(
+        lastPos.equals(new Position(7, lastMoveColumn))
+        && game.getColor() == Piece.Color.WHITE)
+      {
+        game.getBoard().kingPieceAt(lastPos);
+      }
+      //Once all pieces are made kings, and all moves made are validated, update the server (GameManager) copy
+      //manager.updateBoard(game.getBoard(), gameID);
       manager.updateGame(gameID, game);
       manager.removeClientSideGame(player.getUsername());
       game.updateTurn();
