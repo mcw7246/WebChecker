@@ -321,7 +321,10 @@ define(function(require){
   PlayController.prototype.undoMove = function undoMove(move) {
     var $piece = this._boardController.getPiece$(move.end);
     if ($piece === null) {
-      throw new Error('No Piece found at: ' + move.end);
+      var $piece = this._boardController.getPiece$(move.start);
+      if ($piece == null) {
+        throw new Error('No Piece found at: ' + move.end);
+      }
     }
     this._boardController.movePiece($piece, move.reverse());
   };

@@ -1,7 +1,5 @@
 package com.webcheckers.application;
 
-import com.webcheckers.model.BoardView;
-import com.webcheckers.model.CheckerGame;
 import com.webcheckers.model.Player;
 
 import java.util.*;
@@ -15,10 +13,6 @@ import java.util.*;
 public class PlayerLobby
 {
 
-  // An enum of players, player1 is the challenger and player2 is the victim.
-  public enum PLAYERS
-  {PLAYER1, PLAYER2}
-
   ;
 
   // Attributes
@@ -30,14 +24,6 @@ public class PlayerLobby
   private static Set<String> challengers = new HashSet<>();
   //A map of all games where the key is the challenger and values are
   // CheckerGames
-  private static Map<String, CheckerGame> games = new HashMap<>();
-  //A map of all current games where the key is the challenger and values are
-  // the victims.
-  private static Map<String, String> gamesChallenge = new HashMap<>();
-  //A map of all current games where the key is the victim.
-  private static Map<String, String> gamesVictims = new HashMap<>();
-  //A set of all usernames of players who are actively in a game.
-  private static Set<String> inGame = new HashSet<>();
 
   /**
    * Adds a new player to the lobby.
@@ -88,40 +74,11 @@ public class PlayerLobby
    * if they are challenging the correct victim
    */
 
-  public boolean challenging(String challenger, String victim){
-    if(challenges.containsKey(victim) && challenges.get(victim).equals(challenger) && challengers.contains(challenger)){
-      return true;
-    }
-    else{
-      return false;
-    }
-  }
-  /*
   public boolean challenging(String challenger, String victim)
   {
-    if (challenges.get(victim) != null &&
-            challenges.get(victim).equals(challenger))
-    {
-      return false;
-    }
-    if (challengers.contains(challenger))
-    {
-      return true;
-    } else
-    {
-      return false;
-    }
-  }
-*/
-  public PLAYERS getNumber(String username)
-  {
-    if (gamesChallenge.get(username) != null)
-    {
-      return PLAYERS.PLAYER1;
-    } else
-    {
-      return PLAYERS.PLAYER2;
-    }
+    return challenges.containsKey(victim) &&
+            challenges.get(victim).equals(challenger) &&
+            challengers.contains(challenger);
   }
 
   /**
@@ -134,70 +91,11 @@ public class PlayerLobby
     return challengers;
   }
 
-  /**
-   * Returns the opponent of a player.
-   *
-   * @param username the username of the player
-   * @return the Player object of the opposing player.
-   */
-  public Player getOpponent(String username)
-  {
-    String opponent = gamesChallenge.get(username);
-    if (opponent != null)
-    {
-      return players.get(opponent);
-    } else
-    {
-      return players.get(gamesVictims.get(username));
-    }
-  }
-
-  /**
-   * Returns a set of all usernames that are actively in a game.
-   *
-   * @return the set of usernames actively in a game.
-   */
-  public Set<String> getInGame()
-  {
-    return inGame;
-  }
-
-  /**
-   * Starts games, where p1 is the person starting the challenge and p2 is the
-   * person accepting
-   *
-   * @param challenger player starting (challenger)
-   * @param victim player accepting (victim)
-   */
-  public void startGame(String challenger, String victim)
-  {
-    removeChallenger(challenger);
-    Player player1 = players.get(challenger);
-    Player player2 = players.get(victim);
-    player1.hasEnteredGame();
-    player2.hasEnteredGame();
-    gamesChallenge.put(challenger, victim);
-    gamesVictims.put(victim, challenger);
-    inGame.add(challenger);
-    inGame.add(victim);
-    games.put(challenger, new CheckerGame(player1, player2, new BoardView(true)));
-  }
-
-  /**
-   * Returns the active checker game for this user.
-   *
-   * @param user the challenging user.
-   * @return the game.
-   */
-  public CheckerGame getGame(String user)
-  {
-    return games.get(user);
-  }
 
   /**
    * Removes a potential challenger from the list of challengees.
    */
-  public static synchronized void removeChallenger(String victim)
+  public synchronized void removeChallenger(String victim)
   {
     challengers.remove(challenges.get(victim));
     challenges.remove(victim);

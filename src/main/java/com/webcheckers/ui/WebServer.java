@@ -7,6 +7,7 @@ import java.util.logging.Logger;
 
 import com.google.gson.Gson;
 
+import com.webcheckers.application.GameManager;
 import com.webcheckers.application.PlayerLobby;
 import com.webcheckers.model.Player;
 import spark.TemplateEngine;
@@ -61,17 +62,18 @@ public class WebServer
   public static final String REQUEST_GAME_URL = "/requestGame";
   public static final String GAME_URL = "/game";
   public static final String RESPONSE_GAME_URL = "/requestResponse";
+  public static final String VALIDATE_MOVE_URL = "/validateMove";
+  public static final String CHECK_TURN_URL = "/checkTurn";
+  public static final String SUBMIT_TURN_URL = "/submitTurn";
+  public static final String BACKUP_MOVE_URL = "/backupMove";
 
   //
   // Attributes
   //
 
   private final TemplateEngine templateEngine;
-  private final Gson gson;
   private final PlayerLobby playerLobby;
-  //
-  // Constructor
-  //
+  private final GameManager gameManager;
 
   /**
    * The constructor for the Web Server.
@@ -87,8 +89,8 @@ public class WebServer
     Objects.requireNonNull(gson, "gson must not be null");
     //
     this.templateEngine = templateEngine;
-    this.gson = gson;
     playerLobby = new PlayerLobby();
+    gameManager = new GameManager(playerLobby);
   }
 
   //
@@ -143,14 +145,17 @@ public class WebServer
     //// Create separate Route classes to handle each route; this keeps your
     //// code clean; using small classes.
     // Shows the Checkers game Home page.
-    get(HOME_URL, new GetHomeRoute(templateEngine, playerLobby));
+    get(HOME_URL, new GetHomeRoute(templateEngine, playerLobby, gameManager));
     //Shows signin page
     get(SIGNIN_URL, new GetSignInRoute(templateEngine));
     post(SIGNIN_URL, new PostSignInRoute(templateEngine, playerLobby));
-    post(REQUEST_GAME_URL, new PostRequestGameRoute(templateEngine));
-    post(RESPONSE_GAME_URL, new PostRequestResponseRoute(templateEngine,
-            playerLobby));
-    get(GAME_URL, new GetGameRoute(templateEngine, playerLobby));
+    post(REQUEST_GAME_URL, new PostRequestGameRoute());
+    post(RESPONSE_GAME_URL, new PostRequestResponseRoute(playerLobby));
+    get(GAME_URL, new GetGameRoute(templateEngine));
+    post(CHECK_TURN_URL, new PostCheckTurnRoute());
+    post(VALIDATE_MOVE_URL, new PostValidateMoveRoute());
+    post(SUBMIT_TURN_URL, new PostSubmitTurnRoute());
+    post(BACKUP_MOVE_URL, new PostBackupMoveRoute());
     LOG.config("WebServer is initialized.");
   }
 

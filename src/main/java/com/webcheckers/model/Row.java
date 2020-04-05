@@ -28,69 +28,58 @@ public class Row implements Iterable<Space>
    * Constructor for row class
    *
    * @param index The index of the row
-   * @param first used in initializeBoard method for piece arrangement
    */
-  public Row(int index, boolean first)
+  public Row(int index)
   {
     this.index = index;
-    this.squares = new ArrayList<Space>();
-    initializeBoard(first);
+    this.squares = new ArrayList<>();
+    initializeBoard();
+  }
+
+  public Row(Row oldRow)
+  {
+    this.index = oldRow.index;
+    this.squares = new ArrayList<>();
+    for (int i = 0; i < DIMENSIONS; i++)
+    {
+      squares.add(new Space(oldRow.getSpaceAt(i)));
+    }
   }
 
   /**
    * Initializes the board with alternating b&w spaces
    * And arranges the pieces for the start of the game
    */
-  private void initializeBoard(boolean first)
+  private void initializeBoard()
   {
     boolean isBlackSpace;
-    Piece red = new Piece(Piece.Color.RED, Piece.Type.SINGLE);
-    Piece white = new Piece(Piece.Color.WHITE, Piece.Type.SINGLE);
 
-    if (index % 2 == 1)
-    {
-      isBlackSpace = true;
-    } else
-    {
-      isBlackSpace = false;
-    }
+    isBlackSpace = index % 2 == 1;
 
     for (int i = 0; i < DIMENSIONS; i++)
     {
-      squares.add(new Space(i, isBlackSpace));
+      squares.add(new Space(index, i, isBlackSpace));
       isBlackSpace = !isBlackSpace;
     }
 
-    placePieces(first, red, white);
+    placePieces(new Piece(Piece.Color.RED, Piece.Type.SINGLE),
+            new Piece(Piece.Color.WHITE, Piece.Type.SINGLE));
   }
 
   /**
    * Helper method to place pieces on board
    *
-   * @param first whether player is first or not (determines arrangement of piece colors)
    * @param red   red piece
    * @param white white piece
    */
-  private void placePieces(boolean first, Piece red, Piece white)
+  private void placePieces(Piece red, Piece white)
   {
-    if (first)
+    if (index <= DIMENSIONS - 1 && index >= DIMENSIONS - 3)
     {
-      if (index == DIMENSIONS - 1 || index == DIMENSIONS - 2)
-      {
-        fillRow(red);
-      } else if (index == 0 || index == 1)
-      {
-        fillRow(white);
-      }
-    } else
+      fillRow(red);
+    } else if (index >= 0 && index <= 2)
     {
-      if (index == DIMENSIONS - 1 || index == DIMENSIONS - 2)
-      {
-        fillRow(white);
-      } else if (index == 0 || index == 1)
-      {
-        fillRow(red);
-      }
+      fillRow(white);
     }
   }
 
@@ -125,6 +114,16 @@ public class Row implements Iterable<Space>
     return squares;
   }
 
+  /**
+   * Helper function to find a cell at a given int.
+   *
+   * @param cellInt: the index for the cell or column
+   * @return the Space requested.
+   */
+  public Space getSpaceAt(int cellInt)
+  {
+    return squares.get(cellInt);
+  }
 
   @Override
   public Iterator<Space> iterator()

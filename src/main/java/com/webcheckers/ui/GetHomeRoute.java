@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.logging.Logger;
 
+import com.webcheckers.application.GameManager;
 import com.webcheckers.application.PlayerLobby;
 import com.webcheckers.model.Player;
 import spark.*;
@@ -33,6 +34,7 @@ public class GetHomeRoute implements Route
   static final String PLAYER_LOBBY_KEY = "player-lobby";
   static final String SIGN_IN_KEY = "signIn";
   static final String PLAYER_NUM_KEY = "playerNum";
+  static final String GAME_MANAGER_KEY = "gameManager";
   static final String CHALLENGE_USER_KEY = "challengeUser";
   static final String CURRENT_USER_ATTR = "currentUser";
   static final String CHALLENGED_KEY = "pendingChallenge";
@@ -40,15 +42,18 @@ public class GetHomeRoute implements Route
   private static final Logger LOG = Logger.getLogger(GetHomeRoute.class.getName());
   private final TemplateEngine templateEngine;
   private final PlayerLobby lobby;
+  private final GameManager manager;
 
   /**
    * Create the Spark Route (UI controller) to handle all {@code GET /} HTTP requests.
    *
    * @param templateEngine the HTML template rendering engine
    */
-  public GetHomeRoute(final TemplateEngine templateEngine, PlayerLobby playerLobby)
+  public GetHomeRoute(final TemplateEngine templateEngine,
+                      PlayerLobby playerLobby, GameManager gameManager)
   {
     this.lobby = playerLobby;
+    this.manager = gameManager;
     this.templateEngine = Objects.requireNonNull(templateEngine, "templateEngine is required");
     //
     LOG.config("GetHomeRoute is initialized.");
@@ -89,6 +94,7 @@ public class GetHomeRoute implements Route
       }
     }
     httpSession.attribute(PLAYER_LOBBY_KEY, lobby);
+    httpSession.attribute(GAME_MANAGER_KEY, manager);
     // if this is a brand new browser session or a session that timed out
     if (player == null)
     {
