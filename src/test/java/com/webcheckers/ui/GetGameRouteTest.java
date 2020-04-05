@@ -52,7 +52,7 @@ public class GetGameRouteTest
         response = mock(Response.class);
         engine = mock(TemplateEngine.class);
 
-        CuT = new GetGameRoute(engine, lobby, gameManager);
+        CuT = new GetGameRoute(engine);
     }
 
     @Test
@@ -64,6 +64,7 @@ public class GetGameRouteTest
 
         when(request.session()).thenReturn(session);
         when(session.attribute(GetHomeRoute.PLAYER_KEY)).thenReturn(player1);
+        when(session.attribute(GetHomeRoute.GAME_MANAGER_KEY)).thenReturn(gameManager);
 
         TemplateEngineTest testHelper = new TemplateEngineTest();
         when(engine.render(any(ModelAndView.class))).thenAnswer(testHelper.makeAnswer());
@@ -81,12 +82,31 @@ public class GetGameRouteTest
 
         when(request.session()).thenReturn(session);
         when(session.attribute(GetHomeRoute.PLAYER_KEY)).thenReturn(player2);
+        when(session.attribute(GetHomeRoute.GAME_MANAGER_KEY)).thenReturn(gameManager);
 
         TemplateEngineTest testHelper = new TemplateEngineTest();
         when(engine.render(any(ModelAndView.class))).thenAnswer(testHelper.makeAnswer());
 
         CuT.handle(request, response);
-        testHelper.assertViewModelAttribute(GetGameRoute.RED_PLAYER, player2);
+        testHelper.assertViewModelAttribute(GetGameRoute.RED_PLAYER, player1);
     }
+
+    @Test
+    public void nullPlayerTest()
+    {
+        lobby.newPlayer(player1);
+        lobby.newPlayer(player2);
+        gameManager.startGame(player1.getUsername(), player2.getUsername());
+
+        when(request.session()).thenReturn(session);
+        when(session.attribute(GetHomeRoute.PLAYER_KEY)).thenReturn(null);
+        when(session.attribute(GetHomeRoute.GAME_MANAGER_KEY)).thenReturn(gameManager);
+
+        TemplateEngineTest testHelper = new TemplateEngineTest();
+        when(engine.render(any(ModelAndView.class))).thenAnswer(testHelper.makeAnswer());
+
+        assertEquals("Home Redirect", CuT.handle(request, response));
+    }
+
 
 }
