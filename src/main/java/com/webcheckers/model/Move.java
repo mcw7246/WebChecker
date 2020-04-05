@@ -128,7 +128,7 @@ public class Move
         status = MoveStatus.INVALID_BACKWARDS;
       } else if (status == null)
       {
-        status = MoveStatus.VALID;
+        status = game.hasMoved() ? MoveStatus.ALREADY_MOVED : MoveStatus.VALID;
       }
     }
     return status;
