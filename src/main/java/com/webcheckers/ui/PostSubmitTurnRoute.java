@@ -8,6 +8,7 @@ import spark.Response;
 import spark.Route;
 import spark.Session;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.webcheckers.util.Message.info;
@@ -46,11 +47,9 @@ public class PostSubmitTurnRoute implements Route
           return "Redirected Home";
         }
       }
-      //Board board = game.getBoard();
       //TODO: GAME LOGIC (were the moves that were made correct)
-      //game.updateBoard(board);
       //Once moves are validated, king any pieces that made it to the edge of the board
-      final List<Move> moves = session.attribute(PostValidateMoveRoute.MOVE_LIST_ID);
+      final ArrayList<Move> moves = session.attribute(PostValidateMoveRoute.MOVE_LIST_ID);
       final Position lastPos = moves.get(moves.size() -1).getEnd();
       final int lastMoveColumn = lastPos.getCell();
       if(
@@ -67,7 +66,6 @@ public class PostSubmitTurnRoute implements Route
         game.getBoard().kingPieceAt(lastPos);
       }
       //Once all pieces are made kings, and all moves made are validated, update the server (GameManager) copy
-      //manager.updateBoard(game.getBoard(), gameID);
       manager.updateGame(gameID, game);
       manager.removeClientSideGame(player.getUsername());
       game.updateTurn();

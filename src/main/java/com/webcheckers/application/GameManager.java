@@ -139,19 +139,6 @@ public class GameManager
   }
 
   /**
-   * A move has been made! Update the board stored in the game to send change information.
-   *
-   * @param newBoard the new game state information to replace outdated information.
-   * @param id the gameID of the game whose board should be updated.
-
-  public void updateBoard(Board newBoard, int id) {
-    Player PLAYER_ONE = games.get(id).getRedPlayer();
-    Player PLAYER_TWO = games.get(id).getWhitePlayer();
-    games.replace(id, new CheckerGame(PLAYER_ONE, PLAYER_TWO, newBoard));
-  }
-  */
-
-  /**
    * Finds the pair for the given gameID
    *
    * @param gameID an int of the gameID

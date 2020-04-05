@@ -85,7 +85,6 @@ public class Board implements Iterable<Row>
     int cell = pos.getCell();
     Piece heir = this.getSpaceAt(row, cell).getPiece();
     if(heir != null) {heir.setType(Piece.Type.KING);}
-    //this.getSpaceAt(row, cell).getPiece().setType(Piece.Type.KING);
   }
 
   /**
