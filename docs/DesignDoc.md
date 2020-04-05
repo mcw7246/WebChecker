@@ -25,6 +25,9 @@ This is a summary of the project.
 > _Provide a very brief statement about the project and the most
 > important user group and user goals._
 
+To create a high quality WebCheckers product following the American Rules of
+ Checkers in a web application to delight Gary and Ivana.
+
 ### Glossary and Acronyms
 > _Provide a table of terms and acronyms._
 
@@ -49,30 +52,36 @@ The MVP is producing an application that implements the American rules of
 
 ### MVP Features
 
-Sign-in, Start game, Make a Move (Big stories of King and Jump as well), End the
+Sign-in, Start game, Make a Move (Big stories of Move and Jump as well), End the
  Game, and Sign-out. 
 
 ### Roadmap of Enhancements
 > _Provide a list of top-level features in the order you plan to consider them._
 
-Sign-in, Make a Move (jump, then king), Sign-out and End the Game.
+Sign-in, Make a Move (move, jump, then king), Sign-out and End the Game.
 
 ## Application Domain
 
 This section describes the application domain.
 
-![The WebCheckers Domain Model](swen-fwiends-domain-model.png)
+![The WebCheckers Domain Model](domain-model-fwiends.png)
 
 > _Provide a high-level overview of the domain for this application. You
 > can discuss the more important domain entities and their relationship
 > to each other._
 
 The domain of this application is a basic overview of the checkers game. A
- checkers game is played on a board comprised of squares. Each square is
-  either white or red. The checkers are placed on the board, either white or
-   red, and either "kinged" or regular. The pieces move around the board by
-    either going to a valid space or jumping an opponent's piece as many
-     times as possible. A player plays the game of checkers.
+ checkers game is played on a board comprised of row. Each row is comprised
+  of spaces. Each space is either white or black. Each space can be occupied
+   by a piece, the piece can be kinged (allowing it to move differently) or a
+    single piece. (It also can be red or black depending on which player owns
+     it)
+     
+The board is viewed from a player via a BoardView. The player does move
+ pieces though from spaces. Each space has a position that, when a move is
+  made, determines where a piece is moved to. The move holds two positions
+   and changes the location of a piece from one to another if possible. It is
+    either moved via a jump or a regular move.  
 
 
 ## Architecture and Design
@@ -101,12 +110,39 @@ Details of the components within these tiers are supplied below.
 This section describes the web interface flow; this is how the user views and interacts
 with the WebCheckers application.
 
-![[The WebCheckers Web Interface Statechart]](web-checkers-statechart.png)
+![Webcheckers Statechart](web-checkers-statechart.png)
+
+The statechart above describes how the game is processed. There are two minor
+ state charts that are included below that represent states that were
+  provided via the initial architecture, and not something produced by this
+   group.
 
 The User interface relies on 3 main pages. The Home page, which updates based
  on a player actively being signed in or not, the sign-in page, and the game
   page. The home page displays a sign-in prompt if the player is not
-   currently stored in the http-session and the server understands that.
+   currently stored in the http-session. From there the player can login by
+    submitting a post request to sign-in. This is processed and determines if
+     the player can be added to the lobby.
+
+Once in the lobby they can request to start a game with other players. They
+ either receive or send a request. Depending on how the players respond it
+  either starts a game or resets the home screen where the player is simply
+   sitting in the lobby.
+   
+Then the game starts, during the start of the game there are 3 main states
+. Since these weren't produced by the group below is each provided statechart.
+
+![Playing Turn Chart](playing-turn.png)
+
+There are states located inside the .ftl and javascript files
+ for the client. When it's a player's turn they enter an empty state. They
+  make moves and submit it for move validation. From their they can either
+   submit to confirm that their turn was valid or go back to a previous move.
+   
+![Waiting Turn Chart](waiting-for-turn.png)
+
+When waiting for a turn the main thing that happens is a `POST /checkTurn
+` submitted to the server to determine the turn status has been updated.
 
 ### UI Tier
 

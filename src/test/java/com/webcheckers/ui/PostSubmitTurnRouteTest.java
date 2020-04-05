@@ -107,17 +107,19 @@ public class PostSubmitTurnRouteTest
     }
   }
 
-  @Test void local_game_no_jump()
+  @Test
+  void local_game_no_jump()
   {
     when(manager.getLocalGame(player.getUsername())).thenReturn(game);
 
     assertEquals(CuT.handle(request, response),
             gson.toJson(info("valid move")));
     //when(game.getJumpedPiece()).thenReturn(new Space(0, 0, true,
-      //      new Piece(Piece.Color.WHITE)));
+    //      new Piece(Piece.Color.WHITE)));
   }
 
-  @Test void local_game_jump()
+  @Test
+  void local_game_jump()
   {
     when(manager.getLocalGame(player.getUsername())).thenReturn(game);
     Space jumpSpace = new Space(0, 0,

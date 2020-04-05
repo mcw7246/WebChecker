@@ -1,6 +1,5 @@
 package com.webcheckers.application;
 
-import com.webcheckers.model.CheckerGame;
 import com.webcheckers.model.Player;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
