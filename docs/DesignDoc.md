@@ -172,20 +172,29 @@ to get/send a game request.
 
 ### Model Tier
 The Model tier is responsible for managing the domain entities and domain logic.
-There are currently six classes in the Model tier: BoardView, CheckerGame, Piece,
-Player, Row, and Space. These classes work together in order to process user actions,
-effect changes to the model based on the user actions, and maintain the state of the
-model. Each class represents an entity in the model (ex: Piece represents a checker
-piece and its attributes describe if its a black/white piece, or a single/king).
+There are currently nine classes in the Model tier: Board, BoardView, CheckerGame, 
+Move, Piece, Player, Position, Row, and Space. These classes work together in order 
+to process user actions, effect changes to the model based on the user actions, and 
+maintain the state of the model. Each class represents an entity in the model (ex: 
+Piece represents a checker piece and its attributes describe if its a black/white
+piece, or a single/king).
 
-![The WebCheckers Entity Relationships](Entity-Relations.png)
-
-In the Model tier pictured above, there is a CheckerGame which serves as the wrapper 
-class for the model; in other words, it encompasses all aspects of the model. It contains 
-the two Players for the games as well as the board, represented by BoardView. BoardView 
-holds a List of 8 Rows. Each Row contains an ArrayList of 8 Spaces. The Spaces alternate
-in color depending on their index in the Row. A black Space may contain a Piece. A
-Piece could be either Red or White, and a Single or King. 
+In the Domain Model diagram outlined earlier in this design document, it can be seen
+that the CheckerGame class encompasses the state of the board. The board is comprised 
+of numerous Rows, which are ArrayLists of Spaces. Spaces can be Black or White, but 
+only Black spaces can contain Pieces. Pieces are red for the first player (or the one 
+who challenges the other player), and white for the second player. This entire Board 
+is conveyed to Player using the BoardView. We made the decision to have a separate 
+BoardView class because the board has to be flipped depending on which player is 
+viewing it and this seemed to be the most simplest and effective means to do so.
+The Player makes changes to the overall CheckerGame by making Moves, which can be 
+regular moves (where the piece is moved one diagonal space) or jump moves (where the 
+piece jumps diagonally over an opponent's piece in order to collect it). When the 
+player makes a Move, the program tries to validate the movement of the start Position 
+to the End position. These Moves, after they are Validated, alter the Position in 
+which a Piece is placed on the Board. Although Space does have its row and column 
+fields, we made the design decision of creating a separate Position class as a simple 
+way to refer to the location of a Space on the Board when making a Move.
 
 ### Design Improvements
 If development were to continue on this product, there are a few areas
