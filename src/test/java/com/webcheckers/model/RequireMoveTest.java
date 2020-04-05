@@ -33,7 +33,7 @@ public class RequireMoveTest
   }
 
   @Test
-  public void allMovesCorrect()
+  public void allMovesCorrectInitialBoard()
   {
     Map<Move.MoveStatus, List<Move>> validMoves = CuT.getAllMoves();
     assertEquals(new ArrayList<>(), validMoves.get(Move.MoveStatus.JUMP));
