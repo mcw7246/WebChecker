@@ -36,7 +36,7 @@ public class PostValidateMoveRouteTest
           "wrong color!";
   private static final String ALREADY_MOVED = "Already Moved: Already moved a" +
           " piece!";
-  private static final String VALID  = "Valid Move! Click submit to send";
+  private static final String VALID = "Valid Move! Click submit to send";
   private static final String JUMP = "Jump Move! Click submit to send.";
   private static final String OCCUPIED = "Invalid Move: Space is already " +
           "Occupied!";
@@ -77,7 +77,7 @@ public class PostValidateMoveRouteTest
   private TemplateEngine engine;
   private Move move2;
   private Player player;
-  private CheckerGameTest game;
+  private CheckerGame game;
   private Board board;
 
   @BeforeEach
@@ -91,7 +91,7 @@ public class PostValidateMoveRouteTest
     player = mock(Player.class);
     move = gson.fromJson(MOVE_STR, Move.class);
     move2 = mock(Move.class);
-    game = mock(CheckerGameTest.class);
+    game = mock(CheckerGame.class);
     board = mock(Board.class);
     when(request.queryParams(ACTION_DATA)).thenReturn(MOVE_STR);
     when(session.attribute(GetHomeRoute.PLAYER_KEY)).thenReturn(player);
@@ -127,14 +127,7 @@ public class PostValidateMoveRouteTest
   public void home_redirect()
   {
     when(session.attribute(GetHomeRoute.PLAYER_KEY)).thenReturn(null);
-    try
-    {
-      CuT.handle(request, response);
-      fail("Home found a lobby and did not halt.\n");
-    } catch (spark.HaltException e)
-    {
-      // Test passed.
-    }
+    assertEquals("Redirected Home", CuT.handle(request, response));
   }
 
   @Test
@@ -142,14 +135,7 @@ public class PostValidateMoveRouteTest
   {
     when(manager.getLocalGame(player.getUsername())).thenReturn(null);
     when(manager.makeClientSideGame(GAMEID, player.getUsername())).thenReturn(null);
-    try
-    {
-      CuT.handle(request, response);
-      fail("Home found a lobby and did not halt.\n");
-    } catch (spark.HaltException e)
-    {
-      // Test passed.
-    }
+    assertEquals("Redirected Home", CuT.handle(request, response));
   }
 
   @Test

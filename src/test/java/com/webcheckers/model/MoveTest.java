@@ -42,14 +42,14 @@ public class MoveTest
   Move.MoveStatus status;
 
   // Mocked objects.
-  CheckerGameTest game;
+  CheckerGame game;
   Board board;
   Move move;
 
   @BeforeEach
   public void setup()
   {
-    game = mock(CheckerGameTest.class);
+    game = mock(CheckerGame.class);
     board = new Board();
     //startSpace = mock(Space.class);
     //endSpace = mock(Space.class);

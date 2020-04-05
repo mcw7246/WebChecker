@@ -73,7 +73,6 @@ public class PostValidateMoveRoute implements Route
         if (localGame == null)
         {
           response.redirect(WebServer.HOME_URL);
-          halt();
           return "Redirected Home";
         }
       }
@@ -84,7 +83,7 @@ public class PostValidateMoveRoute implements Route
       Space startSpace = gameBoard.getSpaceAt(move.getStart().getRow(), startCell);
       Space endSpace = gameBoard.getSpaceAt(move.getEnd().getRow(), endCell);
       Move.MoveStatus moveValidity = move.validateMove(localGame, startSpace, endSpace);
-      String msg;
+      String msg = "ERROR: Server Side ERROR!";
       switch (moveValidity)
       {
         case INVALID_SPACE:
@@ -120,15 +119,12 @@ public class PostValidateMoveRoute implements Route
         case JUMP_OWN:
           msg = "Invalid Move: You're attempting to jump your own piece!";
           break;
-        default:
-          throw new IllegalStateException("Unexpected value: " + moveValidity);
       }
       //Must return an invalid move
       return gson.toJson(error(msg));
     } else
     {
       response.redirect(WebServer.HOME_URL);
-      halt();
       return "Redirected Home";
     }
   }
