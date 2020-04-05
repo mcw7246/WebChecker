@@ -53,7 +53,6 @@ public class PostSubmitTurnRoute implements Route
         if (game == null)
         {
           response.redirect(WebServer.HOME_URL);
-          halt();
           return "Redirected Home";
         }
       }
@@ -99,7 +98,9 @@ public class PostSubmitTurnRoute implements Route
         List<Move> listMoves = session.attribute(PostValidateMoveRoute.MOVE_LIST_ID);
         Space jumpEndSpace;
         int listSize = listMoves.size();
-        jumpEndSpace = game.getBoard().getSpaceAt(listMoves.get(listSize - 1).getEnd().getRow(), listMoves.get(listSize - 1).getEnd().getCell());
+        Move lastMove = listMoves.get(listSize - 1);
+        jumpEndSpace = game.getBoard().getSpaceAt(lastMove.getEnd().getRow(),
+               lastMove.getEnd().getCell());
 
         //can only go in one direction (the player is a single piece
         if (jumpEndSpace.getPiece().getType() != Piece.Type.KING)
@@ -154,7 +155,6 @@ public class PostSubmitTurnRoute implements Route
     } else
     {
       response.redirect(WebServer.HOME_URL);
-      halt();
     }
     return "Redirected Home";
   }
