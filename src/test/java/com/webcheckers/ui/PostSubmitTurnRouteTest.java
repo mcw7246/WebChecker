@@ -13,6 +13,9 @@ import spark.Response;
 import spark.Session;
 import spark.TemplateEngine;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static com.webcheckers.util.Message.info;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
@@ -127,9 +130,15 @@ public class PostSubmitTurnRouteTest
 
   @Test public void test_king_multi_jump(){
     when(manager.getLocalGame(player.getUsername())).thenReturn(game);
-    Space jumpSpace2 = new Space(2, 3, true, new Piece(Piece.Color.WHITE));
-
+    Space jumpSpace2 = new Space(3, 4, true, new Piece(Piece.Color.WHITE));
+    RequireMove reqMove = new RequireMove(board, Piece.Color.RED);
     jumpSpace = new Space(1, 2, true, new Piece(Piece.Color.WHITE));
+
+    List<Move> moves = new ArrayList<>();
+    moves.add(new Move(new Position(0, 1), new Position(2, 3), Move.MoveStatus.JUMP));
+    moves.add(new Move(new Position(2, 3), new Position(4, 5), Move.MoveStatus.JUMP));
+
+    when(session.attribute(PostValidateMoveRoute.MOVE_LIST_ID)).thenReturn(moves);
     game.addJumpedPieces(jumpSpace2);
     game.addJumpedPieces(jumpSpace);
 
