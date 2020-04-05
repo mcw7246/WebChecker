@@ -11,6 +11,7 @@ import java.util.Objects;
  */
 public class Move
 {
+  //Valid also is regular move.
   public enum MoveStatus
   {
     INVALID_SPACE, VALID, OCCUPIED, TOO_FAR, SAME_SPACE,
@@ -19,12 +20,38 @@ public class Move
 
   private Position start;
   private Position end;
-  private RequiredMove reqMove;
+  //Holds valid or jump depending on the move type.
+  private MoveStatus regStatus;
 
   public Move(Position start, Position end)
   {
     this.start = start;
     this.end = end;
+    this.regStatus = MoveStatus.VALID;
+  }
+
+  /**
+   * Constructor to set the style of moves.
+   *
+   * @param start the starting position
+   * @param end the ending position
+   * @param status the status to set it too.
+   */
+  public Move(Position start, Position end, MoveStatus status)
+  {
+    this.start = start;
+    this.end = end;
+    this.regStatus = status;
+  }
+
+  /**
+   * A getter function for the status. Should only return Valid or Jump!
+   *
+   * @return valid or jump depending on what type of move it is.
+   */
+  public MoveStatus getStatus()
+  {
+    return regStatus;
   }
 
   /**

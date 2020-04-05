@@ -65,6 +65,7 @@ public class PostValidateMoveRoute implements Route
     final String moveStr = request.queryParams(ACTION_DATA);
 
     LOG.config("Validating move: " + moveStr);
+
     final Move move = gson.fromJson(moveStr, Move.class);
     final Player player = httpSession.attribute(GetHomeRoute.PLAYER_KEY);
     if (lobby != null)
@@ -86,6 +87,7 @@ public class PostValidateMoveRoute implements Route
       }
 
       Board gameBoard = localGame.getBoard();
+      LOG.config("From board: \n" + gson.toJson(gameBoard));
       int startCell = abs(move.getStart().getCell());
       int endCell = abs(move.getEnd().getCell());
       Space startSpace = gameBoard.getSpaceAt(move.getStart().getRow(), startCell);
