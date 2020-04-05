@@ -134,12 +134,13 @@ public class Move
             status = MoveStatus.JUMP_OWN;
           } else if (king)
           {
-            status = game.hasMoved() ? MoveStatus.ALREADY_MOVED :
-                    MoveStatus.JUMP;
+            status = MoveStatus.JUMP;
+            game.addJumpedPieces(jumpSpace);
+            return status;
           } else if (colorFactor * rowDiff > 0)
           {
             status = MoveStatus.INVALID_BACKWARDS;
-          } else if (!jumpPiece.getColor().equals(piece.getColor()))
+          } else
           {
             status = MoveStatus.JUMP;
             game.addJumpedPieces(jumpSpace);

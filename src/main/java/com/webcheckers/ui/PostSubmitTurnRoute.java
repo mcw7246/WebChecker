@@ -15,6 +15,7 @@ import java.util.Stack;
 
 import java.util.ArrayList;
 
+import static com.webcheckers.util.Message.error;
 import static com.webcheckers.util.Message.info;
 import static spark.Spark.halt;
 
@@ -56,7 +57,13 @@ public class PostSubmitTurnRoute implements Route
           return "Redirected Home";
         }
       }
-      //TODO: GAME LOGIC (were the moves that were made correct)
+
+      Piece.Color color = Piece.Color.WHITE;
+      if (player.getPlayerNum() == 1)
+      {
+        color = Piece.Color.RED;
+      }
+
       //Once moves are validated, king any pieces that made it to the edge of the board
       final ArrayList<Move> moves = session.attribute(PostValidateMoveRoute.MOVE_LIST_ID);
       final Position lastPos = moves.get(moves.size() -1).getEnd();
@@ -76,7 +83,7 @@ public class PostSubmitTurnRoute implements Route
       }
       //Once all pieces are made kings, and all moves made are validated, update the server (GameManager) copy
       //Board board = game.getBoard();
-      //TODO: REQUIRED MOVE.
+
       /**see if the person made a jump
        * get the space they jumped from
        *
@@ -89,7 +96,7 @@ public class PostSubmitTurnRoute implements Route
         madeJump = true;
       }
 
-      RequireMove requireMove = new RequireMove(game.getBoard(), session.attribute(GetGameRoute.ACTIVE_COLOR));
+      RequireMove requireMove = new RequireMove(game.getBoard(), color);
 
       //made a jump that was a valid jump
       if(madeJump)
@@ -102,25 +109,30 @@ public class PostSubmitTurnRoute implements Route
         jumpEndSpace = game.getBoard().getSpaceAt(lastMove.getEnd().getRow(),
                lastMove.getEnd().getCell());
 
-        //can only go in one direction (the player is a single piece
+        //can only go in one direction (the player is a single piece)
         if (jumpEndSpace.getPiece().getType() != Piece.Type.KING)
         {
           //if there is still valid moves that are jumps
-          if (requireMove.getValidMoves(game.getBoard(), jumpEndSpace, session.attribute(GetGameRoute.ACTIVE_COLOR)) != null)
+          if (requireMove.getValidMoves(game.getBoard(), jumpEndSpace, color) != null)
           {
             //a list of all the valid moves
             Stack<Move> validMoves = new Stack<>();
             int colorFactor = 1;
-            if (session.attribute(GetGameRoute.ACTIVE_COLOR).equals("WHITE"))
+            if (color.equals(Piece.Color.WHITE))
             {
               colorFactor = -1;
             }
             Stack<Move> oneDirMoves = requireMove.addMovesRowOneDirection(validMoves, game.getBoard(), jumpEndSpace.getPiece(), jumpEndSpace, colorFactor);
-
+            Move availableMove;
+            do {
+              availableMove = oneDirMoves.pop();
+            } while (!oneDirMoves.isEmpty() &&
+                    availableMove.getStatus().equals(Move.MoveStatus.VALID));
             //return error message saying there is another valid jump that needs to be made
             if (oneDirMoves.size() != 0)
             {
-              return gson.toJson(info("There is still an available jump. You must make this move before you end your turn."));
+              return gson.toJson(error("There is still an available jump. You" +
+                      " must make this move before you end your turn."));
             }
           }
         }
@@ -138,11 +150,20 @@ public class PostSubmitTurnRoute implements Route
               //if so then it will return a message saying it is necessary
               if (validMoves.pop().getStatus() == Move.MoveStatus.JUMP)
               {
-                return gson.toJson(info("There is still an available jump. You must make this move before you end your turn."));
+                return gson.toJson(error("There is still an available jump. " +
+                        "You must make this move before you end your turn."));
               }
             }
             while (!validMoves.empty());
           }
+        }
+      } else {
+        Map<Move.MoveStatus, List<Move>> validMoves = requireMove.getAllMoves();
+        List<Move> jumps = validMoves.get(Move.MoveStatus.JUMP);
+        if (jumps != null && !jumps.isEmpty())
+        {
+          return gson.toJson(error("There is still an available jump. " +
+                  "You must make this move before you end your turn."));
         }
       }
 
@@ -151,7 +172,7 @@ public class PostSubmitTurnRoute implements Route
       manager.updateGame(gameID, game);
       manager.removeClientSideGame(player.getUsername());
       game.updateTurn();
-      return gson.toJson(info("valid move"));
+      return gson.toJson(info("Valid Move"));
     } else
     {
       response.redirect(WebServer.HOME_URL);

@@ -64,7 +64,9 @@ public class PostRequestResponseRoute implements Route
       switch (accept)
       {
         case "yes":
-          gameManager.startGame(oppPlayer, usernameStr);
+          gameManager.startTestGame(oppPlayer, usernameStr,
+                  "src/test/java/com/webcheckers/test-boards/" +
+                          "kingRequireMultiJump.JSON");
           response.redirect(WebServer.GAME_URL);
           break;
         case "no":

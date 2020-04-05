@@ -94,6 +94,16 @@ public class RequireMove
   }
 
   /**
+   * Quickly gets all the valid moves already calculated in the object.
+   *
+   * @return the map of valid moves.
+   */
+  public Map<Move.MoveStatus, List<Move>> getQuickValidMoves()
+  {
+    return validMoves;
+  }
+
+  /**
    * Adds all the moves that it can in one column direction to the stack.
    *
    * @param moves       the moves already created in the stack

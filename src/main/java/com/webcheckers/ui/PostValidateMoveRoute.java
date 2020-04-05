@@ -79,7 +79,6 @@ public class PostValidateMoveRoute implements Route
       }
 
       Board gameBoard = localGame.getBoard();
-      LOG.config("From board: \n" + gson.toJson(gameBoard));
       int startCell = abs(move.getStart().getCell());
       int endCell = abs(move.getEnd().getCell());
       Space startSpace = gameBoard.getSpaceAt(move.getStart().getRow(), startCell);
@@ -102,6 +101,7 @@ public class PostValidateMoveRoute implements Route
           return gson.toJson(info(msg));
         case JUMP:
           msg = "Jump Move! Click submit to send.";
+          localGame.setMoved(true);
           localGame.makeMove(move);
           addMove(session, move);
           return gson.toJson(info(msg));
