@@ -1,6 +1,5 @@
 package com.webcheckers.model;
 
-import com.webcheckers.ui.PostValidateMoveRoute;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -43,14 +42,14 @@ public class MoveTest
   Move.MoveStatus status;
 
   // Mocked objects.
-  CheckerGame game;
+  CheckerGameTest game;
   Board board;
   Move move;
 
   @BeforeEach
   public void setup()
   {
-    game = mock(CheckerGame.class);
+    game = mock(CheckerGameTest.class);
     board = new Board();
     //startSpace = mock(Space.class);
     //endSpace = mock(Space.class);

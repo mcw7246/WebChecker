@@ -37,7 +37,7 @@ public class PostSubmitTurnRouteTest
   //friendly attributes
   private Space jumpSpace;
   private Piece piece;
-  private CheckerGame game;
+  private CheckerGameTest game;
   Gson gson = new Gson();
 
   //attributes holding mock objects
@@ -68,7 +68,7 @@ public class PostSubmitTurnRouteTest
     when(session.attribute(GetHomeRoute.GAME_MANAGER_KEY)).thenReturn(manager);
     when(session.attribute(GetHomeRoute.PLAYER_KEY)).thenReturn(player);
     when(manager.getGameID(player.getUsername())).thenReturn(GAME_ID);
-    game = new CheckerGame(player, player2, board);
+    game = new CheckerGameTest(player, player2, board);
     CuT = new PostSubmitTurnRoute();
     //when(manager.getLocalGame(player.getUsername())).thenReturn(game);
   }

@@ -77,7 +77,7 @@ public class PostValidateMoveRouteTest
   private TemplateEngine engine;
   private Move move2;
   private Player player;
-  private CheckerGame game;
+  private CheckerGameTest game;
   private Board board;
 
   @BeforeEach
@@ -91,7 +91,7 @@ public class PostValidateMoveRouteTest
     player = mock(Player.class);
     move = gson.fromJson(MOVE_STR, Move.class);
     move2 = mock(Move.class);
-    game = mock(CheckerGame.class);
+    game = mock(CheckerGameTest.class);
     board = mock(Board.class);
     when(request.queryParams(ACTION_DATA)).thenReturn(MOVE_STR);
     when(session.attribute(GetHomeRoute.PLAYER_KEY)).thenReturn(player);
