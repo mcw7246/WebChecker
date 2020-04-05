@@ -42,15 +42,18 @@ public class GetHomeRoute implements Route
   private static final Logger LOG = Logger.getLogger(GetHomeRoute.class.getName());
   private final TemplateEngine templateEngine;
   private final PlayerLobby lobby;
+  private final GameManager manager;
 
   /**
    * Create the Spark Route (UI controller) to handle all {@code GET /} HTTP requests.
    *
    * @param templateEngine the HTML template rendering engine
    */
-  public GetHomeRoute(final TemplateEngine templateEngine, PlayerLobby playerLobby)
+  public GetHomeRoute(final TemplateEngine templateEngine,
+                      PlayerLobby playerLobby, GameManager gameManager)
   {
     this.lobby = playerLobby;
+    this.manager = gameManager;
     this.templateEngine = Objects.requireNonNull(templateEngine, "templateEngine is required");
     //
     LOG.config("GetHomeRoute is initialized.");
@@ -73,7 +76,6 @@ public class GetHomeRoute implements Route
     final Map<String, Object> vm = new HashMap<>();
     vm.put(TITLE_ATTR, TITLE);
     Player player = httpSession.attribute(PLAYER_KEY);
-    GameManager gameManager = httpSession.attribute(GAME_MANAGER_KEY);
 
     String msg = httpSession.attribute(MESSAGE);
     if (msg != null)
@@ -92,6 +94,7 @@ public class GetHomeRoute implements Route
       }
     }
     httpSession.attribute(PLAYER_LOBBY_KEY, lobby);
+    httpSession.attribute(GAME_MANAGER_KEY, manager);
     // if this is a brand new browser session or a session that timed out
     if (player == null)
     {

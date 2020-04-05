@@ -1,25 +1,17 @@
 package com.webcheckers.ui;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
-import java.util.logging.Logger;
-
-import com.webcheckers.application.GameManager;;
+import com.webcheckers.application.GameManager;
+import com.webcheckers.application.PlayerLobby;
 import com.webcheckers.model.Player;
-//import jdk.nashorn.internal.objects.annotations.Getter;
-//import org.w3c.dom.css.ViewCSS;
-//import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
 import spark.Route;
 import spark.Session;
-import spark.TemplateEngine;
+
+import java.util.logging.Logger;
 
 import static com.webcheckers.ui.GetHomeRoute.CHALLENGE_USER_KEY;
 import static spark.Spark.halt;
-
-import com.webcheckers.application.PlayerLobby;
 
 /**
  * The {@code POST /requestResponse} route handler.
@@ -30,27 +22,17 @@ public class PostRequestResponseRoute implements Route
 {
 
   private static final Logger LOG = Logger.getLogger(GetHomeRoute.class.getName());
-
-  // Values used in the view-model map for rendering the receivedRequest message on screen
-  static final String REQUEST_VAL = "gameRequest";
-  static final String VIEW_NAME = "home.ftl";
   static final String GAME_ACCEPT = "gameAccept";
-
   private final PlayerLobby lobby;
-  private final TemplateEngine templateEngine;
-  private GameManager gameManager;
 
   /**
    * Constructor for the {@code GET/game} route handler.
    *
-   * @param templateEngine The {@link TemplateEngine} used to render pages into HTML.
+   * @param lobby: the player lobby for the Response.
    */
-  PostRequestResponseRoute(final TemplateEngine templateEngine,
-                           final PlayerLobby lobby)
+  PostRequestResponseRoute(final PlayerLobby lobby)
   {
     //validation
-    Objects.requireNonNull(templateEngine, "templateEngine must not be null");
-    this.templateEngine = templateEngine;
     this.lobby = lobby;
   }
 
@@ -64,25 +46,21 @@ public class PostRequestResponseRoute implements Route
   @Override
   public String handle(Request request, Response response)
   {
-    gameManager = new GameManager(lobby);
     LOG.config("Post Request Response has been invoked.");
     //retrieve the playerLobby object to verify that no time out has occurred
     final Session httpSession = request.session();
     final Player player = httpSession.attribute(GetHomeRoute.PLAYER_KEY);
-
 
     /* A null playerLobby indicates a timed out session or an illegal request on this URL.
      * In either case, we will redirect back to home.
      */
     if (player != null)
     {
-      final Map<String, Object> vm = new HashMap<>();
       final String usernameStr = player.getUsername();
-      vm.put(GetHomeRoute.TITLE_ATTR, GetHomeRoute.TITLE);
       final String accept = request.queryParams(GAME_ACCEPT);
       final String oppPlayer = httpSession.attribute(CHALLENGE_USER_KEY);
+      GameManager gameManager = httpSession.attribute(GetHomeRoute.GAME_MANAGER_KEY);
       LOG.config("Response to: " + oppPlayer);
-      vm.put(GetHomeRoute.SIGN_IN_KEY, true);
       switch (accept)
       {
         case "yes":
@@ -95,13 +73,12 @@ public class PostRequestResponseRoute implements Route
           break;
         //Act upon the player's response to a game request
       }
-      return null;
     } else
     {
       response.redirect(WebServer.HOME_URL);
       halt();
-      return null;
     }
+    return null;
   }
 
   /**

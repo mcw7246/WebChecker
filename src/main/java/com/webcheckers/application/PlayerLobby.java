@@ -1,7 +1,5 @@
 package com.webcheckers.application;
 
-import com.webcheckers.model.BoardView;
-import com.webcheckers.model.CheckerGame;
 import com.webcheckers.model.Player;
 
 import java.util.*;
@@ -76,13 +74,11 @@ public class PlayerLobby
    * if they are challenging the correct victim
    */
 
-  public boolean challenging(String challenger, String victim){
-    if(challenges.containsKey(victim) && challenges.get(victim).equals(challenger) && challengers.contains(challenger)){
-      return true;
-    }
-    else{
-      return false;
-    }
+  public boolean challenging(String challenger, String victim)
+  {
+    return challenges.containsKey(victim) &&
+            challenges.get(victim).equals(challenger) &&
+            challengers.contains(challenger);
   }
 
   /**
@@ -94,13 +90,6 @@ public class PlayerLobby
   {
     return challengers;
   }
-
-  /**
-   * Returns the opponent of a player.
-   *
-   * @param username the username of the player
-   * @return the Player object of the opposing player.
-   */
 
 
   /**

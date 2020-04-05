@@ -32,8 +32,18 @@ public class Row implements Iterable<Space>
   public Row(int index)
   {
     this.index = index;
-    this.squares = new ArrayList<Space>();
+    this.squares = new ArrayList<>();
     initializeBoard();
+  }
+
+  public Row(Row oldRow)
+  {
+    this.index = oldRow.index;
+    this.squares = new ArrayList<>();
+    for (int i = 0; i < DIMENSIONS; i++)
+    {
+      squares.add(new Space(oldRow.getSpaceAt(i)));
+    }
   }
 
   /**
@@ -43,24 +53,17 @@ public class Row implements Iterable<Space>
   private void initializeBoard()
   {
     boolean isBlackSpace;
-    Piece red = new Piece(Piece.Color.RED, Piece.Type.SINGLE);
-    Piece white = new Piece(Piece.Color.WHITE, Piece.Type.SINGLE);
 
-    if (index % 2 == 1)
-    {
-      isBlackSpace = true;
-    } else
-    {
-      isBlackSpace = false;
-    }
+    isBlackSpace = index % 2 == 1;
 
     for (int i = 0; i < DIMENSIONS; i++)
     {
-      squares.add(new Space(i, isBlackSpace));
+      squares.add(new Space(index, i, isBlackSpace));
       isBlackSpace = !isBlackSpace;
     }
 
-    placePieces(red, white);
+    placePieces(new Piece(Piece.Color.RED, Piece.Type.SINGLE),
+            new Piece(Piece.Color.WHITE, Piece.Type.SINGLE));
   }
 
   /**
@@ -71,10 +74,10 @@ public class Row implements Iterable<Space>
    */
   private void placePieces(Piece red, Piece white)
   {
-    if (index == DIMENSIONS - 1 || index == DIMENSIONS - 2)
+    if (index <= DIMENSIONS - 1 && index >= DIMENSIONS - 3)
     {
       fillRow(red);
-    } else if (index == 0 || index == 1)
+    } else if (index >= 0 && index <= 2)
     {
       fillRow(white);
     }
@@ -111,6 +114,16 @@ public class Row implements Iterable<Space>
     return squares;
   }
 
+  /**
+   * Helper function to find a cell at a given int.
+   *
+   * @param cellInt: the index for the cell or column
+   * @return the Space requested.
+   */
+  public Space getSpaceAt(int cellInt)
+  {
+    return squares.get(cellInt);
+  }
 
   @Override
   public Iterator<Space> iterator()

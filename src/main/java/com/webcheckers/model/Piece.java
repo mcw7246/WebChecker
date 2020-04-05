@@ -8,6 +8,8 @@ package com.webcheckers.model;
 
 public class Piece
 {
+
+
   /**
    * The color of the Piece
    */
@@ -45,6 +47,23 @@ public class Piece
     this.type = type;
   }
 
+  public Piece(Color color)
+  {
+    this.color = color;
+    this.type = Type.SINGLE;
+  }
+
+  /**
+   * A copy constructor for piece.
+   *
+   * @param piece the piece to be copied.
+   */
+  public Piece(Piece piece)
+  {
+    this.color = piece.color;
+    this.type = piece.type;
+  }
+
   /**
    * Returns the color
    *
@@ -64,6 +83,8 @@ public class Piece
   {
     return this.type;
   }
+
+  public void setType(Type type){this.type = type;}
 
 
 }
