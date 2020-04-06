@@ -79,11 +79,11 @@ public class PostSubmitTurnRoute implements Route
       //Once all pieces are made kings, and all moves made are validated, update the server (GameManager) copy
       //Board board = game.getBoard();
 
-      /**see if the person made a jump
+      /*
+       * see if the person made a jump
        * get the space they jumped from
        *
        */
-      //game.updateBoard(board);
       Space jumpSpace;
       while((jumpSpace = game.getJumpedPiece()) != null)
       {

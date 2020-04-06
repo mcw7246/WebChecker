@@ -79,6 +79,7 @@ public class PostValidateMoveRoute implements Route
       }
 
       Board gameBoard = localGame.getBoard();
+      LOG.config("Validating move from board:\n" + gson.toJson(gameBoard));
       int startCell = abs(move.getStart().getCell());
       int endCell = abs(move.getEnd().getCell());
       Space startSpace = gameBoard.getSpaceAt(move.getStart().getRow(), startCell);

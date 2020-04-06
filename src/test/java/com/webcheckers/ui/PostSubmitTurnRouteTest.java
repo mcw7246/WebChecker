@@ -13,6 +13,8 @@ import spark.Response;
 import spark.Session;
 import spark.TemplateEngine;
 
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,6 +33,10 @@ public class PostSubmitTurnRouteTest
 {
   private static final int GAME_ID = 1;
   private static final String PLAYER1 = "player1";
+  private static final String INITIAL_BOARD = "src/test/java/com/webcheckers" +
+          "/test-boards/InitialBoard.JSON";
+  private static final String ONE_MOVE = "src/test/java/com/webcheckers/test" +
+          "-boards/OneMove.JSON";
 
   /**
    * The component-under-test (CuT)
@@ -39,7 +45,6 @@ public class PostSubmitTurnRouteTest
 
   //friendly attributes
   private Space jumpSpace;
-  private Piece piece;
   private CheckerGame game;
   Gson gson = new Gson();
 
@@ -81,15 +86,7 @@ public class PostSubmitTurnRouteTest
   {
     when(manager.getLocalGame(player.getUsername())).thenReturn(null);
     when(manager.getGame(GAME_ID)).thenReturn(null);
-
-    try
-    {
-      CuT.handle(request, response);
-      fail("Home found a game somehow and did not halt.");
-    } catch (spark.HaltException e)
-    {
-      //Test passed.
-    }
+    assertEquals("Redirected Home", CuT.handle(request, response));
   }
 
   @Test
@@ -97,24 +94,26 @@ public class PostSubmitTurnRouteTest
   {
     when(session.attribute(GetHomeRoute.PLAYER_KEY)).thenReturn(null);
     String returned = "";
-    try
-    {
-      returned = CuT.handle(request, response).toString();
-      fail("Home found a game somehow and did not halt.");
-    } catch (spark.HaltException e)
-    {
-      //Test passed.
-    }
+    assertEquals("Redirected Home", CuT.handle(request, response));
   }
 
   @Test void local_game_no_jump()
   {
+    try
+    {
+      this.board = gson.fromJson(new FileReader(ONE_MOVE), Board.class);
+    } catch (FileNotFoundException e){
+      fail("Initial Board was not found from given path");
+    }
+    game = new CheckerGame(player, player2, this.board);
     when(manager.getLocalGame(player.getUsername())).thenReturn(game);
+    List<Move> moves = new ArrayList<>();
+    moves.add(new Move(new Position(5, 0), new Position(4, 1),
+            Move.MoveStatus.VALID));
+    when(session.attribute(PostValidateMoveRoute.MOVE_LIST_ID)).thenReturn(moves);
 
     assertEquals(CuT.handle(request, response),
-            gson.toJson(info("valid move")));
-    //when(game.getJumpedPiece()).thenReturn(new Space(0, 0, true,
-      //      new Piece(Piece.Color.WHITE)));
+            gson.toJson(info("Valid Move")));
   }
 
   @Test void local_game_jump()
@@ -123,28 +122,40 @@ public class PostSubmitTurnRouteTest
     Space jumpSpace = new Space(0, 0,
             true, new Piece(Piece.Color.WHITE));
     game.addJumpedPieces(jumpSpace);
-    assertEquals(gson.toJson(info("valid move")), CuT.handle(request,
+
+    List<Move> moves = new ArrayList<>();
+    moves.add(new Move(new Position(0, 1), new Position(2, 3),
+            Move.MoveStatus.JUMP));
+
+    Space endSpace = new Space(2, 3, true, new Piece(Piece.Color.RED));
+
+    when(board.getSpaceAt(2, 3)).thenReturn(endSpace);
+    when(session.attribute(PostValidateMoveRoute.MOVE_LIST_ID)).thenReturn(moves);
+    assertEquals(gson.toJson(info("Valid Move")), CuT.handle(request,
             response));
     assertNull(jumpSpace.getPiece());
   }
 
   @Test public void test_king_multi_jump(){
     when(manager.getLocalGame(player.getUsername())).thenReturn(game);
-    Space jumpSpace2 = new Space(3, 4, true, new Piece(Piece.Color.WHITE));
-    RequireMove reqMove = new RequireMove(board, Piece.Color.RED);
+    Space jumpSpace2 = new Space(3, 4, true,
+            new Piece(Piece.Color.WHITE));
+    Space endSpace = new Space(4, 5, true,
+            new Piece(Piece.Color.RED, Piece.Type.KING));
     jumpSpace = new Space(1, 2, true, new Piece(Piece.Color.WHITE));
 
     List<Move> moves = new ArrayList<>();
     moves.add(new Move(new Position(0, 1), new Position(2, 3), Move.MoveStatus.JUMP));
     moves.add(new Move(new Position(2, 3), new Position(4, 5), Move.MoveStatus.JUMP));
 
+    when(board.getSpaceAt(4, 5)).thenReturn(endSpace);
     when(session.attribute(PostValidateMoveRoute.MOVE_LIST_ID)).thenReturn(moves);
     game.addJumpedPieces(jumpSpace2);
     game.addJumpedPieces(jumpSpace);
 
-    assertEquals(gson.toJson(info("valid move")), CuT.handle(request, response));
+    assertEquals(gson.toJson(info("Valid Move")), CuT.handle(request,
+            response));
     assertNull(jumpSpace2.getPiece());
-
   }
 
 }
