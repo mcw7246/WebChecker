@@ -16,7 +16,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * @author Mario Castano 'mac3186'
  */
 @Tag("Model-tier")
-class SpaceTest
+public class SpaceTest
 {
 
   //Used for getPiece test
