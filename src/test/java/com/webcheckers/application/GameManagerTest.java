@@ -17,6 +17,7 @@ import static org.mockito.Mockito.when;
  * A test for the gameManager object
  *
  * @author Austin Miller 'akm8654'
+ * @author Mikayla Wishart 'mcw7246'
  */
 @Tag("Application-tier")
 public class GameManagerTest

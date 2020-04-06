@@ -58,6 +58,7 @@ public class PostValidateMoveRoute implements Route
     final String moveStr = request.queryParams(ACTION_DATA);
 
     LOG.config("Validating move: " + moveStr);
+
     final Move move = gson.fromJson(moveStr, Move.class);
     final Player player = session.attribute(GetHomeRoute.PLAYER_KEY);
     if (player != null)
@@ -100,6 +101,7 @@ public class PostValidateMoveRoute implements Route
           return gson.toJson(info(msg));
         case JUMP:
           msg = "Jump Move! Click submit to send.";
+          localGame.setMoved(true);
           localGame.makeMove(move);
           addMove(session, move);
           return gson.toJson(info(msg));

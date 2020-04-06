@@ -75,6 +75,19 @@ public class Board implements Iterable<Row>
   }
 
   /**
+   * Helper for crowning a piece at a given space during PostSubmitTurnRoute request handling
+   *
+   * @param pos the position to check for a piece to king
+   */
+  public void kingPieceAt(Position pos)
+  {
+    int row = pos.getRow();
+    int cell = pos.getCell();
+    Piece heir = this.getSpaceAt(row, cell).getPiece();
+    if(heir != null) {heir.setType(Piece.Type.KING);}
+  }
+
+  /**
    * Gives a copy of the board.
    *
    * @return the board.

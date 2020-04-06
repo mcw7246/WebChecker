@@ -25,6 +25,9 @@ This is a summary of the project.
 > _Provide a very brief statement about the project and the most
 > important user group and user goals._
 
+To create a high quality WebCheckers product following the American Rules of
+ Checkers in a web application to delight Gary and Ivana.
+
 ### Glossary and Acronyms
 > _Provide a table of terms and acronyms._
 
@@ -49,30 +52,36 @@ The MVP is producing an application that implements the American rules of
 
 ### MVP Features
 
-Sign-in, Start game, Make a Move (Big stories of King and Jump as well), End the
+Sign-in, Start game, Make a Move (Big stories of Move and Jump as well), End the
  Game, and Sign-out. 
 
 ### Roadmap of Enhancements
 > _Provide a list of top-level features in the order you plan to consider them._
 
-Sign-in, Make a Move (jump, then king), Sign-out and End the Game.
+Sign-in, Make a Move (move, jump, then king), Sign-out and End the Game.
 
 ## Application Domain
 
 This section describes the application domain.
 
-![The WebCheckers Domain Model](swen-fwiends-domain-model.png)
+![The WebCheckers Domain Model](domain-model-fwiends.png)
 
 > _Provide a high-level overview of the domain for this application. You
 > can discuss the more important domain entities and their relationship
 > to each other._
 
 The domain of this application is a basic overview of the checkers game. A
- checkers game is played on a board comprised of squares. Each square is
-  either white or red. The checkers are placed on the board, either white or
-   red, and either "kinged" or regular. The pieces move around the board by
-    either going to a valid space or jumping an opponent's piece as many
-     times as possible. A player plays the game of checkers.
+ checkers game is played on a board comprised of row. Each row is comprised
+  of spaces. Each space is either white or black. Each space can be occupied
+   by a piece, the piece can be kinged (allowing it to move differently) or a
+    single piece. (It also can be red or black depending on which player owns
+     it)
+     
+The board is viewed from a player via a BoardView. The player does move
+ pieces though from spaces. Each space has a position that, when a move is
+  made, determines where a piece is moved to. The move holds two positions
+   and changes the location of a piece from one to another if possible. It is
+    either moved via a jump or a regular move.  
 
 
 ## Architecture and Design
@@ -101,12 +110,39 @@ Details of the components within these tiers are supplied below.
 This section describes the web interface flow; this is how the user views and interacts
 with the WebCheckers application.
 
-![[The WebCheckers Web Interface Statechart]](web-checkers-statechart.png)
+![Webcheckers Statechart](web-checkers-statechart.png)
+
+The statechart above describes how the game is processed. There are two minor
+ state charts that are included below that represent states that were
+  provided via the initial architecture, and not something produced by this
+   group.
 
 The User interface relies on 3 main pages. The Home page, which updates based
  on a player actively being signed in or not, the sign-in page, and the game
   page. The home page displays a sign-in prompt if the player is not
-   currently stored in the http-session and the server understands that.
+   currently stored in the http-session. From there the player can login by
+    submitting a post request to sign-in. This is processed and determines if
+     the player can be added to the lobby.
+
+Once in the lobby they can request to start a game with other players. They
+ either receive or send a request. Depending on how the players respond it
+  either starts a game or resets the home screen where the player is simply
+   sitting in the lobby.
+   
+Then the game starts, during the start of the game there are 3 main states
+. Since these weren't produced by the group below is each provided statechart.
+
+![Playing Turn Chart](playing-turn.png)
+
+There are states located inside the .ftl and javascript files
+ for the client. When it's a player's turn they enter an empty state. They
+  make moves and submit it for move validation. From their they can either
+   submit to confirm that their turn was valid or go back to a previous move.
+   
+![Waiting Turn Chart](waiting-for-turn.png)
+
+When waiting for a turn the main thing that happens is a `POST /checkTurn
+` submitted to the server to determine the turn status has been updated.
 
 ### UI Tier
 
@@ -136,20 +172,29 @@ to get/send a game request.
 
 ### Model Tier
 The Model tier is responsible for managing the domain entities and domain logic.
-There are currently six classes in the Model tier: BoardView, CheckerGame, Piece,
-Player, Row, and Space. These classes work together in order to process user actions,
-effect changes to the model based on the user actions, and maintain the state of the
-model. Each class represents an entity in the model (ex: Piece represents a checker
-piece and its attributes describe if its a black/white piece, or a single/king).
+There are currently nine classes in the Model tier: Board, BoardView, CheckerGame, 
+Move, Piece, Player, Position, Row, and Space. These classes work together in order 
+to process user actions, effect changes to the model based on the user actions, and 
+maintain the state of the model. Each class represents an entity in the model (ex: 
+Piece represents a checker piece and its attributes describe if its a black/white
+piece, or a single/king).
 
-![The WebCheckers Entity Relationships](Entity-Relations.png)
-
-In the Model tier pictured above, there is a CheckerGame which serves as the wrapper 
-class for the model; in other words, it encompasses all aspects of the model. It contains 
-the two Players for the games as well as the board, represented by BoardView. BoardView 
-holds a List of 8 Rows. Each Row contains an ArrayList of 8 Spaces. The Spaces alternate
-in color depending on their index in the Row. A black Space may contain a Piece. A
-Piece could be either Red or White, and a Single or King. 
+In the Domain Model diagram outlined earlier in this design document, it can be seen
+that the CheckerGame class encompasses the state of the board. The board is comprised 
+of numerous Rows, which are ArrayLists of Spaces. Spaces can be Black or White, but 
+only Black spaces can contain Pieces. Pieces are red for the first player (or the one 
+who challenges the other player), and white for the second player. This entire Board 
+is conveyed to Player using the BoardView. We made the decision to have a separate 
+BoardView class because the board has to be flipped depending on which player is 
+viewing it and this seemed to be the most simplest and effective means to do so.
+The Player makes changes to the overall CheckerGame by making Moves, which can be 
+regular moves (where the piece is moved one diagonal space) or jump moves (where the 
+piece jumps diagonally over an opponent's piece in order to collect it). When the 
+player makes a Move, the program tries to validate the movement of the start Position 
+to the End position. These Moves, after they are Validated, alter the Position in 
+which a Piece is placed on the Board. Although Space does have its row and column 
+fields, we made the design decision of creating a separate Position class as a simple 
+way to refer to the location of a Space on the Board when making a Move.
 
 ### Design Improvements
 If development were to continue on this product, there are a few areas

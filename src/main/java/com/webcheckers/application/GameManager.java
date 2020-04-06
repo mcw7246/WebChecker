@@ -1,9 +1,12 @@
 package com.webcheckers.application;
 
+import com.google.gson.Gson;
 import com.webcheckers.model.Board;
 import com.webcheckers.model.CheckerGame;
 import com.webcheckers.model.Player;
 
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -63,6 +66,41 @@ public class GameManager
     pairToAdd.put(challenger, victim);
     this.pairs.put(gameIDNum, pairToAdd);
     games.put(gameIDNum, new CheckerGame(player1, player2, new Board()));
+  }
+
+  /**
+   * Just starts a test game
+   *
+   * @param challenger the name of the challenger (most likely player1)
+   * @param victim the name of the victim (most likely player2)
+   * @param filename the name of the file that holds the test board.
+   */
+  public void startTestGame(String challenger, String victim, String filename)
+  {
+    playerLobby.removeChallenger(challenger);
+    Player player1 = playerLobby.getPlayers().get(challenger);
+    Player player2 = playerLobby.getPlayers().get(victim);
+    player2.makePlayer2();
+    player1.hasEnteredGame();
+    player2.hasEnteredGame();
+    inGame.add(challenger);
+    inGame.add(victim);
+    gameIDNum += 1;
+    gameID.put(challenger, gameIDNum);
+    gameID.put(victim, gameIDNum);
+    HashMap<String, String> pairToAdd = new HashMap<>();
+    pairToAdd.put(challenger, victim);
+    this.pairs.put(gameIDNum, pairToAdd);
+    Gson gson = new Gson();
+    Board board;
+    try
+    {
+      board = gson.fromJson(new FileReader(filename), Board.class);
+    } catch (FileNotFoundException e) {
+      System.err.println("ERROR: FILE NOT FOUND STARTING GAME FROM SCRATCH");
+      board = new Board();
+    }
+    games.put(gameIDNum, new CheckerGame(player1, player2, board));
   }
 
   /**
