@@ -24,6 +24,11 @@ public class PostRequestResponseRoute implements Route
   private static final Logger LOG = Logger.getLogger(GetHomeRoute.class.getName());
   static final String GAME_ACCEPT = "gameAccept";
   private final PlayerLobby lobby;
+  private static final String KING_JUMP = "src/test/java/com/webcheckers/test" +
+          "-boards/ToBeKingedMultiJumpWhite.JSON";
+  private static final String REQUIRE_JUMP = "src/test/java/com/webcheckers" +
+          "/test-boards/requireJumpBoard.JSON";
+
 
   /**
    * Constructor for the {@code GET/game} route handler.

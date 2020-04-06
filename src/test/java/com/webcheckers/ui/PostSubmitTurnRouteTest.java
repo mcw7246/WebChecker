@@ -37,6 +37,13 @@ public class PostSubmitTurnRouteTest
           "/test-boards/InitialBoard.JSON";
   private static final String ONE_MOVE = "src/test/java/com/webcheckers/test" +
           "-boards/OneMove.JSON";
+  private static final String KING_JUMP = "src/test/java/com/webcheckers/test" +
+          "-boards/ToBeKingedMultiJump.JSON";
+  private static final String KING_JUMP_WHITE = "src/test/java/com" +
+          "/webcheckers/test" +
+          "-boards/ToBeKingedMultiJumpWhite.JSON";
+  private static final String REQUIRE_JUMP = "src/test/java/com/webcheckers" +
+          "/test-boards/requireJumpBoard.JSON";
 
   /**
    * The component-under-test (CuT)
@@ -118,22 +125,24 @@ public class PostSubmitTurnRouteTest
 
   @Test void local_game_jump()
   {
+    try
+    {
+      this.board = gson.fromJson(new FileReader(REQUIRE_JUMP), Board.class);
+    } catch (FileNotFoundException e){
+      fail("Initial Board was not found from given path");
+    }
+    CheckerGame game = new CheckerGame(player, player2, board);
+    when(player.getPlayerNum()).thenReturn(1);
     when(manager.getLocalGame(player.getUsername())).thenReturn(game);
-    Space jumpSpace = new Space(0, 0,
-            true, new Piece(Piece.Color.WHITE));
-    game.addJumpedPieces(jumpSpace);
 
     List<Move> moves = new ArrayList<>();
-    moves.add(new Move(new Position(0, 1), new Position(2, 3),
+    moves.add(new Move(new Position(4, 1), new Position(2, 3),
             Move.MoveStatus.JUMP));
 
     Space endSpace = new Space(2, 3, true, new Piece(Piece.Color.RED));
-
-    when(board.getSpaceAt(2, 3)).thenReturn(endSpace);
     when(session.attribute(PostValidateMoveRoute.MOVE_LIST_ID)).thenReturn(moves);
     assertEquals(gson.toJson(info("Valid Move")), CuT.handle(request,
             response));
-    assertNull(jumpSpace.getPiece());
   }
 
   @Test public void test_king_multi_jump(){
@@ -158,6 +167,45 @@ public class PostSubmitTurnRouteTest
     assertNull(jumpSpace2.getPiece());
   }
 
+  @Test
+  public void red_king()
+  {
+    try
+    {
+      this.board = gson.fromJson(new FileReader(KING_JUMP), Board.class);
+    } catch (FileNotFoundException e){
+      fail("Initial Board was not found from given path");
+    }
+    game = new CheckerGame(player, player2, this.board);
+    when(manager.getLocalGame(player.getUsername())).thenReturn(game);
+    List<Move> moves = new ArrayList<>();
+    moves.add(new Move(new Position(2, 5), new Position(0, 7),
+            Move.MoveStatus.JUMP));
+    when(session.attribute(PostValidateMoveRoute.MOVE_LIST_ID)).thenReturn(moves);
+    assertEquals(gson.toJson(info("Valid Move")), CuT.handle(request,
+            response));
+    assertEquals(Piece.Type.KING, board.getSpaceAt(0, 7).getPiece().getType());
+  }
+
+  @Test
+  public void white_king()
+  {
+    try
+    {
+      this.board = gson.fromJson(new FileReader(KING_JUMP_WHITE), Board.class);
+    } catch (FileNotFoundException e){
+      fail("Initial Board was not found from given path");
+    }
+    game = new CheckerGame(player, player2, this.board);
+    when(manager.getLocalGame(player.getUsername())).thenReturn(game);
+    List<Move> moves = new ArrayList<>();
+    moves.add(new Move(new Position(2, 5), new Position(0, 7),
+            Move.MoveStatus.JUMP));
+    when(session.attribute(PostValidateMoveRoute.MOVE_LIST_ID)).thenReturn(moves);
+    assertEquals(gson.toJson(info("Valid Move")), CuT.handle(request,
+            response));
+    assertEquals(Piece.Type.KING, board.getSpaceAt(0, 7).getPiece().getType());
+  }
 }
 
 

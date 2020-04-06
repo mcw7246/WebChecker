@@ -3,6 +3,7 @@ package com.webcheckers.ui;
 import com.webcheckers.application.GameManager;
 import com.webcheckers.model.BoardView;
 import com.webcheckers.model.CheckerGame;
+import com.webcheckers.model.Move;
 import com.webcheckers.model.Player;
 import spark.*;
 
@@ -58,6 +59,8 @@ public class GetGameRoute implements Route
       Player redPlayer = game.getRedPlayer();
       Player whitePlayer = game.getWhitePlayer();
       vm.put(VIEW_MODE, Player.ViewMode.PLAY);
+      //Reset Moves
+      session.attribute(PostValidateMoveRoute.MOVE_LIST_ID, null);
       session.attribute(GAME_BOARD, game.getBoard());
       if (game.getRedPlayer().getUsername().equals(username))
       {
