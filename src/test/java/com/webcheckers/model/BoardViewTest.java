@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.webcheckers.model.Board.DIMENSIONS;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -35,7 +36,7 @@ public class BoardViewTest
     @BeforeEach
     public void setup()
     {
-        board = mock(Board.class);
+        board = new Board();
     }
 
     @Test
@@ -45,21 +46,50 @@ public class BoardViewTest
     }
 
     @Test
-    public void testMakeCopyOfBoard()
+    public void testCopyBoard()
     {
+        BoardView CuT1 = new BoardView(board);
 
-    }
+        List<Row> a = CuT1.getBoard();
+        List<Row> b = board.getBoard();
 
-    @Test
-    public void testFlip()
-    {
-
+        for (int i = 0; i < DIMENSIONS; i++)
+        {
+            //System.out.println(a.get(i).getIndex());
+            //System.out.println(b.get(i).getIndex());
+            if(a.get(i).getIndex() != b.get(i).getIndex())
+            {
+                assertEquals(true, false);
+            }
+        }
+        assertEquals(true, true);
     }
 
     @Test
     public void testGetBoard()
     {
+        BoardView CuT1 = new BoardView(board);
 
+        List<Row> a = CuT1.getBoard();
+        List<Row> b = board.getBoard();
+
+        for (int i = 0; i < DIMENSIONS; i++)
+        {
+            if(a.get(i).getIndex() != b.get(i).getIndex())
+            {
+                assertEquals(true, false);
+            }
+        }
+        assertEquals(true, true);
     }
 
+
+    @Test
+    public void testFlip()
+    {
+        BoardView CuT1 = new BoardView(board);
+        BoardView CuT2 = new BoardView(board);
+        CuT2.flip();
+        assertNotEquals(CuT1.getBoard(), CuT2.getBoard());
+    }
 }
