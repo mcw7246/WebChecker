@@ -240,6 +240,6 @@ public class MoveTest
 
     CuT = new Move(start, end);
     status = CuT.validateMove(game, startSpace, endSpace);
-    assertEquals(Move.MoveStatus.VALID, status);
+    assertEquals(Move.MoveStatus.JUMP, status);
   }
 }

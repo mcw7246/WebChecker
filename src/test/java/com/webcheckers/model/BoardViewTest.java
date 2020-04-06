@@ -41,7 +41,7 @@ public class BoardViewTest
     @Test
     public void ctor_withArgs()
     {
-        BoardView CuT = new BoardView(board);
+        // BoardView CuT = new BoardView(board);
     }
 
     @Test
