@@ -79,4 +79,16 @@ public class PieceTest
         assertEquals(Piece.Type.KING, CuT2.getType());
         assertNotEquals(Piece.Type.SINGLE, CuT2.getType());
     }
+
+    /**
+     * Tests that the setType method works
+     */
+    @Test
+    public void testSetType()
+    {
+        Piece CuT1 = new Piece(Piece.Color.RED, Piece.Type.SINGLE);
+        Piece CuT2 = CuT1;
+        assertEquals(CuT1, CuT2);
+        CuT2.setType(Piece.Type.KING);
+    }
 }
