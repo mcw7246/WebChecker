@@ -7,8 +7,55 @@ public class RequireMove
   public final Board board;
   public final Piece.Color color;
 
-  public enum SPACE_STATUS
-  {OCC_SAME, OCC_DIFF, FREE}
+  /**
+   * Adds all the moves that it can in one column direction to the stack.
+   *
+   * @param moves       the moves already created in the stack
+   * @param board       the board that is being checked
+   * @param row         the initial row
+   * @param col         the inital column
+   * @param rowCheck    the row being checked
+   * @param colCheck    the column being checked
+   * @param colorFactor the direction
+   * @return the updated moves stack.
+   */
+  public Stack<Move> addMovesColOneDirection(Stack<Move> moves, Board board,
+                                             int row, int col, int rowCheck,
+                                             int colCheck, int colorFactor,
+                                             Space checkSpace)
+  {
+    Position startPos = new Position(row, col);
+    //Is the space empty? If so valid move.
+
+    SpaceStatus status = isAvailableSpace(checkSpace, color);
+    switch (status)
+    {
+      case OCC_SAME:
+        break;
+      case OCC_DIFF:
+        //Check to see if the jump is possible
+        if (validDimension(rowCheck += colorFactor))
+        {
+          //Check Left
+          if (validDimension(colCheck += colorFactor))
+          {
+            checkSpace = board.getSpaceAt(rowCheck, colCheck);
+            if (isAvailableSpace(checkSpace, color).
+                    equals(SpaceStatus.FREE))
+            {
+              Position endPos = new Position(rowCheck, colCheck);
+              moves.push(new Move(startPos, endPos, Move.MoveStatus.JUMP));
+            }
+          }
+        }
+        break;
+      case FREE:
+        Position endPos = new Position(rowCheck, colCheck);
+        moves.push(new Move(startPos, endPos));
+        break;
+    }
+    return moves;
+  }
 
   //Stores all valid moves, all the possible jumps are stored under the jump
   // key, all the possible regular moves are stored as another.
@@ -104,53 +151,25 @@ public class RequireMove
   }
 
   /**
-   * Adds all the moves that it can in one column direction to the stack.
+   * Returns what is going on with the space that is being checked
    *
-   * @param moves       the moves already created in the stack
-   * @param board       the board that is being checked
-   * @param row         the initial row
-   * @param col         the inital column
-   * @param rowCheck    the row being checked
-   * @param colCheck    the column being checked
-   * @param colorFactor the direction
-   * @return the updated moves stack.
+   * @param space the space to be checked
+   * @param color the color of the piece attempting to move their
+   * @return the status of the space compared to the piece color provided.
    */
-  public Stack<Move> addMovesColOneDirection(Stack<Move> moves, Board board,
-                                             int row, int col, int rowCheck,
-                                             int colCheck, int colorFactor,
-                                             Space checkSpace)
+  public SpaceStatus isAvailableSpace(Space space, Piece.Color color)
   {
-    Position startPos = new Position(row, col);
-    //Is the space empty? If so valid move.
-
-    SPACE_STATUS status = isAvailableSpace(checkSpace, color);
-    switch (status)
+    Piece piece = space.getPiece();
+    if (piece == null)
     {
-      case OCC_SAME:
-        break;
-      case OCC_DIFF:
-        //Check to see if the jump is possible
-        if (validDimension(rowCheck += colorFactor))
-        {
-          //Check Left
-          if (validDimension(colCheck += colorFactor))
-          {
-            checkSpace = board.getSpaceAt(rowCheck, colCheck);
-            if (isAvailableSpace(checkSpace, color).
-                    equals(SPACE_STATUS.FREE))
-            {
-              Position endPos = new Position(rowCheck, colCheck);
-              moves.push(new Move(startPos, endPos, Move.MoveStatus.JUMP));
-            }
-          }
-        }
-        break;
-      case FREE:
-        Position endPos = new Position(rowCheck, colCheck);
-        moves.push(new Move(startPos, endPos));
-        break;
+      return SpaceStatus.FREE;
+    } else if (piece.getColor().equals(color))
+    {
+      return SpaceStatus.OCC_SAME;
+    } else
+    {
+      return SpaceStatus.OCC_DIFF;
     }
-    return moves;
   }
 
   /**
@@ -209,26 +228,7 @@ public class RequireMove
     return dim > 0 && dim < Board.DIMENSIONS;
   }
 
-  /**
-   * Returns what is going on with the space that is being checked
-   *
-   * @param space the space to be checked
-   * @param color the color of the piece attempting to move their
-   * @return the status of the space compared to the piece color provided.
-   */
-  public SPACE_STATUS isAvailableSpace(Space space, Piece.Color color)
-  {
-    Piece piece = space.getPiece();
-    if (piece == null)
-    {
-      return SPACE_STATUS.FREE;
-    } else if (piece.getColor().equals(color))
-    {
-      return SPACE_STATUS.OCC_SAME;
-    } else
-    {
-      return SPACE_STATUS.OCC_DIFF;
-    }
-  }
+  public enum SpaceStatus
+  {OCC_SAME, OCC_DIFF, FREE}
 
 }
