@@ -232,17 +232,25 @@ So far three stories have passed all unit testing. These stories are the
 > those._
 
 The strategy for unit testing was to find the most complete (or what we
- thought were complete) classes and begin testing with those. The most
-  thorough we wanted were the PlayerLobby and Player. Since the most
-   important part of Sprint 1 was dealing with the Players and signing-in
-   . Then we used other parts that we found essential. The coverage goals
-    were 80% throughout. For some (such as the UI-tier) it was difficult to
-     truly meet this goal since using mockito only gives us so much. The
-      actual tests have to be done in a demo style test.
+ thought were complete) classes and begin testing with those. However
+ , originally we struggled finding the correct area to test because unit
+  testing only acquires so much. Until we exported boards as JSON objects and
+   allowed them to be used in Unit Testing.
 
-![WebCheckers Current Code Coverage](current-test-coverage-25-mar.png)
+![WebCheckers Current Code Coverage](current-test-coverage-06-apr.png)
 
-As you can see the UI did not meet that goal. However, the application and
- model did. (Application has a Jacoco calculation error, when the link is
-  clicked it actually shows 88%). This is because the GetGameRoute and
-   GetSignInRoute remain untested.
+As you can see the UI did not meet that goal. The model did, the majority of
+ the reason for this was a lack of communication and commitment for the team
+  this sprint. We lacked enough testing to truly iron out all the bugs and
+   make sure that we reached every line in the code. We were missing quite a
+    lot of Routes and when updating to the new sprint we didn't cover many
+     previous routes. UI is the biggest example of this.
+     
+![WebCheckers UI Coverage April](ui-coverage-06-apr.png)
+
+RequestGame, GetHome, RequestResponse, and PostSignIn no longer meet the mark
+. We
+ also
+ didn't
+ have everyone on the team complete their parts. Such as BackupMove and
+  PostCheckTurn.
