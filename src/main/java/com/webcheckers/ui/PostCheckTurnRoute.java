@@ -25,6 +25,7 @@ public class PostCheckTurnRoute implements Route
     final Session httpSession = request.session();
     final Player player = httpSession.attribute(GetHomeRoute.PLAYER_KEY);
     final Gson gson = new Gson();
+    //Possible to do: add protection against null game manager
     GameManager manager = httpSession.attribute(GetHomeRoute.GAME_MANAGER_KEY);
     if (player != null)
     {
