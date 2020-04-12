@@ -28,6 +28,8 @@ public class PostRequestResponseRoute implements Route
           "-boards/ToBeKingedMultiJumpWhite.JSON";
   private static final String REQUIRE_JUMP = "src/test/java/com/webcheckers" +
           "/test-boards/requireJumpBoard.JSON";
+  private static final String INCORRECT_AVAILABLE_JUMP = "src/test/java/com" +
+          "/webcheckers/test-boards/noAvailableJump";
 
 
   /**
@@ -69,7 +71,8 @@ public class PostRequestResponseRoute implements Route
       switch (accept)
       {
         case "yes":
-          gameManager.startGame(oppPlayer, usernameStr);
+          gameManager.startTestGame(oppPlayer, usernameStr,
+                  INCORRECT_AVAILABLE_JUMP , 2);
           response.redirect(WebServer.GAME_URL);
           break;
         case "no":

@@ -75,7 +75,8 @@ public class GameManager
    * @param victim the name of the victim (most likely player2)
    * @param filename the name of the file that holds the test board.
    */
-  public void startTestGame(String challenger, String victim, String filename)
+  public void startTestGame(String challenger, String victim, String filename
+          , int turn)
   {
     playerLobby.removeChallenger(challenger);
     Player player1 = playerLobby.getPlayers().get(challenger);
@@ -100,7 +101,12 @@ public class GameManager
       System.err.println("ERROR: FILE NOT FOUND STARTING GAME FROM SCRATCH");
       board = new Board();
     }
-    games.put(gameIDNum, new CheckerGame(player1, player2, board));
+    CheckerGame game = new CheckerGame(player1, player2, board);
+    if(turn > 1)
+    {
+      game.updateTurn();
+    }
+    games.put(gameIDNum, game);
   }
 
   /**

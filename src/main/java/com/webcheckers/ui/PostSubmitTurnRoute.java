@@ -174,6 +174,7 @@ public class PostSubmitTurnRoute implements Route
             }
           }
         }
+        //Jump not made
       } else {
         Map<Move.MoveStatus, List<Move>> validMoves = requireMove.getAllMoves();
         List<Move> jumps = validMoves.get(Move.MoveStatus.JUMP);

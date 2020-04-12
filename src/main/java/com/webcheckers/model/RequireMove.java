@@ -36,8 +36,8 @@ public class RequireMove
         //Check to see if the jump is possible
         if (validDimension(rowCheck += colorFactor))
         {
-          //Check Left
-          if (validDimension(colCheck += colorFactor))
+          //Check Correct Direction
+          if (validDimension(colCheck += (colCheck-col)))
           {
             checkSpace = board.getSpaceAt(rowCheck, colCheck);
             if (isAvailableSpace(checkSpace, color).
@@ -123,7 +123,7 @@ public class RequireMove
       return null;
     } else
     {
-      int colorFactor = -1;
+      int colorFactor = 1;
       if (piece.getColor() == Piece.Color.WHITE)
       {
         colorFactor = -colorFactor;
@@ -225,7 +225,7 @@ public class RequireMove
    */
   public boolean validDimension(int dim)
   {
-    return dim > 0 && dim < Board.DIMENSIONS;
+    return dim >= 0 && dim < Board.DIMENSIONS;
   }
 
   public enum SpaceStatus
