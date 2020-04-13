@@ -4,6 +4,8 @@ import com.webcheckers.application.PlayerLobby;
 
 import java.util.regex.Pattern;
 
+//import static jdk.vm.ci.meta.JavaKind.Char;
+
 /**
  * placeholder for actual code and information
  *
@@ -91,15 +93,17 @@ public class Player
      * make sure that the username contains letters and numbers and spaces only
      */
 
-    boolean userContains = Pattern.matches("[a-zA-Z0-9]+", username);
+    boolean userContains = Pattern.matches("[a-zA-Z0-9\\s]+", username);
+    boolean containsSpace = Pattern.compile(" ").matcher(username).find();
+    System.out.println(containsSpace);
     boolean numContains = Pattern.compile("[0-9]").matcher(username).find();
-    boolean spaceContains = Pattern.compile(" ").matcher(username).find();
     if (!userContains || username.length() < 6 || username.length() > 25 ||
-            Character.isDigit(username.charAt(0)) || !numContains)
+            username.startsWith("[0-9]+") || !numContains)
     {
       result = UsernameResult.INVALID;
       return result;
     }
+
     /*
      * if the arrayList.size() == 0 then there are no users in the playerLobby
      * and the username can be any username
@@ -107,12 +111,21 @@ public class Player
      */
     else
     {
-      if (spaceContains)
+      if(containsSpace)
       {
-        this.username = username.trim();
+        String trimmedUsername = username.trim();
+        if(playerLobby.getUsernames().contains(trimmedUsername)){
+          result = UsernameResult.TAKEN;
+        }
+        else{
+          setUsername(trimmedUsername);
+          playerLobby.newPlayer(this);
+          result = UsernameResult.AVAILABLE;
+        }
       }
+
       //username already exists
-      if (playerLobby.getUsernames().stream().anyMatch(p1 -> p1.equals(username)))
+      else if (playerLobby.getUsernames().stream().anyMatch(p1 -> p1.equals(username)))
       {
         result = UsernameResult.TAKEN;
       } else

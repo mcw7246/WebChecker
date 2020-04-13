@@ -14,7 +14,7 @@ import spark.template.freemarker.FreeMarkerEngine;
 
 /**
  * The entry point for the WebCheckers web application.
- *
+ * :)
  * @author <a href='mailto:bdbvse@rit.edu'>Bryan Basham</a>
  */
 public final class Application
