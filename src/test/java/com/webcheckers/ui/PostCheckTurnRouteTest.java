@@ -100,6 +100,4 @@ public class PostCheckTurnRouteTest
     when(game.getTurn()).thenReturn(PLAYER2);
     assertEquals(gson.toJson(info("false")), CuT.handle(request, response));
   }
-
-
 }

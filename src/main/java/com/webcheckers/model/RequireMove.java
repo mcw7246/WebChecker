@@ -4,8 +4,14 @@ import java.util.*;
 
 public class RequireMove
 {
-  public final Board board;
-  public final Piece.Color color;
+  private final Board board;
+  private Piece.Color color;
+
+  public RequireMove(Board board, Piece.Color color)
+  {
+    this.board = board;
+    this.color = color;
+  }
 
   /**
    * Adds all the moves that it can in one column direction to the stack.
@@ -57,15 +63,14 @@ public class RequireMove
     return moves;
   }
 
+  public void updateColor(Piece.Color color)
+  {
+    this.color = color;
+  }
+
   //Stores all valid moves, all the possible jumps are stored under the jump
   // key, all the possible regular moves are stored as another.
   public Map<Move.MoveStatus, List<Move>> validMoves;
-
-  public RequireMove(Board board, Piece.Color color)
-  {
-    this.board = board;
-    this.color = color;
-  }
 
   public Map<Move.MoveStatus, List<Move>> getAllMoves()
   {
@@ -123,10 +128,10 @@ public class RequireMove
       return null;
     } else
     {
-      int colorFactor = 1;
+      int colorFactor = -1;
       if (piece.getColor() == Piece.Color.WHITE)
       {
-        colorFactor = -colorFactor;
+        colorFactor = -1;
       }
       moves = addMovesRowOneDirection(moves, board, piece, space, colorFactor);
       boolean king = piece.getType().equals(Piece.Type.KING);

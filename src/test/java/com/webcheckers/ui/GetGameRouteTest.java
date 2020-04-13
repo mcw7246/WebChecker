@@ -108,5 +108,10 @@ public class GetGameRouteTest
         assertEquals("Home Redirect", CuT.handle(request, response));
     }
 
+    @Test
+    public void cannot_move()
+    {
+        //TODO
+    }
 
 }

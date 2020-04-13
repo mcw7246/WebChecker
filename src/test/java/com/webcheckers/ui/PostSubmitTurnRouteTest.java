@@ -206,6 +206,12 @@ public class PostSubmitTurnRouteTest
             response));
     assertEquals(Piece.Type.KING, board.getSpaceAt(0, 7).getPiece().getType());
   }
+
+  @Test
+  public void opponent_cannot_move()
+  {
+    //TODO
+  }
 }
 
 

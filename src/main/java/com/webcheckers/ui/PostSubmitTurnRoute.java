@@ -54,9 +54,11 @@ public class PostSubmitTurnRoute implements Route
       }
 
       Piece.Color color = Piece.Color.WHITE;
+      Piece.Color oppColor = Piece.Color.RED;
       if (player.getPlayerNum() == 1)
       {
         color = Piece.Color.RED;
+        oppColor = Piece.Color.WHITE;
       }
 
       //Once moves are validated, king any pieces that made it to the edge of the board
@@ -91,11 +93,12 @@ public class PostSubmitTurnRoute implements Route
         madeJump = true;
       }
 
-      RequireMove requireMove = new RequireMove(game.getBoard(), color);
+
 
       //made a jump that was a valid jump
       if(madeJump)
       {
+        RequireMove requireMove = new RequireMove(game.getBoard(), color);
         //gets all the jumps that are valid for the given board
         List<Move> listMoves = session.attribute(PostValidateMoveRoute.MOVE_LIST_ID);
         Space jumpEndSpace;
@@ -176,6 +179,8 @@ public class PostSubmitTurnRoute implements Route
         }
         //Jump not made
       } else {
+        CheckerGame originalGame = manager.getGame(gameID);
+        RequireMove requireMove = new RequireMove(originalGame.getBoard(), color);
         Map<Move.MoveStatus, List<Move>> validMoves = requireMove.getAllMoves();
         List<Move> jumps = validMoves.get(Move.MoveStatus.JUMP);
         if (jumps != null && !jumps.isEmpty())
@@ -184,8 +189,6 @@ public class PostSubmitTurnRoute implements Route
                   "You must make this move before you end your turn."));
         }
       }
-
-
 
       manager.updateGame(gameID, game);
       manager.removeClientSideGame(player.getUsername());
