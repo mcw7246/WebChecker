@@ -113,6 +113,24 @@ public class GetGameRoute implements Route
           vm.put("modeOptionsAsJSON", gson.toJson(modeOptions));
         }
       }
+      int redPieces = game.getNumRedPieces();
+      int whitePieces = game.getNumWhitePieces();
+      if((redPieces == 0) || (whitePieces == 0))
+      {
+        modeOptions.put("isGameOver", true);
+        if(whitePieces == 0)
+        {
+          modeOptions.put("gameOverMessage", oppUsername + "'s pieces " +
+                  "were all taken! You win!");
+          vm.put("modeOptionsAsJSON", gson.toJson(modeOptions));
+        }
+        else
+        {
+          modeOptions.put("gameOverMessage", "Your pieces " +
+                  "were all taken! You lose!");
+          vm.put("modeOptionsAsJSON", gson.toJson(modeOptions));
+        }
+      }
       vm.put(ACTIVE_COLOR, game.getColor());
       return templateEngine.render(new ModelAndView(vm, VIEW_NAME));
     } else

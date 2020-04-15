@@ -34,6 +34,8 @@ public class CheckerGame
 
   private boolean moved = false;
 
+  private int numRedPieces, numWhitePieces;
+
   /**
    * Constructor
    */
@@ -43,6 +45,8 @@ public class CheckerGame
     this.PLAYER_TWO = PLAYER_TWO;
     this.board = board;
     jumpedPieces = new Stack<Space>();
+    numRedPieces = 12;
+    numWhitePieces = 12;
   }
 
   /**
@@ -57,6 +61,8 @@ public class CheckerGame
     this.board = new Board(original.board);
     this.turn = original.turn;
     jumpedPieces = new Stack<Space>();
+    numRedPieces = 12;
+    numWhitePieces = 12;
   }
 
   /**
@@ -153,7 +159,17 @@ public class CheckerGame
   {
     try
     {
-        return jumpedPieces.pop();
+        Space sp = jumpedPieces.pop();
+        Piece piece = sp.getPiece();
+        if(piece.getColor().equals(Piece.Color.RED))
+        {
+          numRedPieces--;
+        }
+        else if(piece.getColor().equals(Piece.Color.WHITE))
+        {
+          numWhitePieces--;
+        }
+        return sp;
     }catch(EmptyStackException ese) {
       System.err.println("(CheckerGame.java) Stack empty");
       return null;
@@ -168,6 +184,16 @@ public class CheckerGame
   public void setMoved(boolean moved)
   {
     this.moved = moved;
+  }
+
+  public int getNumRedPieces()
+  {
+    return numRedPieces;
+  }
+
+  public int getNumWhitePieces()
+  {
+    return numWhitePieces;
   }
 
 }
