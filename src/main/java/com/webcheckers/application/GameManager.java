@@ -30,6 +30,7 @@ public class GameManager
   private static PlayerLobby playerLobby;
   private static Map<String, Integer> spectators = new HashMap<>();
   private static Map<Integer, Integer> spectatorNum = new HashMap<>();
+  private static Map<Integer, String> gameOver = new HashMap<>();
 
   public GameManager(PlayerLobby lobby)
   {
@@ -66,6 +67,58 @@ public class GameManager
     pairToAdd.put(challenger, victim);
     this.pairs.put(gameIDNum, pairToAdd);
     games.put(gameIDNum, new CheckerGame(player1, player2, new Board()));
+    gameOver.put(gameIDNum, "No");
+  }
+
+  /**
+   * A function used to end the game in the player lobby.
+   *
+   * @param gameIDNum the gameID to end.
+   */
+  public void endGame(int gameIDNum)
+  {
+    Map<String, String> pair = pairs.get(gameIDNum);
+    Player player1 =
+            playerLobby.getPlayers().get(pair.keySet().toArray()[0]);
+    Player player2 = playerLobby.getPlayers().get(pair.values().toArray()[0]);
+    if (player1 != null)
+    {
+      String challenger = player1.getUsername();
+      inGame.remove(challenger);
+      gameID.remove(challenger);
+    }
+    if (player2 != null)
+    {
+      String victim = player2.getUsername();
+      inGame.remove(victim);
+      gameID.remove(victim);
+    }
+    spectatorNum.remove(gameIDNum);
+    pairs.remove(gameIDNum);
+    games.remove(gameIDNum);
+    gameOver.remove(gameIDNum);
+  }
+
+  /**
+   * Sets the game over state.
+   *
+   * @param gameIDNum the id number to change
+   * @param status the status to set it to.
+   */
+  public void setGameOver(int gameIDNum, String status)
+  {
+    gameOver.replace(gameIDNum, status);
+  }
+
+  /**
+   * Returns the status of the game over status.
+   *
+   * @param gameIDNum the game to get
+   * @return the status of the game.
+   */
+  public String getGameOverStatus(int gameIDNum)
+  {
+    return gameOver.get(gameIDNum);
   }
 
   /**
@@ -170,10 +223,7 @@ public class GameManager
     if(gameID.containsKey(username))
     {
       return gameID.get(username);
-    } else
-    {
-      return spectators.get(username);
-    }
+    } else return spectators.getOrDefault(username, -1);
   }
 
   /**

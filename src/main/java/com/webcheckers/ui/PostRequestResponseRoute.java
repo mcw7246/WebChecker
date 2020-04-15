@@ -77,6 +77,7 @@ public class PostRequestResponseRoute implements Route
       switch (accept)
       {
         case "yes":
+          lobby.removeChallenger(usernameStr);
           gameManager.startGame(oppPlayer, usernameStr);
           response.redirect(WebServer.GAME_URL);
           break;

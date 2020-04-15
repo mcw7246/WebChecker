@@ -1,5 +1,6 @@
 package com.webcheckers.ui;
 
+import com.webcheckers.application.GameManager;
 import com.webcheckers.application.PlayerLobby;
 import com.webcheckers.model.Player;
 import com.webcheckers.util.Message;
@@ -10,6 +11,7 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Objects;
 
+import static com.webcheckers.ui.GetHomeRoute.GAME_MANAGER_KEY;
 import static com.webcheckers.ui.GetHomeRoute.PLAYER_KEY;
 import static spark.Spark.halt;
 import static spark.Spark.modelAndView;
@@ -24,84 +26,66 @@ public class PostSignOutRoute implements Route
 {
 
 
-    //
-    // Static methods
-    //
-    static final String MESSAGE_ATTR = "message";
+  //
+  // Static methods
+  //
+  static final String MESSAGE_ATTR = "message";
 
-    static final String VIEW_NAME = "home.ftl";
+  static final String VIEW_NAME = "home.ftl";
 
-    private final TemplateEngine templateEngine;
-    //
-    // Attributes
-    //
-    private Player player;
-    private PlayerLobby playerLobby;
+  private final TemplateEngine templateEngine;
+  //
+  // Attributes
+  //
+  private Player player;
+  private PlayerLobby playerLobby;
 
 
+  //
+  // Constructor
+  //
+  public PostSignOutRoute(TemplateEngine templateEngine, PlayerLobby playerLobby)
+  {
+    // validation
+    Objects.requireNonNull(playerLobby, "playerLobby must not be null");
+    Objects.requireNonNull(templateEngine, "templateEngine must not be null");
     //
-    // Constructor
-    //
-    public PostSignOutRoute(TemplateEngine templateEngine, PlayerLobby playerLobby)
+    this.playerLobby = playerLobby;
+    this.templateEngine = templateEngine;
+  }
+
+  @Override
+  public String handle(Request request, Response response)
+  {
+    // retrieve the game object
+    final Session session = request.session();
+
+    this.player = session.attribute(GetHomeRoute.PLAYER_KEY);
+    if (this.player != null)
     {
-        // validation
-        Objects.requireNonNull(playerLobby, "playerLobby must not be null");
-        Objects.requireNonNull(templateEngine, "templateEngine must not be null");
-        //
-        this.playerLobby = playerLobby;
-        this.templateEngine = templateEngine;
-    }
+      if(this.player.isInGame())
+      {
+        GameManager manager = session.attribute(GAME_MANAGER_KEY);
+        int gameID = manager.getGameID(player.getUsername());
+        manager.setGameOver(gameID, player.getUsername() + " has resigned.");
+      }
+      //System.out.println(playerLobby.getPlayers());
+      playerLobby.removePlayer(this.player);
+      session.attribute(PLAYER_KEY, null);
+      //System.out.println(playerLobby.getPlayers());
 
-    @Override
-    public String handle(Request request, Response response)
+      //goes through the cases and submits the correct message/response
+
+      //sign out then directs to the home page
+      response.redirect(WebServer.HOME_URL);
+      return null;
+      //templateEngine.render(new ModelAndView(vm, VIEW_NAME));
+    } else
     {
-        // start building the View-Model
-        ModelAndView mv;
-        final Map<String, Object> vm = new HashMap<>();
-        vm.put(GetHomeRoute.TITLE_ATTR, GetHomeRoute.TITLE);
-
-        // retrieve the game object
-        final Session session = request.session();
-
-        this.player = session.attribute(GetHomeRoute.PLAYER_KEY);
-        if (this.player != null)
-        {
-            //System.out.println(playerLobby.getPlayers());
-            playerLobby.removePlayer(this.player);
-            session.attribute(PLAYER_KEY, null);
-            //System.out.println(playerLobby.getPlayers());
-
-            //goes through the cases and submits the correct message/response
-
-            //sign out then directs to the home page
-            response.redirect(WebServer.HOME_URL);
-            return "Why isn't this working";
-            //templateEngine.render(new ModelAndView(vm, VIEW_NAME));
-        } else
-        {
-            // handle trying to sign out while not signed in
-            response.redirect(WebServer.HOME_URL);
-            halt();
-            return null;
-        }
+      // handle trying to sign out while not signed in
+      response.redirect(WebServer.HOME_URL);
+      halt();
+      return null;
     }
-
-    /**
-     * Helper method that notifies a user of unexpected responses or other internal errors that occur
-     *
-     * @param vm      the View-Model map to update in case of error
-     * @param message the message associated with the error that occurred
-     * @return the updated View to notify the user that an error had occurred
-     */
-    private ModelAndView error(final Map<String, Object> vm, final String message)
-    {
-        vm.put(MESSAGE_ATTR, Message.error(message));
-        return new ModelAndView(vm, VIEW_NAME);
-    }
-
-    private void available(Response response)
-    {
-        response.redirect(WebServer.HOME_URL);
-        halt();
-    }
+  }
 }

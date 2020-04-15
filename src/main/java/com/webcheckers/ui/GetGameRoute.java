@@ -13,6 +13,7 @@ import java.util.logging.Logger;
 
 import static com.webcheckers.model.Piece.Color.RED;
 import static com.webcheckers.model.Piece.Color.WHITE;
+import static com.webcheckers.ui.PostResignRoute.RESIGN_ATTR;
 import static com.webcheckers.ui.WebServer.HOME_URL;
 
 public class GetGameRoute implements Route
@@ -83,10 +84,14 @@ public class GetGameRoute implements Route
         bV.flip();
         vm.put(GAME_BOARD_VIEW, bV);
       }
+      vm.put(VIEWERS, gameManager.getViewers(gameIdNum));
       RequireMove requireMove = new RequireMove(game.getBoard(), color);
       Map<Move.MoveStatus, List<Move>> availableMoves = requireMove.getAllMoves();
       //check me then opponent for if opponent can move.
       final Map<String, Object> modeOptions = new HashMap<>(2);
+
+      boolean inGame = player.isInGame();
+
       if(availableMoves.get(Move.MoveStatus.JUMP).isEmpty() &&
               availableMoves.get(Move.MoveStatus.VALID).isEmpty())
       {
@@ -111,11 +116,19 @@ public class GetGameRoute implements Route
           modeOptions.put("isGameOver", true);
           modeOptions.put("gameOverMessage", oppUsername + " cannot " +
                   "move! You win!");
+          vm.put(ACTIVE_COLOR, game.getColor());
           vm.put("modeOptionsAsJSON", gson.toJson(modeOptions));
+          gameManager.setGameOver(gameIdNum, "NO MOVE");
+          if(inGame)
+          {
+            player.hasEnteredGame();
+          }
+          return templateEngine.render(new ModelAndView(vm, VIEW_NAME));
         }
       }
       int redPieces = game.getNumRedPieces();
       int whitePieces = game.getNumWhitePieces();
+      vm.put(ACTIVE_COLOR, game.getColor());
       if((redPieces == 0) || (whitePieces == 0))
       {
         modeOptions.put("isGameOver", true);
@@ -124,16 +137,38 @@ public class GetGameRoute implements Route
           modeOptions.put("gameOverMessage", oppUsername + "'s pieces " +
                   "were all taken! You win!");
           vm.put("modeOptionsAsJSON", gson.toJson(modeOptions));
+          gameManager.setGameOver(gameIdNum, "TAKEN");
+          if(inGame)
+          {
+            player.hasEnteredGame();
+          }
+          return templateEngine.render(new ModelAndView(vm, VIEW_NAME));
         }
         else
         {
           modeOptions.put("gameOverMessage", "Your pieces " +
                   "were all taken! You lose!");
           vm.put("modeOptionsAsJSON", gson.toJson(modeOptions));
+          gameManager.setGameOver(gameIdNum, "TAKEN");
+          if(inGame)
+          {
+            player.hasEnteredGame();
+          }
+          return templateEngine.render(new ModelAndView(vm, VIEW_NAME));
         }
       }
-      vm.put(ACTIVE_COLOR, game.getColor());
-      vm.put(VIEWERS, gameManager.getViewers(gameIdNum));
+      String gameOverStatus = gameManager.getGameOverStatus(gameIdNum);
+      if(gameOverStatus.contains("resigned"))
+      {
+        modeOptions.put("isGameOver", true);
+        modeOptions.put("gameOverMessage", gameOverStatus);
+        if(inGame)
+        {
+          player.hasEnteredGame();
+        }
+        vm.put("modeOptionsAsJSON", gson.toJson(modeOptions));
+        return templateEngine.render(new ModelAndView(vm, VIEW_NAME));
+      }
       return templateEngine.render(new ModelAndView(vm, VIEW_NAME));
     } else
     {

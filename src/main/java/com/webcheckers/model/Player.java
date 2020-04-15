@@ -59,7 +59,7 @@ public class Player
    */
   public void hasEnteredGame()
   {
-    inGame = true;
+    inGame = !inGame;
   }
 
   /**

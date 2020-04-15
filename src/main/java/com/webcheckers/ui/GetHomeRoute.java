@@ -15,6 +15,7 @@ import spark.*;
 import com.webcheckers.util.Message;
 
 import static com.webcheckers.ui.PostRequestGameRoute.MESSAGE;
+import static com.webcheckers.ui.PostResignRoute.RESIGN_ATTR;
 import static spark.Spark.halt;
 
 /**
@@ -115,7 +116,13 @@ public class GetHomeRoute implements Route
         return null;
       } else
       {
+        int gameID = manager.getGameID(player.getUsername());
+        if(gameID != -1)
+        {
+          manager.endGame(gameID);
+        }
         vm.put(SIGN_IN_KEY, true);
+        httpSession.attribute(RESIGN_ATTR, false);
         vm.put(CURRENT_USER_ATTR, player.getUsername());
         Map<String, String> challenges = lobby.getChallenges();
         if (challenges.containsKey(player.getUsername()))
