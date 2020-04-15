@@ -200,6 +200,7 @@ public class GameManager
       game.updateTurn();
     }
     games.put(gameIDNum, game);
+    gameOver.put(gameIDNum, "No");
   }
 
   /**
