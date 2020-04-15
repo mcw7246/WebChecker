@@ -32,6 +32,8 @@ public class PostRequestResponseRoute implements Route
           "/webcheckers/test-boards/noAvailableJump";
   private static final String NECESSARY_JUMP_WHITE = "src/test/java/com" +
           "/webcheckers/test-boards/necesssaryJumpWhite.JSON";
+  private static final String STACK_JUMP = "src/test/java/com/webcheckers" +
+          "/test-boards/beforeServerCrashBoard.JSON";
 
   /**
    * Constructor for the {@code GET/game} route handler.
@@ -72,7 +74,7 @@ public class PostRequestResponseRoute implements Route
       switch (accept)
       {
         case "yes":
-          gameManager.startGame(oppPlayer, usernameStr);
+          gameManager.startTestGame(oppPlayer, usernameStr, STACK_JUMP, 2);
           response.redirect(WebServer.GAME_URL);
           break;
         case "no":
