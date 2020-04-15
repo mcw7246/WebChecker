@@ -76,8 +76,7 @@ public class PostRequestResponseRoute implements Route
       switch (accept)
       {
         case "yes":
-          gameManager.startTestGame(oppPlayer, usernameStr,
-                  STACK_JUMP, 2);
+          gameManager.startGame(oppPlayer, usernameStr);
           response.redirect(WebServer.GAME_URL);
           break;
         case "no":
