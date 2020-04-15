@@ -99,6 +99,38 @@ public class GetGameRoute implements Route
 
       boolean inGame = player.isInGame();
       vm.put(ACTIVE_COLOR, game.getColor());
+      int redPieces = game.getNumRedPieces();
+      int whitePieces = game.getNumWhitePieces();
+
+      if((redPieces == 0) || (whitePieces == 0))
+      {
+        modeOptions.put("isGameOver", true);
+        if(whitePieces == 0)
+        {
+          modeOptions.put("gameOverMessage", oppUsername + "'s pieces " +
+                  "were all taken! You win!");
+          vm.put("modeOptionsAsJSON", gson.toJson(modeOptions));
+          gameManager.setGameOver(gameIdNum, "TAKEN");
+          if(inGame)
+          {
+            player.hasEnteredGame();
+          }
+          return templateEngine.render(new ModelAndView(vm, VIEW_NAME));
+        }
+        else
+        {
+          modeOptions.put("gameOverMessage", "Your pieces " +
+                  "were all taken! You lose!");
+          vm.put("modeOptionsAsJSON", gson.toJson(modeOptions));
+          gameManager.setGameOver(gameIdNum, "TAKEN");
+          if(inGame)
+          {
+            player.hasEnteredGame();
+          }
+          return templateEngine.render(new ModelAndView(vm, VIEW_NAME));
+        }
+      }
+
       if(availableMoves.get(Move.MoveStatus.JUMP).isEmpty() &&
               availableMoves.get(Move.MoveStatus.VALID).isEmpty())
       {
@@ -139,37 +171,7 @@ public class GetGameRoute implements Route
           return templateEngine.render(new ModelAndView(vm, VIEW_NAME));
         }
       }
-      int redPieces = game.getNumRedPieces();
-      int whitePieces = game.getNumWhitePieces();
 
-      if((redPieces == 0) || (whitePieces == 0))
-      {
-        modeOptions.put("isGameOver", true);
-        if(whitePieces == 0)
-        {
-          modeOptions.put("gameOverMessage", oppUsername + "'s pieces " +
-                  "were all taken! You win!");
-          vm.put("modeOptionsAsJSON", gson.toJson(modeOptions));
-          gameManager.setGameOver(gameIdNum, "TAKEN");
-          if(inGame)
-          {
-            player.hasEnteredGame();
-          }
-          return templateEngine.render(new ModelAndView(vm, VIEW_NAME));
-        }
-        else
-        {
-          modeOptions.put("gameOverMessage", "Your pieces " +
-                  "were all taken! You lose!");
-          vm.put("modeOptionsAsJSON", gson.toJson(modeOptions));
-          gameManager.setGameOver(gameIdNum, "TAKEN");
-          if(inGame)
-          {
-            player.hasEnteredGame();
-          }
-          return templateEngine.render(new ModelAndView(vm, VIEW_NAME));
-        }
-      }
       String gameOverStatus = gameManager.getGameOverStatus(gameIdNum);
       if(gameOverStatus.contains("resigned"))
       {
