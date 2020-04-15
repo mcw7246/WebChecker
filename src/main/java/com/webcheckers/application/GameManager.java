@@ -7,10 +7,7 @@ import com.webcheckers.model.Player;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Holds and manages all games once they start
@@ -107,6 +104,16 @@ public class GameManager
       game.updateTurn();
     }
     games.put(gameIDNum, game);
+  }
+
+  /**
+   * Produces a list of all active games
+   *
+   * @return all active games in a list form.
+   */
+  public List<CheckerGame> getGames()
+  {
+    return new ArrayList<>(games.values());
   }
 
   /**

@@ -8,6 +8,7 @@ import java.util.logging.Logger;
 
 import com.webcheckers.application.GameManager;
 import com.webcheckers.application.PlayerLobby;
+import com.webcheckers.model.CheckerGame;
 import com.webcheckers.model.Player;
 import spark.*;
 
@@ -124,6 +125,7 @@ public class GetHomeRoute implements Route
           vm.put(CHALLENGE_USER_KEY, challenges.get(player.getUsername()));
         }
         List<String> usernames = lobby.getUsernames();
+        List<CheckerGame> games = manager.getGames();
         usernames.remove(player.getUsername());
         vm.put("usernames", usernames);
       }
