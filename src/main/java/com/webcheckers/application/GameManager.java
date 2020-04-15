@@ -7,10 +7,7 @@ import com.webcheckers.model.Player;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Holds and manages all games once they start
@@ -31,6 +28,8 @@ public class GameManager
   private static Set<String> inGame = new HashSet<>();
   private static Map<String, CheckerGame> clientSideGames = new HashMap<>();
   private static PlayerLobby playerLobby;
+  private static Map<String, Integer> spectators = new HashMap<>();
+  private static Map<Integer, Integer> spectatorNum = new HashMap<>();
 
   public GameManager(PlayerLobby lobby)
   {
@@ -62,10 +61,50 @@ public class GameManager
     gameIDNum += 1;
     gameID.put(challenger, gameIDNum);
     gameID.put(victim, gameIDNum);
+    spectatorNum.put(gameIDNum, 0);
     HashMap<String, String> pairToAdd = new HashMap<>();
     pairToAdd.put(challenger, victim);
     this.pairs.put(gameIDNum, pairToAdd);
     games.put(gameIDNum, new CheckerGame(player1, player2, new Board()));
+  }
+
+  /**
+   * Adds a spectator to a game id using the hashmap stored in the
+   * GameManager object.
+   *
+   * @param username the username to add to the game
+   * @param gameId the id of the game watching
+   */
+  public void addSpectator(String username, int gameId)
+  {
+    spectators.put(username, gameId);
+    int viewers = spectatorNum.get(gameId);
+    spectatorNum.put(gameId, viewers+1);
+  }
+
+  /**
+   * Returns the amount of viewers currently watching the game
+   *
+   * @param gameID the game that is being watched
+   * @return the number of active viewers.
+   */
+  public int getViewers(int gameID)
+  {
+    return spectatorNum.get(gameID);
+  }
+
+  /**
+   * Removes a spectator from the map of spectators / id.
+   *
+   * @param username the username that  must be removed.
+   */
+  public void removeSpectator(String username)
+  {
+    int gameID = spectators.get(username);
+    spectators.remove(username);
+    int viewers = spectatorNum.get(gameID);
+    spectatorNum.put(gameID, viewers-1);
+
   }
 
   /**
@@ -92,6 +131,7 @@ public class GameManager
     HashMap<String, String> pairToAdd = new HashMap<>();
     pairToAdd.put(challenger, victim);
     this.pairs.put(gameIDNum, pairToAdd);
+    spectatorNum.put(gameIDNum, 0);
     Gson gson = new Gson();
     Board board;
     try
@@ -110,6 +150,16 @@ public class GameManager
   }
 
   /**
+   * Produces a list of all active games
+   *
+   * @return all active games in a list form.
+   */
+  public List<CheckerGame> getGames()
+  {
+    return new ArrayList<>(games.values());
+  }
+
+  /**
    * Returns the game id from a username
    *
    * @param username: the username to get the Game ID
@@ -117,7 +167,13 @@ public class GameManager
    */
   public int getGameID(String username)
   {
-    return gameID.get(username);
+    if(gameID.containsKey(username))
+    {
+      return gameID.get(username);
+    } else
+    {
+      return spectators.get(username);
+    }
   }
 
   /**

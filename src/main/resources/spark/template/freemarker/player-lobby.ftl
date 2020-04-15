@@ -1,12 +1,14 @@
 <#if signIn>
     <#if !pendingChallenge??>
     <div id="player-lobby">
-        <h2>Welcome ${currentUser}! You can request a game below.</h2>
+        <h2>Welcome ${currentUser}! You can request to play a game with a
+            player below, or watch an ongoing match!</h2>
+        <h3>Challenge a Player:</h3>
         <#list usernames as username>
                 <p>${username}:
                 <form action='./requestGame' method="POST">
                 <button type="submit" name="gameRequest"
-                value=${username}>Request
+                value=${username?replace(" ", "-")}>Request
                     Game</button>
             </form>
         <#else>
@@ -15,7 +17,8 @@
     </div>
     <#else>
         <div id="challenge-pending">
-            <h2>${challengeUser!"Error"} has challenged you to a game!</h2>
+            <h2>You have been challenged to a game.</h2>
+            <h3>${challengeUser!"Error"} has challenged you!</h3>
             <form action='./requestResponse' method="Post">
                 <button type="submit" name="gameAccept"
                         value="yes">Accept</button>

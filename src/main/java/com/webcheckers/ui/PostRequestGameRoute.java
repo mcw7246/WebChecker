@@ -52,7 +52,8 @@ public class PostRequestGameRoute implements Route
     if (playerLobby != null)
     {
       // person who is being challenged.
-      final String challengerStr = request.queryParams(REQUEST_VAL);
+      String challengerStr = request.queryParams(REQUEST_VAL);
+      challengerStr = challengerStr.replace('-', ' ');
       String username = player.getUsername();
       if (playerLobby.getChallenges().get(username) != null)
       {

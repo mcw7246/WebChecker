@@ -18,7 +18,7 @@ public class Player
 
   public enum ViewMode
   {
-    PLAY
+    PLAY, SPECTATOR
   }
 
   private String username;
@@ -98,7 +98,7 @@ public class Player
     System.out.println(containsSpace);
     boolean numContains = Pattern.compile("[0-9]").matcher(username).find();
     if (!userContains || username.length() < 6 || username.length() > 25 ||
-            username.startsWith("[0-9]+") || !numContains)
+            username.startsWith("[0-9]+"))
     {
       result = UsernameResult.INVALID;
       return result;

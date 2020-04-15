@@ -32,6 +32,10 @@ public class PostRequestResponseRoute implements Route
           "/webcheckers/test-boards/noAvailableJump";
   private static final String NECESSARY_JUMP_WHITE = "src/test/java/com" +
           "/webcheckers/test-boards/necesssaryJumpWhite.JSON";
+  private static final String STACK_JUMP = "src/test/java/com/webcheckers" +
+          "/test-boards/beforeServerCrashBoard.JSON";
+  private static final String MULTI_JUMP_STILL_REQUIRED_WRONG = "src/test" +
+          "/java/com/webcheckers/test-boards/multiJumpBoardStillJump.JSON";
 
   /**
    * Constructor for the {@code GET/game} route handler.
@@ -66,7 +70,8 @@ public class PostRequestResponseRoute implements Route
     {
       final String usernameStr = player.getUsername();
       final String accept = request.queryParams(GAME_ACCEPT);
-      final String oppPlayer = httpSession.attribute(CHALLENGE_USER_KEY);
+      String oppPlayer = httpSession.attribute(CHALLENGE_USER_KEY);
+      oppPlayer = oppPlayer.replace('-', ' ');
       GameManager gameManager = httpSession.attribute(GetHomeRoute.GAME_MANAGER_KEY);
       LOG.config("Response to: " + oppPlayer);
       switch (accept)

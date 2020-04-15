@@ -25,6 +25,7 @@ public class GetGameRoute implements Route
   public static final String GAME_BOARD_VIEW = "board";
   public static final String VIEW_NAME = "game.ftl";
   public static final String GAME_BOARD = "board_actual";
+  public static final String VIEWERS = "viewers";
 
   //Attributes
   private static final Logger LOG = Logger.getLogger(GetHomeRoute.class.getName());
@@ -54,7 +55,7 @@ public class GetGameRoute implements Route
       String CURRENT_PLAYER = "currentUser";
       String username = player.getUsername();
       String oppUsername;
-              vm.put(CURRENT_PLAYER, username);
+      vm.put(CURRENT_PLAYER, username);
 
       CheckerGame game;
       int gameIdNum = gameManager.getGameID(player.getUsername());
@@ -113,7 +114,26 @@ public class GetGameRoute implements Route
           vm.put("modeOptionsAsJSON", gson.toJson(modeOptions));
         }
       }
+      int redPieces = game.getNumRedPieces();
+      int whitePieces = game.getNumWhitePieces();
+      if((redPieces == 0) || (whitePieces == 0))
+      {
+        modeOptions.put("isGameOver", true);
+        if(whitePieces == 0)
+        {
+          modeOptions.put("gameOverMessage", oppUsername + "'s pieces " +
+                  "were all taken! You win!");
+          vm.put("modeOptionsAsJSON", gson.toJson(modeOptions));
+        }
+        else
+        {
+          modeOptions.put("gameOverMessage", "Your pieces " +
+                  "were all taken! You lose!");
+          vm.put("modeOptionsAsJSON", gson.toJson(modeOptions));
+        }
+      }
       vm.put(ACTIVE_COLOR, game.getColor());
+      vm.put(VIEWERS, gameManager.getViewers(gameIdNum));
       return templateEngine.render(new ModelAndView(vm, VIEW_NAME));
     } else
     {

@@ -120,14 +120,23 @@ public class PostSubmitTurnRoute implements Route
             {
               colorFactor = -1;
             }
-            Stack<Move> oneDirMoves = requireMove.addMovesRowOneDirection(validMoves, game.getBoard(), jumpEndSpace.getPiece(), jumpEndSpace, colorFactor);
+            validMoves = requireMove.addMovesRowOneDirection(validMoves,
+                    game.getBoard(), jumpEndSpace.getPiece(), jumpEndSpace, colorFactor);
             Move availableMove;
-            do {
-              availableMove = oneDirMoves.pop();
-            } while (!oneDirMoves.isEmpty() &&
-                    availableMove.getStatus().equals(Move.MoveStatus.VALID));
-            //return error message saying there is another valid jump that needs to be made
-            if (oneDirMoves.size() != 0)
+            while(true)
+            {
+              if (validMoves.isEmpty())
+              {
+                break;
+              } else if(!validMoves.get(0).getStatus().equals(Move.MoveStatus.VALID))
+              {
+                break;
+              } else
+              {
+                validMoves.pop();
+              }
+            }
+            if (validMoves.size() != 0)
             {
               return gson.toJson(error("There is still an available jump. You" +
                       " must make this move before you end your turn."));

@@ -29,6 +29,8 @@
     <!-- List of Players below     -->
     <#include "player-lobby.ftl" />
 
+    <#include "active-games.ftl" />
+
   </div>
 
 </div>
