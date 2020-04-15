@@ -17,6 +17,8 @@ import static com.webcheckers.ui.WebServer.HOME_URL;
 
 public class GetSpectatorGameRoute implements Route
 {
+  public static String TURN = "turn";
+
   private static final Logger LOG = Logger.getLogger(GetHomeRoute.class.getName());
   private Gson gson = new Gson();
   private final TemplateEngine templateEngine;
@@ -40,28 +42,31 @@ public class GetSpectatorGameRoute implements Route
     if(spectator != null)
     {
       String redUsername = request.queryParams("watchGameRequest");
-      GameManager gameManager = session.attribute(GetHomeRoute.GAME_MANAGER_KEY);
+      GameManager manager = session.attribute(GetHomeRoute.GAME_MANAGER_KEY);
       String CURRENT_PLAYER = "currentUser";
       vm.put(CURRENT_PLAYER, spectator.getUsername());
       vm.put(GetGameRoute.VIEW_MODE, Player.ViewMode.SPECTATOR);
       CheckerGame game;
-      int gameIdNum = gameManager.getGameID(redUsername);
-      game = gameManager.getGame(gameIdNum);
+      int gameIdNum = manager.getGameID(redUsername);
+      game = manager.getGame(gameIdNum);
       Player redPlayer = game.getRedPlayer();
       Player whitePlayer = game.getWhitePlayer();
       vm.put(RED_PLAYER, redPlayer);
       vm.put(WHITE_PLAYER, whitePlayer);
       if(game.getTurn().equals(redUsername))
       {
+        session.attribute(TURN, redUsername);
         BoardView bV = new BoardView(game.getBoard());
         vm.put(GAME_BOARD_VIEW, bV);
       } else
       {
+        session.attribute(TURN, whitePlayer.getUsername());
         BoardView bV = new BoardView(game.getBoard());
         bV.flip();
         vm.put(GAME_BOARD_VIEW, bV);
       }
       vm.put(ACTIVE_COLOR, game.getColor());
+      manager.addSpectator(spectator.getUsername(), gameIdNum);
       return templateEngine.render(new ModelAndView(vm, VIEW_NAME));
     } else
     {

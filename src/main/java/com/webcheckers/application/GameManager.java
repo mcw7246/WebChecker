@@ -28,6 +28,7 @@ public class GameManager
   private static Set<String> inGame = new HashSet<>();
   private static Map<String, CheckerGame> clientSideGames = new HashMap<>();
   private static PlayerLobby playerLobby;
+  private static Map<String, Integer> spectators = new HashMap<>();
 
   public GameManager(PlayerLobby lobby)
   {
@@ -63,6 +64,28 @@ public class GameManager
     pairToAdd.put(challenger, victim);
     this.pairs.put(gameIDNum, pairToAdd);
     games.put(gameIDNum, new CheckerGame(player1, player2, new Board()));
+  }
+
+  /**
+   * Adds a spectator to a game id using the hashmap stored in the
+   * GameManager object.
+   *
+   * @param username the username to add to the game
+   * @param gameId the id of the game watching
+   */
+  public void addSpectator(String username, int gameId)
+  {
+    spectators.put(username, gameId);
+  }
+
+  /**
+   * Removes a spectator from the map of spectators / id.
+   *
+   * @param username the username that  must be removed.
+   */
+  public void removeSpectator(String username)
+  {
+    spectators.remove(username);
   }
 
   /**
@@ -124,7 +147,13 @@ public class GameManager
    */
   public int getGameID(String username)
   {
-    return gameID.get(username);
+    if(gameID.containsKey(username))
+    {
+      return gameID.get(username);
+    } else
+    {
+      return spectators.get(username);
+    }
   }
 
   /**

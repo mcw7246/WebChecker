@@ -9,39 +9,35 @@ import spark.Response;
 import spark.Route;
 import spark.Session;
 
-import java.util.logging.Logger;
-
 import static com.webcheckers.util.Message.info;
 import static spark.Spark.halt;
 
-public class PostCheckTurnRoute implements Route
+public class PostSpectatorCheckTurnRoute implements Route
 {
 
-  private static final Logger LOG = Logger.getLogger(GetHomeRoute.class.getName());
-
   @Override
-  public Object handle(Request request, Response response)
+  public Object handle(Request request, Response response) throws Exception
   {
     final Session httpSession = request.session();
-    final Player player = httpSession.attribute(GetHomeRoute.PLAYER_KEY);
+    final Player spectator = httpSession.attribute(GetHomeRoute.PLAYER_KEY);
     final Gson gson = new Gson();
-    //Possible to do: add protection against null game manager
-    if (player != null)
+    if (spectator != null)
     {
       GameManager manager = httpSession.attribute(GetHomeRoute.GAME_MANAGER_KEY);
-      int gameID = manager.getGameID(player.getUsername());
+      String username = spectator.getUsername();
+      int gameID = manager.getGameID(username);
       final CheckerGame game = manager.getGame(gameID);
-      if (game.getTurn().equals(player.getUsername()))
-      {
-        return gson.toJson(info("true"));
-      } else
+      String turn = httpSession.attribute(GetSpectatorGameRoute.TURN);
+      if (game.getTurn().equals(turn))
       {
         return gson.toJson(info("false"));
+      } else
+      {
+        return gson.toJson(info("true"));
       }
     } else
     {
       response.redirect(WebServer.HOME_URL);
-      halt();
       return "Redirected Home";
     }
   }
