@@ -21,12 +21,14 @@ public class PlayerTest
   private static final String GOOD_NAME = "player1";
   private static final String NO_NUM = "player";
   private static final String TOO_SHORT = "p1";
+  private static final String CONTAINS_SPACE = "pla yer";
   private static final String TOO_LONG = "itsybitsysp1derwentupthewaterspout";
   private static final String HAS_SPACE = "player 1";
   private static final String CAPS_OK = "Player1";
   private static final String NUM_START = "1Player";
   private static final String SPECIAL_CHAR = "Player1!";
   private static final String GOOD_NAME_2 = "player2";
+
 
   /**
    * The component under test.
@@ -119,11 +121,12 @@ public class PlayerTest
    * Tests that the correct type of result is given when the username has no
    * number.
    */
+
   @Test
   public void no_Num()
   {
     CuT = new Player(lobby);
-    assertEquals(UsernameResult.INVALID, CuT.isValidUsername(NO_NUM));
+    assertEquals(UsernameResult.AVAILABLE, CuT.isValidUsername(NO_NUM));
   }
 
   /**
@@ -137,6 +140,14 @@ public class PlayerTest
   }
 
   /**
+   * Tests if having a space in the username is valid
+   */
+  @Test
+  public void contains_Space(){
+    CuT = new Player(lobby);
+    assertEquals(UsernameResult.AVAILABLE, CuT.isValidUsername(CONTAINS_SPACE));
+  }
+  /**
    * Tests that the correct type of result is given when the username is too
    * long (>25 chars).
    */
@@ -145,17 +156,6 @@ public class PlayerTest
   {
     CuT = new Player(lobby);
     assertEquals(UsernameResult.INVALID, CuT.isValidUsername(TOO_LONG));
-  }
-
-  /**
-   * Tests that the correct type of result is given when the username
-   * contains a white space (which is an illegal character)
-   */
-  @Test
-  public void has_Space()
-  {
-    CuT = new Player(lobby);
-    assertEquals(UsernameResult.INVALID, CuT.isValidUsername(HAS_SPACE));
   }
 
   /**
@@ -183,6 +183,7 @@ public class PlayerTest
   /**
    * When a special character is present the result should be invalid.
    */
+
   @Test
   public void special_Char()
   {

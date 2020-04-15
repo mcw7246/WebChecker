@@ -93,12 +93,15 @@ public class Player
      * make sure that the username contains letters and numbers and spaces only
      */
 
-    boolean userContains = Pattern.matches("[a-zA-Z0-9\\s]+", username);
-    boolean containsSpace = Pattern.compile(" ").matcher(username).find();
-    System.out.println(containsSpace);
-    boolean numContains = Pattern.compile("[0-9]").matcher(username).find();
-    if (!userContains || username.length() < 6 || username.length() > 25 ||
-            username.startsWith("[0-9]+") || !numContains)
+    boolean userContains = Pattern.compile("[a-z]+").matcher(username).find();
+    boolean containsSpace = Pattern.compile("\\s\\s").matcher(username).find();
+    String[] usernameList = username.split("");
+    boolean numContains = Pattern.compile("[0-9]*").matcher(username).find();
+    System.out.println(usernameList[0]);
+    boolean firstNum = usernameList[0].matches("[0-9]");
+    boolean specialChar = Pattern.compile("[^a-zA-Z0-9\\s]").matcher(username).find();
+    System.out.println(specialChar);
+    if (!userContains || username.length() < 6 || username.length() > 25 || firstNum || specialChar)
     {
       result = UsernameResult.INVALID;
       return result;
