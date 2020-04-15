@@ -8,7 +8,7 @@
                 <p>${username}:
                 <form action='./requestGame' method="POST">
                 <button type="submit" name="gameRequest"
-                value=${username}>Request
+                value=${username?replace(" ", "-")}>Request
                     Game</button>
             </form>
         <#else>

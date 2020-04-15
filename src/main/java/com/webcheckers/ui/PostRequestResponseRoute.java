@@ -70,7 +70,8 @@ public class PostRequestResponseRoute implements Route
     {
       final String usernameStr = player.getUsername();
       final String accept = request.queryParams(GAME_ACCEPT);
-      final String oppPlayer = httpSession.attribute(CHALLENGE_USER_KEY);
+      String oppPlayer = httpSession.attribute(CHALLENGE_USER_KEY);
+      oppPlayer = oppPlayer.replace('-', ' ');
       GameManager gameManager = httpSession.attribute(GetHomeRoute.GAME_MANAGER_KEY);
       LOG.config("Response to: " + oppPlayer);
       switch (accept)
