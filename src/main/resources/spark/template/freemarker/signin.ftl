@@ -7,7 +7,7 @@
     <link rel="stylesheet" type="text/css" href="/css/style.css">
 </head>
 
-<body>
+<body onload="initTheme()">
 <div class="page">
 
     <h1>Web Checkers | ${title}</h1>
@@ -29,5 +29,7 @@
 
 </div>
 </body>
+
+<script data-main="/js" src="/js/initTheme.js"></script>
 
 </html>

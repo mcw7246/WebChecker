@@ -18,7 +18,7 @@
   };
   </script>
 </head>
-<body>
+<body onload="initTheme()">
   <div class="page">
     <h1>Web Checkers | Game View</h1>
     
@@ -85,7 +85,6 @@
           </table>
         </div>
       </div>
-
     </div>
     <h3>Current Spectators: ${viewers}</h3>
   </div>
@@ -94,6 +93,7 @@
          autostart="false" ></audio>
   
   <script data-main="/js/game/index" src="/js/require.js"></script>
+  <script data-main="/js" src="/js/initTheme.js"></script>
   
 </body>
 </html>
