@@ -123,14 +123,18 @@ public class PostSubmitTurnRoute implements Route
             validMoves = requireMove.addMovesRowOneDirection(validMoves,
                     game.getBoard(), jumpEndSpace.getPiece(), jumpEndSpace, colorFactor);
             Move availableMove;
-            if (validMoves.size() > 0)
+            while(true)
             {
-              do
+              if (validMoves.isEmpty())
               {
-                availableMove = validMoves.pop();
-              } while (!validMoves.isEmpty() &&
-                      availableMove.getStatus().equals(Move.MoveStatus.VALID));
-              //return error message saying there is another valid jump that needs to be made
+                break;
+              } else if(!validMoves.get(0).getStatus().equals(Move.MoveStatus.VALID))
+              {
+                break;
+              } else
+              {
+                validMoves.pop();
+              }
             }
             if (validMoves.size() != 0)
             {
