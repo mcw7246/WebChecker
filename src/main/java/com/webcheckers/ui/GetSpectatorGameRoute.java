@@ -66,6 +66,7 @@ public class GetSpectatorGameRoute implements Route
         vm.put(GAME_BOARD_VIEW, bV);
       }
       vm.put(ACTIVE_COLOR, game.getColor());
+      vm.put(VIEWERS, manager.getViewers(gameIdNum));
       manager.addSpectator(spectator.getUsername(), gameIdNum);
       return templateEngine.render(new ModelAndView(vm, VIEW_NAME));
     } else

@@ -13,7 +13,8 @@
     "modeOptions" : ${modeOptionsAsJSON!'{}'},
     "redPlayer" : "${redPlayer.getUsername()}",
     "whitePlayer" : "${whitePlayer.getUsername()}",
-    "activeColor" : "${activeColor}"
+    "activeColor" : "${activeColor}",
+    "viewers" : "${viewers}"
   };
   </script>
 </head>
@@ -86,6 +87,7 @@
       </div>
 
     </div>
+    <h3>Current Spectators: ${viewers}</h3>
   </div>
 
   <audio id="audio" src="https://www.soundjay.com/misc/sounds/squeeze-toy-5.mp3"

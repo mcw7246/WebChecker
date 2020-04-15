@@ -29,6 +29,7 @@ public class GameManager
   private static Map<String, CheckerGame> clientSideGames = new HashMap<>();
   private static PlayerLobby playerLobby;
   private static Map<String, Integer> spectators = new HashMap<>();
+  private static Map<Integer, Integer> spectatorNum = new HashMap<>();
 
   public GameManager(PlayerLobby lobby)
   {
@@ -60,6 +61,7 @@ public class GameManager
     gameIDNum += 1;
     gameID.put(challenger, gameIDNum);
     gameID.put(victim, gameIDNum);
+    spectatorNum.put(gameIDNum, 0);
     HashMap<String, String> pairToAdd = new HashMap<>();
     pairToAdd.put(challenger, victim);
     this.pairs.put(gameIDNum, pairToAdd);
@@ -76,6 +78,19 @@ public class GameManager
   public void addSpectator(String username, int gameId)
   {
     spectators.put(username, gameId);
+    int viewers = spectatorNum.get(gameId);
+    spectatorNum.put(gameId, viewers+1);
+  }
+
+  /**
+   * Returns the amount of viewers currently watching the game
+   *
+   * @param gameID the game that is being watched
+   * @return the number of active viewers.
+   */
+  public int getViewers(int gameID)
+  {
+    return spectatorNum.get(gameID);
   }
 
   /**
@@ -85,7 +100,11 @@ public class GameManager
    */
   public void removeSpectator(String username)
   {
+    int gameID = spectators.get(username);
     spectators.remove(username);
+    int viewers = spectatorNum.get(gameID);
+    spectatorNum.put(gameID, viewers-1);
+
   }
 
   /**
@@ -112,6 +131,7 @@ public class GameManager
     HashMap<String, String> pairToAdd = new HashMap<>();
     pairToAdd.put(challenger, victim);
     this.pairs.put(gameIDNum, pairToAdd);
+    spectatorNum.put(gameIDNum, 0);
     Gson gson = new Gson();
     Board board;
     try

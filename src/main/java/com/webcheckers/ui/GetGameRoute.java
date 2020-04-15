@@ -25,6 +25,7 @@ public class GetGameRoute implements Route
   public static final String GAME_BOARD_VIEW = "board";
   public static final String VIEW_NAME = "game.ftl";
   public static final String GAME_BOARD = "board_actual";
+  public static final String VIEWERS = "viewers";
 
   //Attributes
   private static final Logger LOG = Logger.getLogger(GetHomeRoute.class.getName());
@@ -114,6 +115,7 @@ public class GetGameRoute implements Route
         }
       }
       vm.put(ACTIVE_COLOR, game.getColor());
+      vm.put(VIEWERS, gameManager.getViewers(gameIdNum));
       return templateEngine.render(new ModelAndView(vm, VIEW_NAME));
     } else
     {
