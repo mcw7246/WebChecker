@@ -13,6 +13,7 @@ import java.util.logging.Logger;
 
 import static com.webcheckers.model.Piece.Color.RED;
 import static com.webcheckers.model.Piece.Color.WHITE;
+import static com.webcheckers.ui.PostRequestGameRoute.MESSAGE;
 import static com.webcheckers.ui.PostResignRoute.RESIGN_ATTR;
 import static com.webcheckers.ui.WebServer.HOME_URL;
 
@@ -52,6 +53,7 @@ public class GetGameRoute implements Route
 
     if (player != null)
     {
+      session.attribute(MESSAGE, null);
       GameManager gameManager = session.attribute(GetHomeRoute.GAME_MANAGER_KEY);
       String CURRENT_PLAYER = "currentUser";
       String username = player.getUsername();

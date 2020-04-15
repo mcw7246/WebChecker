@@ -57,7 +57,7 @@ public class PostRequestGameRoute implements Route
       String username = player.getUsername();
       if (playerLobby.getChallenges().get(username) != null)
       {
-        httpSession.attribute(ERROR_MESSAGE_KEY, "Request not Sent! You have a pending request.");
+        httpSession.attribute(ERROR_MESSAGE_KEY, "Request Not Sent! You have a pending request.");
         response.redirect(WebServer.HOME_URL);
         return null;
       } else if (playerLobby.getChallengers().contains(username))
@@ -68,7 +68,7 @@ public class PostRequestGameRoute implements Route
         return null;
       } else if (gameManager.getInGame().contains(challengerStr))
       {
-        httpSession.attribute(ERROR_MESSAGE_KEY, "Request not Sent! " +
+        httpSession.attribute(ERROR_MESSAGE_KEY, "Request Not Sent! " +
                 challengerStr + " is already in a game.");
       } else if (!playerLobby.challenge(challengerStr, username))
       {
