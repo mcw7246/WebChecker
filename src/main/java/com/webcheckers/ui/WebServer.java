@@ -161,10 +161,6 @@ public class WebServer
     post(BACKUP_MOVE_URL, new PostBackupMoveRoute());
     get(SPECTATOR_GAME_URL, new GetSpectatorGameRoute(templateEngine));
     post(SPECTATOR_CHECK_TURN_URL, new PostSpectatorCheckTurnRoute());
-    post(REQUEST_GAME_URL, new PostRequestGameRoute(templateEngine));
-    post(RESPONSE_GAME_URL, new PostRequestResponseRoute(templateEngine,
-            playerLobby));
-    get(GAME_URL, new GetGameRoute(templateEngine, playerLobby));
     post(SIGNOUT_URL, new PostSignOutRoute(templateEngine, playerLobby));
     LOG.config("WebServer is initialized.");
   }
