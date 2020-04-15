@@ -13,7 +13,7 @@ import java.util.*;
 public class PlayerLobby
 {
 
-  ;
+
 
   // Attributes
   //Player Hashmap where the username is the key.
@@ -45,7 +45,7 @@ public class PlayerLobby
    */
   public boolean challenge(String victim, String challenger)
   {
-    if (challenges.containsKey(victim))
+    if (challenges.containsKey(victim) || challengers.contains(victim))
     {
       return false;
     } else

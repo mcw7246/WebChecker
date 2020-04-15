@@ -69,6 +69,8 @@ public class PostSubmitTurnRouteTest
   @BeforeEach
   public void setup()
   {
+    game = new CheckerGame(player, player2, board);
+
     request = mock(Request.class);
     session = mock(Session.class);
     when(request.session()).thenReturn(session);
@@ -109,15 +111,19 @@ public class PostSubmitTurnRouteTest
     try
     {
       this.board = gson.fromJson(new FileReader(ONE_MOVE), Board.class);
+      game = new CheckerGame(player, player2, board);
     } catch (FileNotFoundException e){
       fail("Initial Board was not found from given path");
     }
-    game = new CheckerGame(player, player2, this.board);
+    int gameID = manager.getGameID(player.getUsername());
     when(manager.getLocalGame(player.getUsername())).thenReturn(game);
+    when(manager.getGameID(player.getUsername())).thenReturn(gameID);
     List<Move> moves = new ArrayList<>();
     moves.add(new Move(new Position(5, 0), new Position(4, 1),
             Move.MoveStatus.VALID));
+    when(manager.getGame(gameID)).thenReturn(game);
     when(session.attribute(PostValidateMoveRoute.MOVE_LIST_ID)).thenReturn(moves);
+    when(manager.getLocalGame(player.getUsername())).thenReturn(game);
 
     assertEquals(CuT.handle(request, response),
             gson.toJson(info("Valid Move")));
@@ -132,15 +138,23 @@ public class PostSubmitTurnRouteTest
       fail("Initial Board was not found from given path");
     }
     CheckerGame game = new CheckerGame(player, player2, board);
+    int gameID = manager.getGameID(player.getUsername());
     when(player.getPlayerNum()).thenReturn(1);
     when(manager.getLocalGame(player.getUsername())).thenReturn(game);
-
+    when(manager.getGameID(player.getUsername())).thenReturn(gameID);
+    when(manager.getGame(gameID)).thenReturn(game);
     List<Move> moves = new ArrayList<>();
     moves.add(new Move(new Position(4, 1), new Position(2, 3),
             Move.MoveStatus.JUMP));
 
     Space endSpace = new Space(2, 3, true, new Piece(Piece.Color.RED));
     when(session.attribute(PostValidateMoveRoute.MOVE_LIST_ID)).thenReturn(moves);
+    System.out.println("BOARD: " + board);
+
+    when(manager.getLocalGame(player.getUsername())).thenReturn(game);
+    CuT.handle(request, response);
+    // TODO fix the assertEquals : it returns "there is still an available
+    // TODO jump. You must take this before you end your turn."
     assertEquals(gson.toJson(info("Valid Move")), CuT.handle(request,
             response));
   }
