@@ -17,7 +17,8 @@
     </div>
     <#else>
         <div id="challenge-pending">
-            <h2>${challengeUser!"Error"} has challenged you to a game!</h2>
+            <h2>You have been challenged to a game.</h2>
+            <h3>${challengeUser!"Error"} has challenged you!</h3>
             <form action='./requestResponse' method="Post">
                 <button type="submit" name="gameAccept"
                         value="yes">Accept</button>
