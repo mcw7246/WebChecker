@@ -35,6 +35,8 @@ public class PostRequestResponseRoute implements Route
           "/java/com/webcheckers/test-boards/multiJumpBoardStillJump.JSON";
   private static final String NO_MORE_MOVES = "src/test/java/com/webcheckers" +
           "/test-boards/no-more-moves.JSON";
+  private static final String ABOUT_JUMP_ALL = "src/test/java/com/webcheckers" +
+          "/test-boards/about-to-all-pieces-jumped.JSON";
 
   /**
    * Constructor for the {@code GET/game} route handler.
@@ -66,6 +68,9 @@ public class PostRequestResponseRoute implements Route
     {
       manager.startTestGame(opponent, username,
               MULTI_JUMP_STILL_REQUIRED_WRONG, 1);
+    } else if (username.equals("ABOUT TO JUMP ALL"))
+    {
+      manager.startTestGame(opponent, username, ABOUT_JUMP_ALL, 1);
     } else
     {
       manager.startGame(opponent, username);
