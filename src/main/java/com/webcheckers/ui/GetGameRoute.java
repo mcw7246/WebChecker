@@ -54,7 +54,7 @@ public class GetGameRoute implements Route
       String CURRENT_PLAYER = "currentUser";
       String username = player.getUsername();
       String oppUsername;
-              vm.put(CURRENT_PLAYER, username);
+      vm.put(CURRENT_PLAYER, username);
 
       CheckerGame game;
       int gameIdNum = gameManager.getGameID(player.getUsername());

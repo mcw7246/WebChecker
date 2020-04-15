@@ -18,7 +18,7 @@ public class Player
 
   public enum ViewMode
   {
-    PLAY
+    PLAY, SPECTATOR
   }
 
   private String username;

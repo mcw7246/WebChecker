@@ -1,7 +1,9 @@
 <#if signIn>
     <#if !pendingChallenge??>
     <div id="player-lobby">
-        <h2>Welcome ${currentUser}! You can request a game below.</h2>
+        <h2>Welcome ${currentUser}! You can request to play a game with a
+            player below, or watch an ongoing match!</h2>
+        <h3>Challenge a Player:</h3>
         <#list usernames as username>
                 <p>${username}:
                 <form action='./requestGame' method="POST">

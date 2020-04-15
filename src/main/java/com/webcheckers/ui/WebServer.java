@@ -66,6 +66,7 @@ public class WebServer
   public static final String CHECK_TURN_URL = "/checkTurn";
   public static final String SUBMIT_TURN_URL = "/submitTurn";
   public static final String BACKUP_MOVE_URL = "/backupMove";
+  public static final String SPECTATOR_GAME_URL = "/spectator/game";
 
   //
   // Attributes
@@ -156,6 +157,7 @@ public class WebServer
     post(VALIDATE_MOVE_URL, new PostValidateMoveRoute());
     post(SUBMIT_TURN_URL, new PostSubmitTurnRoute());
     post(BACKUP_MOVE_URL, new PostBackupMoveRoute());
+    get(SPECTATOR_GAME_URL, new GetSpectatorGameRoute(templateEngine));
     LOG.config("WebServer is initialized.");
   }
 

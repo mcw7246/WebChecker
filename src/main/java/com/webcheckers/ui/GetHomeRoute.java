@@ -102,6 +102,7 @@ public class GetHomeRoute implements Route
       vm.replace(TITLE_ATTR, TITLE + " Please sign-in.");
       vm.put(SIGN_IN_KEY, false);
       vm.put(PLAYER_NUM_KEY, lobby.getUsernames().size());
+      vm.put("gameNum", manager.getGames().size());
       // get the object that will provide client-specific services for this player
       vm.put(NEW_PLAYER_ATTR, true);
     } else
@@ -126,6 +127,7 @@ public class GetHomeRoute implements Route
         }
         List<String> usernames = lobby.getUsernames();
         List<CheckerGame> games = manager.getGames();
+        vm.put("games", games);
         usernames.remove(player.getUsername());
         vm.put("usernames", usernames);
       }
