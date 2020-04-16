@@ -62,6 +62,7 @@ public class CheckerGame
     this.PLAYER_TWO = original.PLAYER_TWO;
     this.board = new Board(original.board);
     this.turn = original.turn;
+    this.gameID = original.getGameID();
     jumpedPieces = new Stack<Space>();
     numRedPieces = 12;
     numWhitePieces = 12;

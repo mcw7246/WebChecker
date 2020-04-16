@@ -13,9 +13,10 @@
     <#include "nav-bar.ftl" />
   <div class="body">
     <h2>You can rewatch a valid game below!</h2>
-    <h3>Replay Games:</h3>
+    <h3>Replay Games: (Listed by highest win percentage between players)</h3>
       <#list replayGames as games>
-        <p>${games.getRedPlayer().getUsername()} (${games.getRedPlayer()
+        <p>${games.getGameID()}. ${games.getRedPlayer().getUsername()} (${games
+            .getRedPlayer()
             .getWinPercentage()
             }) v. ${games.getWhitePlayer().getUsername()} (${games
             .getWhitePlayer()

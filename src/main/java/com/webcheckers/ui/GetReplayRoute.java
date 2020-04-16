@@ -34,7 +34,7 @@ public class GetReplayRoute implements Route
   {
     public int compare(CheckerGame a, CheckerGame b)
     {
-      return (int) a.winningAverage()*100 - (int) b.winningAverage()*100;
+      return (int) b.winningAverage()*100 - (int) a.winningAverage()*100;
     }
   }
 

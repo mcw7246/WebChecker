@@ -79,6 +79,41 @@ public class ReplayManager
   }
 
   /**
+   * Determines if the specified user is watching a replay at the moment or not
+   *
+   * @param username the username to check
+   * @return if the map contains the username.
+   */
+  public boolean isWatching(String username)
+  {
+    return activeReplays.containsKey(username);
+  }
+
+  /**
+   * Advances the player to watch the next turn
+   *
+   * @param username the player who is watching
+   * @param gameID the game they are watching
+   */
+  public void nextMove(String username, int gameID)
+  {
+    int move = getMove(username, gameID) + 1;
+    activeReplays.get(username).replace(gameID, move);
+  }
+
+  /**
+   * Takes the player back to the move that they decide to be at.
+   *
+   * @param username the username of the player watching
+   * @param gameID the game they are watching.
+   */
+  public void previousMove(String username, int gameID)
+  {
+    int move = getMove(username, gameID) - 1;
+    activeReplays.get(username).replace(gameID, move);
+  }
+
+  /**
    * Returns the board at the current move value.
    *
    * @param gameID the game to get

@@ -1,6 +1,7 @@
 package com.webcheckers.ui;
 
 import com.webcheckers.application.GameManager;
+import com.webcheckers.application.ReplayManager;
 import com.webcheckers.model.Player;
 import spark.Request;
 import spark.Response;
@@ -14,6 +15,11 @@ import static com.webcheckers.ui.WebServer.*;
 public class PostChangeTheme implements Route
 {
   public static String THEME = "theme";
+  private ReplayManager replayManager;
+
+  public PostChangeTheme(ReplayManager rManager){
+    replayManager = rManager;
+  }
 
   @Override
   public Object handle(Request request, Response response) throws Exception
@@ -40,6 +46,9 @@ public class PostChangeTheme implements Route
       } else if (player.inArchive())
       {
         response.redirect(REPLAY_URL);
+      } else if (replayManager.isWatching(player.getUsername()))
+      {
+        response.redirect(REPLAY_GAME);
       } else
       {
         response.redirect(HOME_URL);

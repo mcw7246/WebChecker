@@ -20,7 +20,7 @@ import static com.webcheckers.util.Message.info;
 
 public class GetReplayGameRoute implements Route
 {
-  private static final String GAME_ID = "gameID";
+  public static final String GAME_ID = "gameID";
   private static final String RED_PLAYER = "redPlayer";
   private static final String MODE_OPTIONS_AS_JSON = "modeOptionsAsJSON";
   private static final String HAS_NEXT = "hasNext";
@@ -59,13 +59,13 @@ public class GetReplayGameRoute implements Route
 
     if (watcher != null)
     {
+      watcher.enterOrExitArchive(false);
       String gameIDStr = request.queryParams("replayRequest");
       int gameID;
       if (gameIDStr != null)
       {
         gameID = Integer.parseInt(gameIDStr);
         session.attribute(GAME_ID, gameID);
-
       } else
       {
         gameID = session.attribute(GAME_ID);
@@ -77,8 +77,8 @@ public class GetReplayGameRoute implements Route
       GameManager manager = session.attribute(GetHomeRoute.GAME_MANAGER_KEY);
 
       int move = rManager.getMove(username, gameID);
-      boolean hasNext = move > 0;
-      boolean hasPrevious = move < rManager.maxMoves(gameID)-1;
+      boolean hasPrevious = move > 0;
+      boolean hasNext = move < rManager.maxMoves(gameID)-1;
       Map<String, Object> modeOptions = new HashMap<>();
       modeOptions.put(HAS_NEXT, hasNext);
       modeOptions.put(HAS_PREVIOUS, hasPrevious);
@@ -104,6 +104,10 @@ public class GetReplayGameRoute implements Route
                 info("You have started viewing " + game.getRedPlayer().getUsername() +
                         " v. " + game.getWhitePlayer().getUsername() +
                         "!"));
+      } else {
+        vm.put("message",
+                info("You're on move " + move + " of " +
+                        (rManager.maxMoves(gameID)-1) + "."));
       }
       vm.put(NOT_REPLAY, false);
       vm.put(VIEWERS, "No viewers in replay mode!");

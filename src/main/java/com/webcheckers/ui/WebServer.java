@@ -73,6 +73,8 @@ public class WebServer
   public static final String CHANGE_THEME_URL = "/changeTheme";
   public static final String REPLAY_URL = "/replay";
   public static final String REPLAY_GAME = "/replay/game";
+  public static final String NEXT_TURN = "/replay/nextTurn";
+  public static final String PREVIOUS_TURN = "/replay/previousTurn";
 
   //
   // Attributes
@@ -172,6 +174,8 @@ public class WebServer
     post(CHANGE_THEME_URL, new PostChangeTheme());
     get(REPLAY_URL, new GetReplayRoute(templateEngine, rManager));
     get(REPLAY_GAME, new GetReplayGameRoute(templateEngine, rManager));
+    post(PREVIOUS_TURN, new PostReplayPreviousTurnRoute(rManager));
+    post(NEXT_TURN, new PostReplayNextTurnRoute(rManager));
     LOG.config("WebServer is initialized.");
   }
 }
