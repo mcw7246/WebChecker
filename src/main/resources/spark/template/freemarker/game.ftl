@@ -97,7 +97,7 @@
   <h3>Current Spectators: ${viewers}</h3>
 </div>
 
-<#if theme??>
+<#if theme>
 <audio id="audio" src="https://www.soundjay.com/misc/sounds/squeeze-toy-5.mp3"
        autostart="false"></audio>
 <#else>

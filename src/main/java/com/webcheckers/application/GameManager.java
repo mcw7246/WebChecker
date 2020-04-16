@@ -71,6 +71,17 @@ public class GameManager
   }
 
   /**
+   * Determines if the username is a spectator or not.
+   *
+   * @param username the username to check
+   * @return true if it is a spectator or not.
+   */
+  public boolean isSpectator(String username)
+  {
+    return spectators.containsKey(username);
+  }
+
+  /**
    * A function used to end the game in the player lobby.
    *
    * @param gameIDNum the gameID to end.

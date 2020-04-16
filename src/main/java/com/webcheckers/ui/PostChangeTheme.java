@@ -9,8 +9,7 @@ import spark.Session;
 
 import static com.webcheckers.ui.GetHomeRoute.GAME_MANAGER_KEY;
 import static com.webcheckers.ui.GetHomeRoute.PLAYER_KEY;
-import static com.webcheckers.ui.WebServer.GAME_URL;
-import static com.webcheckers.ui.WebServer.HOME_URL;
+import static com.webcheckers.ui.WebServer.*;
 
 public class PostChangeTheme implements Route
 {
@@ -28,17 +27,22 @@ public class PostChangeTheme implements Route
       if (theme == null)
       {
         session.attribute(THEME, "pink");
-      } else {
+      } else
+      {
         session.attribute(THEME, null);
       }
       if (player.isInGame())
       {
         response.redirect(GAME_URL);
+      } else if (manager.isSpectator(player.getUsername()))
+      {
+        response.redirect(SPECTATOR_GAME_URL);
       } else
       {
         response.redirect(HOME_URL);
       }
-    } else {
+    } else
+    {
       response.redirect(HOME_URL);
     }
     return null;
