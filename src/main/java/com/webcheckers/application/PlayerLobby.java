@@ -121,4 +121,15 @@ public class PlayerLobby
     return players;
   }
 
+  /**
+   * public function to remove a player for sign out
+   *
+   * @param player -> player to be removed
+   */
+  public synchronized void removePlayer(Player player)
+  {
+    if(player != null)
+    players.remove(player.getUsername());
+  }
+
 }

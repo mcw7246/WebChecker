@@ -7,10 +7,7 @@ import com.webcheckers.model.Player;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Holds and manages all games once they start
@@ -31,10 +28,16 @@ public class GameManager
   private static Set<String> inGame = new HashSet<>();
   private static Map<String, CheckerGame> clientSideGames = new HashMap<>();
   private static PlayerLobby playerLobby;
+  private static Map<String, Integer> spectators = new HashMap<>();
+  private static Map<Integer, Integer> spectatorNum = new HashMap<>();
+  private static Map<Integer, String> gameOver = new HashMap<>();
+  private static Set<Integer> activeGames = new HashSet<>();
+  private final ReplayManager rManager;
 
-  public GameManager(PlayerLobby lobby)
+  public GameManager(PlayerLobby lobby, ReplayManager rManager)
   {
     playerLobby = lobby;
+    this.rManager = rManager;
   }
 
   public Set<String> getInGame()
@@ -62,10 +65,127 @@ public class GameManager
     gameIDNum += 1;
     gameID.put(challenger, gameIDNum);
     gameID.put(victim, gameIDNum);
+    spectatorNum.put(gameIDNum, 0);
     HashMap<String, String> pairToAdd = new HashMap<>();
     pairToAdd.put(challenger, victim);
     this.pairs.put(gameIDNum, pairToAdd);
-    games.put(gameIDNum, new CheckerGame(player1, player2, new Board()));
+    CheckerGame game = new CheckerGame(player1, player2, new Board());
+    game.setGameID(gameIDNum);
+    games.put(gameIDNum, game);
+    gameOver.put(gameIDNum, "No");
+    activeGames.add(gameIDNum);
+    rManager.addMove(gameIDNum, game);
+  }
+
+  /**
+   * Determines if the username is a spectator or not.
+   *
+   * @param username the username to check
+   * @return true if it is a spectator or not.
+   */
+  public boolean isSpectator(String username)
+  {
+    return spectators.containsKey(username);
+  }
+
+  /**
+   * A function used to end the game in the player lobby.
+   *
+   * @param gameIDNum the gameID to end.
+   */
+  public void endGame(int gameIDNum)
+  {
+    Map<String, String> pair = pairs.get(gameIDNum);
+    Player player1 =
+            playerLobby.getPlayers().get(pair.keySet().toArray()[0]);
+    Player player2 = playerLobby.getPlayers().get(pair.values().toArray()[0]);
+    if (player1 != null)
+    {
+      String challenger = player1.getUsername();
+      inGame.remove(challenger);
+    }
+    if (player2 != null)
+    {
+      String victim = player2.getUsername();
+      inGame.remove(victim);
+    }
+    spectatorNum.remove(gameIDNum);
+    activeGames.remove(gameIDNum);
+  }
+
+  public void removeFromGame(String username)
+  {
+    gameID.remove(username);
+  }
+
+  /**
+   * Sets the game over state.
+   *
+   * @param gameIDNum the id number to change
+   * @param status the status to set it to.
+   */
+  public void setGameOver(int gameIDNum, String status)
+  {
+    gameOver.replace(gameIDNum, status);
+  }
+
+  /**
+   * Returns the status of the game over status.
+   *
+   * @param gameIDNum the game to get
+   * @return the status of the game.
+   */
+  public String getGameOverStatus(int gameIDNum)
+  {
+    return gameOver.get(gameIDNum);
+  }
+
+  /**
+   * Adds a spectator to a game id using the hashmap stored in the
+   * GameManager object.
+   *
+   * @param username the username to add to the game
+   * @param gameId the id of the game watching
+   */
+  public void addSpectator(String username, int gameId)
+  {
+    spectators.put(username, gameId);
+    int viewers = spectatorNum.get(gameId);
+    spectatorNum.put(gameId, viewers+1);
+  }
+
+  public Map<String, Integer> getSpectators(){
+    return spectators;
+  }
+  /**
+   * Returns the amount of viewers currently watching the game
+   *
+   * @param gameID the game that is being watched
+   * @return the number of active viewers.
+   */
+  public int getViewers(int gameID)
+  {
+    if(spectatorNum.get(gameID) != null)
+    {
+      return spectatorNum.get(gameID);
+    } else
+    {
+      return 0;
+    }
+  }
+
+  /**
+   * Removes a spectator from the map of spectators / id.
+   *
+   * @param username the username that  must be removed.
+   */
+  public void removeSpectator(String username)
+  {
+    int gameID = spectators.get(username);
+    spectators.remove(username);
+    int viewers = spectatorNum.get(gameID);
+    spectatorNum.put(gameID, viewers-1);
+
   }
 
   /**
@@ -93,6 +213,7 @@ public class GameManager
     HashMap<String, String> pairToAdd = new HashMap<>();
     pairToAdd.put(challenger, victim);
     this.pairs.put(gameIDNum, pairToAdd);
+    spectatorNum.put(gameIDNum, 0);
     Gson gson = new Gson();
     Board board;
     try
@@ -107,7 +228,24 @@ public class GameManager
     {
       game.updateTurn();
     }
+    game.setGameID(gameIDNum);
     games.put(gameIDNum, game);
+    gameOver.put(gameIDNum, "No");
+    activeGames.add(gameIDNum);
+  }
+
+  /**
+   * Produces a list of all active games
+   *
+   * @return all active games in a list form.
+   */
+  public List<CheckerGame> getGames()
+  {
+    List<CheckerGame> gameArrayList = new ArrayList<>();
+    for(int gameID : activeGames){
+      gameArrayList.add(games.get(gameID));
+    }
+    return gameArrayList;
   }
 */
   /**
@@ -118,7 +256,10 @@ public class GameManager
    */
   public int getGameID(String username)
   {
-    return gameID.get(username);
+    if(gameID.containsKey(username))
+    {
+      return gameID.get(username);
+    } else return spectators.getOrDefault(username, -1);
   }
 
   /**

@@ -4,6 +4,7 @@ package com.webcheckers.ui;
 import com.google.gson.Gson;
 import com.webcheckers.application.GameManager;
 import com.webcheckers.application.PlayerLobby;
+import com.webcheckers.application.ReplayManager;
 import com.webcheckers.model.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
@@ -15,7 +16,6 @@ import spark.TemplateEngine;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.sql.SQLOutput;
 import java.util.*;
 
 import static com.webcheckers.util.Message.error;
@@ -66,6 +66,7 @@ public class PostSubmitTurnRouteTest
   private Session session;
   private Response response;
   private TemplateEngine engine;
+  private ReplayManager rManager;
   private Player player;
   private Player player2;
   private Board board;
@@ -83,6 +84,7 @@ public class PostSubmitTurnRouteTest
     response = mock(Response.class);
     player = mock(Player.class);
     player2 = mock(Player.class);
+    rManager = mock(ReplayManager.class);
     board = mock(Board.class);
     when(player.getUsername()).thenReturn(PLAYER1);
     lobby = mock(PlayerLobby.class);
@@ -93,6 +95,7 @@ public class PostSubmitTurnRouteTest
     game = new CheckerGame(player, player2, board);
     requireMove = mock(RequireMove.class);
     CuT = new PostSubmitTurnRoute();
+    CuT = new PostSubmitTurnRoute(rManager);
     //when(manager.getLocalGame(player.getUsername())).thenReturn(game);
   }
 

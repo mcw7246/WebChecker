@@ -2,6 +2,7 @@ package com.webcheckers.ui;
 
 import com.webcheckers.application.GameManager;
 import com.webcheckers.application.PlayerLobby;
+import com.webcheckers.application.ReplayManager;
 import com.webcheckers.model.Player;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
@@ -43,6 +44,7 @@ public class PostRequestGameRouteTest
   private GameManager manager;
 
   // attributes holding mock objects
+  private ReplayManager rManager;
   private Request request;
   private Session session;
   private Response response;
@@ -66,6 +68,10 @@ public class PostRequestGameRouteTest
     lobby = new PlayerLobby();
     manager = new GameManager(lobby);
 
+    when(player1.getUsername()).thenReturn(PLAYER1);
+    when(player2.getUsername()).thenReturn(PLAYER2);
+    rManager = new ReplayManager();
+    manager = new GameManager(lobby, rManager);
     when(player1.getUsername()).thenReturn(PLAYER1);
     when(player2.getUsername()).thenReturn(PLAYER2);
     // Have to add it to the lobby.

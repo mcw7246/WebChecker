@@ -30,6 +30,11 @@ public class GameManagerTest
   private GameManager CuT;
 
   /*
+  Friendly Objects
+   */
+  ReplayManager rManager;
+
+  /*
   Mocked Objects
    */
   private PlayerLobby lobby;
@@ -54,8 +59,8 @@ public class GameManagerTest
     players.put(P1_NAME, p1);
     players.put(P2_NAME, p2);
     when(lobby.getPlayers()).thenReturn(players);
-
-    CuT = new GameManager(lobby);
+    rManager = new ReplayManager();
+    CuT = new GameManager(lobby, rManager);
 
   }
 

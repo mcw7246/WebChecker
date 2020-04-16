@@ -3,6 +3,7 @@ package com.webcheckers.ui;
 import com.webcheckers.application.GameManager;
 import com.webcheckers.application.PlayerLobby;
 import com.webcheckers.model.Player;
+import org.eclipse.jetty.io.NegotiatingClientConnection;
 import spark.Request;
 import spark.Response;
 import spark.Route;
@@ -28,10 +29,14 @@ public class PostRequestResponseRoute implements Route
           "-boards/ToBeKingedMultiJumpWhite.JSON";
   private static final String REQUIRE_JUMP = "src/test/java/com/webcheckers" +
           "/test-boards/requireJumpBoard.JSON";
-  private static final String INCORRECT_AVAILABLE_JUMP = "src/test/java/com" +
-          "/webcheckers/test-boards/noAvailableJump";
   private static final String NECESSARY_JUMP_WHITE = "src/test/java/com" +
           "/webcheckers/test-boards/necesssaryJumpWhite.JSON";
+  private static final String MULTI_JUMP_STILL_REQUIRED_WRONG = "src/test" +
+          "/java/com/webcheckers/test-boards/multiJumpBoardStillJump.JSON";
+  private static final String NO_MORE_MOVES = "src/test/java/com/webcheckers" +
+          "/test-boards/no-more-moves.JSON";
+  private static final String ABOUT_JUMP_ALL = "src/test/java/com/webcheckers" +
+          "/test-boards/about-to-all-pieces-jumped.JSON";
 
   /**
    * Constructor for the {@code GET/game} route handler.
@@ -42,6 +47,34 @@ public class PostRequestResponseRoute implements Route
   {
     //validation
     this.lobby = lobby;
+  }
+
+  private void startGameOrTest(String username, String opponent,
+                               GameManager manager)
+  {
+    if (username.equals("TEST MULTI KING JUMP"))
+    {
+      manager.startTestGame(username, opponent, KING_JUMP, 2);
+    } else if (username.equals("TEST REQUIRE JUMP"))
+    {
+      manager.startTestGame(username, opponent, REQUIRE_JUMP, 1);
+    } else if (username.equals("TEST NECESSARY WHITE"))
+    {
+      manager.startTestGame(username, opponent, NECESSARY_JUMP_WHITE, 2);
+    } else if (username.equals("TEST NO MORE MOVES"))
+    {
+      manager.startTestGame(username, opponent, NO_MORE_MOVES, 1);
+    } else if (username.equals("TEST MULTI JUMP REQUIRE"))
+    {
+      manager.startTestGame(username, opponent,
+              MULTI_JUMP_STILL_REQUIRED_WRONG, 1);
+    } else if (username.equals("ABOUT TO JUMP ALL"))
+    {
+      manager.startTestGame(username, opponent, ABOUT_JUMP_ALL, 1);
+    } else
+    {
+      manager.startGame(username, opponent);
+    }
   }
 
   /**
@@ -66,13 +99,15 @@ public class PostRequestResponseRoute implements Route
     {
       final String usernameStr = player.getUsername();
       final String accept = request.queryParams(GAME_ACCEPT);
-      final String oppPlayer = httpSession.attribute(CHALLENGE_USER_KEY);
+      String oppPlayer = httpSession.attribute(CHALLENGE_USER_KEY);
+      oppPlayer = oppPlayer.replace('-', ' ');
       GameManager gameManager = httpSession.attribute(GetHomeRoute.GAME_MANAGER_KEY);
       LOG.config("Response to: " + oppPlayer);
       switch (accept)
       {
         case "yes":
-          gameManager.startGame(oppPlayer, usernameStr);
+          lobby.removeChallenger(usernameStr);
+          startGameOrTest(oppPlayer, usernameStr, gameManager);
           response.redirect(WebServer.GAME_URL);
           break;
         case "no":

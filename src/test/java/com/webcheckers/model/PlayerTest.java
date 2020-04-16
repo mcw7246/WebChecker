@@ -2,6 +2,7 @@ package com.webcheckers.model;
 
 import com.webcheckers.application.GameManager;
 import com.webcheckers.application.PlayerLobby;
+import com.webcheckers.application.ReplayManager;
 import com.webcheckers.model.Player.UsernameResult;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
@@ -40,13 +41,15 @@ public class PlayerTest
 
   // Friendly objects
   private PlayerLobby lobby;
-  private GameManager gameManager;
+  private GameManager manager;
+  private ReplayManager rManager;
 
   @BeforeEach
   public void setup()
   {
     lobby = new PlayerLobby();
-    gameManager = new GameManager(lobby);
+    rManager = new ReplayManager();
+    manager = new GameManager(lobby, rManager);
   }
 
   /**
@@ -96,10 +99,10 @@ public class PlayerTest
     assertFalse(CuT.isInGame());
 
     lobby.challenge(GOOD_NAME, GOOD_NAME_2);
-    gameManager.startGame(GOOD_NAME_2, GOOD_NAME);
+    manager.startGame(GOOD_NAME_2, GOOD_NAME);
 
     // Get the updated CuT.
-    CuT = gameManager.getOpponent(GOOD_NAME_2);
+    CuT = manager.getOpponent(GOOD_NAME_2);
 
     assertTrue(CuT.isInGame());
   }

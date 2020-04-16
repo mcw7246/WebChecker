@@ -9,7 +9,7 @@ import com.google.gson.Gson;
 
 import com.webcheckers.application.GameManager;
 import com.webcheckers.application.PlayerLobby;
-import com.webcheckers.model.Player;
+import com.webcheckers.application.ReplayManager;
 import spark.TemplateEngine;
 
 
@@ -66,6 +66,17 @@ public class WebServer
   public static final String CHECK_TURN_URL = "/checkTurn";
   public static final String SUBMIT_TURN_URL = "/submitTurn";
   public static final String BACKUP_MOVE_URL = "/backupMove";
+  public static final String RESIGN_GAME_URL = "/resignGame";
+  public static final String SPECTATOR_GAME_URL = "/spectator/game";
+  public static final String SPECTATOR_CHECK_TURN_URL = "/spectator/checkTurn";
+  public static final String SIGNOUT_URL = "/signout";
+  public static final String CHANGE_THEME_URL = "/changeTheme";
+  public static final String REPLAY_URL = "/replay";
+  public static final String REPLAY_GAME = "/replay/game";
+  public static final String NEXT_TURN = "/replay/nextTurn";
+  public static final String PREVIOUS_TURN = "/replay/previousTurn";
+  public static final String REPLAY_STOP_WATCHING = "/replay/stopWatching";
+  public static final String EXIT_SPECTATOR_GAME_URL = "/spectator/stopWatching";
 
   //
   // Attributes
@@ -74,6 +85,7 @@ public class WebServer
   private final TemplateEngine templateEngine;
   private final PlayerLobby playerLobby;
   private final GameManager gameManager;
+  private final ReplayManager rManager = new ReplayManager();
 
   /**
    * The constructor for the Web Server.
@@ -90,7 +102,7 @@ public class WebServer
     //
     this.templateEngine = templateEngine;
     playerLobby = new PlayerLobby();
-    gameManager = new GameManager(playerLobby);
+    gameManager = new GameManager(playerLobby, rManager);
   }
 
   //
@@ -145,7 +157,8 @@ public class WebServer
     //// Create separate Route classes to handle each route; this keeps your
     //// code clean; using small classes.
     // Shows the Checkers game Home page.
-    get(HOME_URL, new GetHomeRoute(templateEngine, playerLobby, gameManager));
+    get(HOME_URL, new GetHomeRoute(templateEngine, playerLobby, gameManager,
+            rManager));
     //Shows signin page
     get(SIGNIN_URL, new GetSignInRoute(templateEngine));
     post(SIGNIN_URL, new PostSignInRoute(templateEngine, playerLobby));
@@ -154,9 +167,19 @@ public class WebServer
     get(GAME_URL, new GetGameRoute(templateEngine));
     post(CHECK_TURN_URL, new PostCheckTurnRoute());
     post(VALIDATE_MOVE_URL, new PostValidateMoveRoute());
-    post(SUBMIT_TURN_URL, new PostSubmitTurnRoute());
+    post(SUBMIT_TURN_URL, new PostSubmitTurnRoute(rManager));
     post(BACKUP_MOVE_URL, new PostBackupMoveRoute());
+    post(RESIGN_GAME_URL, new PostResignRoute(templateEngine));
+    get(SPECTATOR_GAME_URL, new GetSpectatorGameRoute(templateEngine));
+    post(SPECTATOR_CHECK_TURN_URL, new PostSpectatorCheckTurnRoute());
+    post(SIGNOUT_URL, new PostSignOutRoute(templateEngine, playerLobby));
+    post(CHANGE_THEME_URL, new PostChangeTheme(rManager));
+    get(REPLAY_URL, new GetReplayRoute(templateEngine, rManager));
+    get(REPLAY_GAME, new GetReplayGameRoute(templateEngine, rManager));
+    post(PREVIOUS_TURN, new PostReplayPreviousTurnRoute(rManager));
+    post(NEXT_TURN, new PostReplayNextTurnRoute(rManager));
+    get(REPLAY_STOP_WATCHING, new PostReplayStopWatchingRoute(rManager));
+    get(EXIT_SPECTATOR_GAME_URL, new GetStopWatchingRoute(templateEngine));
     LOG.config("WebServer is initialized.");
   }
-
 }
