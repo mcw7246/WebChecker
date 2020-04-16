@@ -55,12 +55,13 @@ public class PostSubmitTurnRoute implements Route
 
       Piece.Color color = Piece.Color.WHITE;
       Piece.Color oppColor = Piece.Color.RED;
+      System.out.println("GetPlayerNum: " + player.getPlayerNum());
       if (player.getPlayerNum() == 1)
       {
         color = Piece.Color.RED;
         oppColor = Piece.Color.WHITE;
       }
-
+      System.out.println(color);
       //Once moves are validated, king any pieces that made it to the edge of the board
       final ArrayList<Move> moves = session.attribute(PostValidateMoveRoute.MOVE_LIST_ID);
       final Position lastPos = moves.get(moves.size() -1).getEnd();
@@ -182,6 +183,7 @@ public class PostSubmitTurnRoute implements Route
         CheckerGame originalGame = manager.getGame(gameID);
         RequireMove requireMove = new RequireMove(originalGame.getBoard(), color);
         Map<Move.MoveStatus, List<Move>> validMoves = requireMove.getAllMoves();
+        System.out.println("Valid Moves: " + validMoves);
         List<Move> jumps = validMoves.get(Move.MoveStatus.JUMP);
         if (jumps != null && !jumps.isEmpty())
         {

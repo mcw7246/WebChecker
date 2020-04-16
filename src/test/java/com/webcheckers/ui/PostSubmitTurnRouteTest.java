@@ -15,6 +15,7 @@ import spark.TemplateEngine;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.sql.SQLOutput;
 import java.util.*;
 
 import static com.webcheckers.util.Message.error;
@@ -325,29 +326,70 @@ public class PostSubmitTurnRouteTest
   {
     //TODO
 
+
   }
 
   @Test
   public void required_move_not_made()
   {
-    //TODO: FINISH THIS TEST
+    board = mock(Board.class);
+    int gameID = manager.getGameID(player.getUsername());
+    when(manager.getGameID(player.getUsername())).thenReturn(gameID);
+    when(manager.getGame(gameID)).thenReturn(game);
+    when(player.getPlayerNum()).thenReturn(1);
 
-    try
-    {
-      this.board = gson.fromJson(new FileReader(REQUIRE_JUMP), Board.class);
-    }
-    catch (FileNotFoundException ex)
-    {
-      fail("Initial board was not found from given path.");
-    }
+    System.out.println(gameID);
+
+    when(session.attribute(GetHomeRoute.PLAYER_KEY)).thenReturn(player);
+
+    List<Move> jumpMoves = new ArrayList<>();
+    Map<Move.MoveStatus, List<Move>> requiredMoves = new HashMap<>();
+
+    Piece redPiece = new Piece(Piece.Color.RED, Piece.Type.SINGLE);
+    Piece whitePiece = new Piece(Piece.Color.WHITE, Piece.Type.SINGLE);
+    Space jumpStart = new Space(0, 1, true, redPiece);
+    Space jumpSpace = new Space(1, 2, true, whitePiece);
+    Space jumpEnd = new Space(2, 3, true);
+
+    Stack<Move> validMoves = new Stack<>();
+    Move requiredJumpMove = new Move(new Position(jumpStart.getRowIndex(), jumpStart.getColumnIndex()), new Position(jumpEnd.getRowIndex(), jumpEnd.getColumnIndex()));
+    jumpMoves.add(requiredJumpMove);
+    validMoves.push(requiredJumpMove);
+    requiredMoves.put(Move.MoveStatus.JUMP, jumpMoves);
+
+    Piece movedRed = new Piece(Piece.Color.RED,Piece.Type.SINGLE);
+    Space startSpace = new Space(4, 5, true, movedRed);
+    Space endSpace = new Space(5, 6, true);
+
+    Move moveMade = new Move(new Position(startSpace.getRowIndex(), startSpace.getColumnIndex()), new Position(endSpace.getRowIndex(), endSpace.getColumnIndex()));
+
+    List<Move> movesMadeList = new ArrayList<>();
+    movesMadeList.add(moveMade);
+    when(board.getSpaceAt(jumpStart.getRowIndex(), jumpStart.getColumnIndex())).thenReturn(jumpStart);
+    when(board.getSpaceAt(jumpEnd.getRowIndex(), jumpEnd.getColumnIndex())).thenReturn(jumpEnd);
+
+    when(session.attribute(PostValidateMoveRoute.MOVE_LIST_ID)).thenReturn(movesMadeList);
+    when(requireMove.getAllMoves()).thenReturn(requiredMoves);
+    System.out.println(requiredMoves);
+    //CuT.handle(request, response);
+
+
+
+    /**
     when(manager.getGameID(player.getUsername())).thenReturn(GAME_ID);
     when(manager.getGame(GAME_ID)).thenReturn(game);
 
 
+    System.out.println(player.getPlayerNum());
+    System.out.println(player2.getPlayerNum());
+    System.out.println(game.getTurn());
+    System.out.println(game.getColor());
     Map<Move.MoveStatus, List<Move>> allMoves = requireMove.getAllMoves();
+
 
     List<Move> jumpMoves = new ArrayList<>();
 
+    //creates the move that should have been made
     Piece redPiece = new Piece(Piece.Color.RED, Piece.Type.SINGLE);
     Piece whitePiece = new Piece(Piece.Color.WHITE, Piece.Type.SINGLE);
     Space jumpStart = new Space(0, 1, true, redPiece);
@@ -358,10 +400,13 @@ public class PostSubmitTurnRouteTest
 
     jumpMoves.add(jumpMove);
 
+
     allMoves.put(Move.MoveStatus.JUMP, jumpMoves);
 
+    System.out.println(allMoves);
     System.out.println(jumpMoves);
 
+    //creates the move that was made
     Piece redMoved = new Piece(Piece.Color.RED, Piece.Type.SINGLE);
 
     Space startSpace = new Space(3, 4, true, redMoved);
@@ -374,44 +419,22 @@ public class PostSubmitTurnRouteTest
 
     movesStack.push(moveMade);
     movesList.add(moveMade);
+
+    when(player.getPlayerNum()).thenReturn(1);
     when(session.attribute(PostValidateMoveRoute.MOVE_LIST_ID)).thenReturn(movesList);
 
     when(requireMove.getAllMoves()).thenReturn(allMoves);
 
     when(requireMove.getValidMoves(board, jumpSpace, Piece.Color.RED)).thenReturn(movesStack);
-    //CuT.handle(request, response);
-
-    /**
-     Piece piece = new Piece(Piece.Color.RED, Piece.Type.SINGLE);
-     Space start = new Space(0,0,true, piece);
-     Space end = new Space(1, 2, true);
-
-     int gameID = manager.getGameID(player.getUsername());
-
-     when(manager.getGame(gameID)).thenReturn(game);
-
-     when(manager.getLocalGame(player.getUsername())).thenReturn(game);
-
-     when(session.attribute(GetHomeRoute.GAME_MANAGER_KEY)).thenReturn(manager);
-
-     List<Move> movesMade = new ArrayList<>();
-     //normal move made
-     Move move = new Move(new Position(start.getRowIndex(), start.getColumnIndex()), new Position(end.getRowIndex(), end.getColumnIndex()));
-
-     movesMade.add(move);
-     when(session.attribute(PostValidateMoveRoute.MOVE_LIST_ID)).thenReturn(movesMade);
-     board.getSpaceAt(end.getRowIndex(), end.getColumnIndex()).setPiece(piece);
-
-     System.out.println(board.getSpaceAt(end.getRowIndex(), end.getColumnIndex()).getPiece());
-
-     Map<Move.MoveStatus, List<Move>> moves = requireMove.getAllMoves();
-     List<Move> listMoves = new ArrayList<>();
-     Move requiredMove = new Move(new Position(2, 3), new Position(4, 5));
-     listMoves.add(requiredMove);
-     moves.put(Move.MoveStatus.JUMP, listMoves);
-     System.out.println(moves);
-
-     assertEquals(gson.toJson(error("There is still an available jump. You must make this move before you end your turn.")), CuT.handle(request, response));*/
+    when(board.getSpaceAt(startSpace.getRowIndex(), startSpace.getColumnIndex())).thenReturn(startSpace);
+    when(board.getSpaceAt(endSpace.getRowIndex(), endSpace.getColumnIndex())).thenReturn(endSpace);
+    when(board.getSpaceAt(whiteJumpSpace.getRowIndex(), whiteJumpSpace.getColumnIndex())).thenReturn(whiteJumpSpace);
+    when(board.getSpaceAt(jumpEnd.getRowIndex(), jumpEnd.getColumnIndex())).thenReturn(jumpEnd);
+    when(manager.getLocalGame(player.getUsername())).thenReturn(game);
+    when(board.getSpaceAt(jumpStart.getRowIndex(), jumpStart.getColumnIndex())).thenReturn(jumpStart);
+    CuT.handle(request, response);
+    //assertEquals(gson.toJson(error("There is still an available jump. You must make this move before you end your turn.")), CuT.handle(request, response));
+*/
   }
 
 
