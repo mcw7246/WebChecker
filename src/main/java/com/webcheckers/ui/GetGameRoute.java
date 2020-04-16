@@ -51,6 +51,14 @@ public class GetGameRoute implements Route
     final Session session = request.session();
     final Player player = session.attribute(GetHomeRoute.PLAYER_KEY);
 
+    String theme = session.attribute("theme");
+    if(theme != null)
+    {
+      vm.put("theme", true);
+    } else {
+      vm.put("theme", false);
+    }
+
     if (player != null)
     {
       session.attribute(MESSAGE, null);

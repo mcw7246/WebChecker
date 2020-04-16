@@ -39,6 +39,14 @@ public class GetSpectatorGameRoute implements Route
     final Session session = request.session();
     final Player spectator = session.attribute(GetHomeRoute.PLAYER_KEY);
 
+    String theme = session.attribute("theme");
+    if(theme != null)
+    {
+      vm.put("theme", true);
+    } else {
+      vm.put("theme", false);
+    }
+
     if(spectator != null)
     {
       String redUsername = request.queryParams("watchGameRequest");

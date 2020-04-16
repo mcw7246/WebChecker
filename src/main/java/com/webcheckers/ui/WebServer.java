@@ -70,6 +70,7 @@ public class WebServer
   public static final String SPECTATOR_GAME_URL = "/spectator/game";
   public static final String SPECTATOR_CHECK_TURN_URL = "/spectator/checkTurn";
   public static final String SIGNOUT_URL = "/signout";
+  public static final String CHANGE_THEME_URL = "/changeTheme";
 
   //
   // Attributes
@@ -164,6 +165,7 @@ public class WebServer
     get(SPECTATOR_GAME_URL, new GetSpectatorGameRoute(templateEngine));
     post(SPECTATOR_CHECK_TURN_URL, new PostSpectatorCheckTurnRoute());
     post(SIGNOUT_URL, new PostSignOutRoute(templateEngine, playerLobby));
+    post(CHANGE_THEME_URL, new PostChangeTheme());
     LOG.config("WebServer is initialized.");
   }
 }
