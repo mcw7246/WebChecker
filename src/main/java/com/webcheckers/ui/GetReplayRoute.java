@@ -63,7 +63,10 @@ public class GetReplayRoute implements Route
         games.add(manager.getGame(gameID));
       }
       games.sort(new SortbyPercentage());
-      vm.put(REPLAY_GAMES, games);
+      if(!games.isEmpty())
+      {
+        vm.put(REPLAY_GAMES, games);
+      }
       return engine.render(new ModelAndView(vm, VIEW_NAME));
     } else
     {

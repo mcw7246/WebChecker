@@ -15,11 +15,13 @@
     <h2>You can rewatch a valid game below!</h2>
     <h3>Replay Games:</h3>
       <#list replayGames as games>
-        <p>${games.getRedPlayer()} (${game.getRedPlayer().getWinPercentage()
-            }) v. ${games.getWhitePlayer()} (${game.getWhitePlayer()
+        <p>${games.getRedPlayer().getUsername()} (${games.getRedPlayer()
+            .getWinPercentage()
+            }) v. ${games.getWhitePlayer().getUsername()} (${games
+            .getWhitePlayer()
             .getWinPercentage()}):
         <form action="./replay/game" method="GET">
-          <button type="submit" name="replayRequest" value=${game}>Watch
+          <button type="submit" name="replayRequest" value=${games}>Watch
             Game
           </button>
         </form></p>

@@ -31,6 +31,7 @@ public class GameManager
   private static Map<String, Integer> spectators = new HashMap<>();
   private static Map<Integer, Integer> spectatorNum = new HashMap<>();
   private static Map<Integer, String> gameOver = new HashMap<>();
+  private static Set<Integer> activeGames = new HashSet<>();
 
   public GameManager(PlayerLobby lobby)
   {
@@ -68,6 +69,7 @@ public class GameManager
     this.pairs.put(gameIDNum, pairToAdd);
     games.put(gameIDNum, new CheckerGame(player1, player2, new Board()));
     gameOver.put(gameIDNum, "No");
+    activeGames.add(gameIDNum);
   }
 
   /**
@@ -103,6 +105,7 @@ public class GameManager
       inGame.remove(victim);
     }
     spectatorNum.remove(gameIDNum);
+    activeGames.remove(gameIDNum);
   }
 
   public void removeFromGame(String username)
@@ -227,7 +230,11 @@ public class GameManager
    */
   public List<CheckerGame> getGames()
   {
-    return new ArrayList<>(games.values());
+    List<CheckerGame> gameArrayList = new ArrayList<>();
+    for(int gameID : activeGames){
+      gameArrayList.add(games.get(gameID));
+    }
+    return gameArrayList;
   }
 
   /**
