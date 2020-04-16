@@ -111,13 +111,16 @@ public class PostSubmitTurnRouteTest
     assertEquals("Redirected Home", CuT.handle(request, response));
   }
 
-  @Test void local_game_no_jump()
+  @Test
+  void local_game_no_jump()
   {
     try
     {
       this.board = gson.fromJson(new FileReader(ONE_MOVE), Board.class);
       game = new CheckerGame(player, player2, board);
-    } catch (FileNotFoundException e){
+    }
+    catch (FileNotFoundException e)
+    {
       fail("Initial Board was not found from given path");
     }
     int gameID = manager.getGameID(player.getUsername());
@@ -137,12 +140,15 @@ public class PostSubmitTurnRouteTest
   /**
    * tests a jump being made
    */
-  @Test void local_game_jump()
+  @Test
+  void local_game_jump()
   {
     try
     {
       this.board = gson.fromJson(new FileReader(REQUIRE_JUMP), Board.class);
-    } catch (FileNotFoundException e){
+    }
+    catch (FileNotFoundException e)
+    {
       fail("Initial Board was not found from given path");
     }
     CheckerGame game = new CheckerGame(player, player2, board);
@@ -166,7 +172,9 @@ public class PostSubmitTurnRouteTest
   /**
    * tests a king making a multijump
    */
-  @Test public void test_king_multi_jump(){
+  @Test
+  public void test_king_multi_jump()
+  {
     when(manager.getLocalGame(player.getUsername())).thenReturn(game);
 
     //creates all the pieces used in the test
@@ -221,7 +229,9 @@ public class PostSubmitTurnRouteTest
     try
     {
       this.board = gson.fromJson(new FileReader(KING_JUMP), Board.class);
-    } catch (FileNotFoundException e){
+    }
+    catch (FileNotFoundException e)
+    {
       fail("Initial Board was not found from given path");
     }
 
@@ -244,7 +254,7 @@ public class PostSubmitTurnRouteTest
     startSpace.setPiece(jumpPiece);
     jumpSpace.setPiece(jumpedPiece);
 
-    Move moveMade = new Move(new Position(startSpace.getRowIndex(), startSpace.getColumnIndex()), new Position(endSpace.getRowIndex(),endSpace.getColumnIndex()), Move.MoveStatus.JUMP);
+    Move moveMade = new Move(new Position(startSpace.getRowIndex(), startSpace.getColumnIndex()), new Position(endSpace.getRowIndex(), endSpace.getColumnIndex()), Move.MoveStatus.JUMP);
     moves.add(moveMade);
     game.makeMove(moveMade);
 
@@ -265,8 +275,14 @@ public class PostSubmitTurnRouteTest
   @Test
   public void white_king()
   {
-    board = mock(Board.class);
-
+    try
+    {
+      this.board = gson.fromJson(new FileReader(KING_JUMP), Board.class);
+    }
+    catch (FileNotFoundException e)
+    {
+      fail("Initial Board was not found from given path");
+    }
     game = new CheckerGame(player, player2, this.board);
 
     when(manager.getLocalGame(player.getUsername())).thenReturn(game);
@@ -282,11 +298,13 @@ public class PostSubmitTurnRouteTest
     Piece redPiece = new Piece(Piece.Color.RED, Piece.Type.SINGLE);
     Piece whitePiece = new Piece(Piece.Color.WHITE, Piece.Type.SINGLE);
 
-    Space start = new Space(5, 5, true, whitePiece);
+    Space start = new Space(5, 5, true);
+    start.setPiece(whitePiece);
     Space jumped = new Space(6, 6, true, redPiece);
     Space end = new Space(7, 7, true);
 
     Move moveMade = new Move(new Position(start.getRowIndex(), start.getColumnIndex()), new Position(end.getRowIndex(), end.getColumnIndex()), Move.MoveStatus.JUMP);
+
 
     game.makeMove(moveMade);
 
@@ -310,12 +328,16 @@ public class PostSubmitTurnRouteTest
   }
 
   @Test
-  public void required_move_not_made(){
+  public void required_move_not_made()
+  {
     //TODO: FINISH THIS TEST
 
-    try{
+    try
+    {
       this.board = gson.fromJson(new FileReader(REQUIRE_JUMP), Board.class);
-    }catch(FileNotFoundException ex){
+    }
+    catch (FileNotFoundException ex)
+    {
       fail("Initial board was not found from given path.");
     }
     when(manager.getGameID(player.getUsername())).thenReturn(GAME_ID);
@@ -357,42 +379,40 @@ public class PostSubmitTurnRouteTest
     when(requireMove.getAllMoves()).thenReturn(allMoves);
 
     when(requireMove.getValidMoves(board, jumpSpace, Piece.Color.RED)).thenReturn(movesStack);
-    CuT.handle(request, response);
+    //CuT.handle(request, response);
 
     /**
-    Piece piece = new Piece(Piece.Color.RED, Piece.Type.SINGLE);
-    Space start = new Space(0,0,true, piece);
-    Space end = new Space(1, 2, true);
+     Piece piece = new Piece(Piece.Color.RED, Piece.Type.SINGLE);
+     Space start = new Space(0,0,true, piece);
+     Space end = new Space(1, 2, true);
 
-    int gameID = manager.getGameID(player.getUsername());
+     int gameID = manager.getGameID(player.getUsername());
 
-    when(manager.getGame(gameID)).thenReturn(game);
+     when(manager.getGame(gameID)).thenReturn(game);
 
-    when(manager.getLocalGame(player.getUsername())).thenReturn(game);
+     when(manager.getLocalGame(player.getUsername())).thenReturn(game);
 
-    when(session.attribute(GetHomeRoute.GAME_MANAGER_KEY)).thenReturn(manager);
+     when(session.attribute(GetHomeRoute.GAME_MANAGER_KEY)).thenReturn(manager);
 
-    List<Move> movesMade = new ArrayList<>();
-    //normal move made
-    Move move = new Move(new Position(start.getRowIndex(), start.getColumnIndex()), new Position(end.getRowIndex(), end.getColumnIndex()));
+     List<Move> movesMade = new ArrayList<>();
+     //normal move made
+     Move move = new Move(new Position(start.getRowIndex(), start.getColumnIndex()), new Position(end.getRowIndex(), end.getColumnIndex()));
 
-    movesMade.add(move);
-    when(session.attribute(PostValidateMoveRoute.MOVE_LIST_ID)).thenReturn(movesMade);
-    board.getSpaceAt(end.getRowIndex(), end.getColumnIndex()).setPiece(piece);
+     movesMade.add(move);
+     when(session.attribute(PostValidateMoveRoute.MOVE_LIST_ID)).thenReturn(movesMade);
+     board.getSpaceAt(end.getRowIndex(), end.getColumnIndex()).setPiece(piece);
 
-    System.out.println(board.getSpaceAt(end.getRowIndex(), end.getColumnIndex()).getPiece());
+     System.out.println(board.getSpaceAt(end.getRowIndex(), end.getColumnIndex()).getPiece());
 
-    Map<Move.MoveStatus, List<Move>> moves = requireMove.getAllMoves();
-    List<Move> listMoves = new ArrayList<>();
-    Move requiredMove = new Move(new Position(2, 3), new Position(4, 5));
-    listMoves.add(requiredMove);
-    moves.put(Move.MoveStatus.JUMP, listMoves);
-    System.out.println(moves);
+     Map<Move.MoveStatus, List<Move>> moves = requireMove.getAllMoves();
+     List<Move> listMoves = new ArrayList<>();
+     Move requiredMove = new Move(new Position(2, 3), new Position(4, 5));
+     listMoves.add(requiredMove);
+     moves.put(Move.MoveStatus.JUMP, listMoves);
+     System.out.println(moves);
 
-    assertEquals(gson.toJson(error("There is still an available jump. You must make this move before you end your turn.")), CuT.handle(request, response));*/
+     assertEquals(gson.toJson(error("There is still an available jump. You must make this move before you end your turn.")), CuT.handle(request, response));*/
   }
-
-
 
 
 }

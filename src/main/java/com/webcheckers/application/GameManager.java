@@ -75,6 +75,7 @@ public class GameManager
    * @param victim the name of the victim (most likely player2)
    * @param filename the name of the file that holds the test board.
    */
+  /**
   public void startTestGame(String challenger, String victim, String filename
           , int turn)
   {
@@ -108,7 +109,7 @@ public class GameManager
     }
     games.put(gameIDNum, game);
   }
-
+*/
   /**
    * Returns the game id from a username
    *
