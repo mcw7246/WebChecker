@@ -67,6 +67,20 @@ public class PostResignRouteTest
         this.CuT = new PostResignRoute(templateEngine);
     }
 
+    /**
+     * Tests if the constructor works
+     */
+    @Test
+    public void ctor_withArg()
+    {
+        CuT = new PostResignRoute(templateEngine);
+    }
+
+
+    /**
+     * Test for the handle method for resign routes
+     * Tests that the return from handle is a valid resign message
+     */
     @Test
     public void testHandle()
     {
