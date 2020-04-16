@@ -20,17 +20,18 @@
         <!-- Provide a message to the user, if supplied. -->
         <#include "message.ftl" />
 
-        <!-- TODO: future content on the Home:
-                to start games,
-                spectating active games,
-                or replay archived games
-        -->
-
         <!-- List of Players below     -->
         <#include "player-lobby.ftl" />
 
         <#include "active-games.ftl" />
 
+        <#if signIn>
+        <h3>Go to Replay Archive:</h3>
+        <form action="./replay" method="GET">
+            <button type="submit" name="replay"
+                    value="replayPage">Archive</button>
+        </form>
+        </#if>
     </div>
 
 </div>

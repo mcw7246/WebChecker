@@ -96,18 +96,18 @@ public class GameManager
     {
       String challenger = player1.getUsername();
       inGame.remove(challenger);
-      gameID.remove(challenger);
     }
     if (player2 != null)
     {
       String victim = player2.getUsername();
       inGame.remove(victim);
-      gameID.remove(victim);
     }
     spectatorNum.remove(gameIDNum);
-    pairs.remove(gameIDNum);
-    games.remove(gameIDNum);
-    gameOver.remove(gameIDNum);
+  }
+
+  public void removeFromGame(String username)
+  {
+    gameID.remove(username);
   }
 
   /**
@@ -154,7 +154,13 @@ public class GameManager
    */
   public int getViewers(int gameID)
   {
-    return spectatorNum.get(gameID);
+    if(spectatorNum.get(gameID) != null)
+    {
+      return spectatorNum.get(gameID);
+    } else
+    {
+      return 0;
+    }
   }
 
   /**

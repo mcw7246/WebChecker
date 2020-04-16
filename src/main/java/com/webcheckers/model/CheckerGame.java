@@ -141,6 +141,16 @@ public class CheckerGame
   }
 
   /**
+   * Returns the average of the players who are playing.
+   *
+   * @return the average of the two.
+   */
+  public double winningAverage()
+  {
+    return (PLAYER_ONE.getWinPercentage() + PLAYER_TWO.getWinPercentage())/2;
+  }
+
+  /**
    * Gets the actual board (not just the view)
    *
    * @return the board.

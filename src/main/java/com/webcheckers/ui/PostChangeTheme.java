@@ -37,6 +37,9 @@ public class PostChangeTheme implements Route
       } else if (manager.isSpectator(player.getUsername()))
       {
         response.redirect(SPECTATOR_GAME_URL);
+      } else if (player.inArchive())
+      {
+        response.redirect(REPLAY_URL);
       } else
       {
         response.redirect(HOME_URL);

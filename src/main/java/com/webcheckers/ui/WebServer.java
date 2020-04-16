@@ -9,6 +9,7 @@ import com.google.gson.Gson;
 
 import com.webcheckers.application.GameManager;
 import com.webcheckers.application.PlayerLobby;
+import com.webcheckers.application.ReplayManager;
 import com.webcheckers.model.Player;
 import spark.TemplateEngine;
 
@@ -71,6 +72,7 @@ public class WebServer
   public static final String SPECTATOR_CHECK_TURN_URL = "/spectator/checkTurn";
   public static final String SIGNOUT_URL = "/signout";
   public static final String CHANGE_THEME_URL = "/changeTheme";
+  public static final String REPLAY_URL = "/replay";
 
   //
   // Attributes
@@ -79,6 +81,7 @@ public class WebServer
   private final TemplateEngine templateEngine;
   private final PlayerLobby playerLobby;
   private final GameManager gameManager;
+  private final ReplayManager rManager = new ReplayManager();
 
   /**
    * The constructor for the Web Server.
@@ -166,6 +169,7 @@ public class WebServer
     post(SPECTATOR_CHECK_TURN_URL, new PostSpectatorCheckTurnRoute());
     post(SIGNOUT_URL, new PostSignOutRoute(templateEngine, playerLobby));
     post(CHANGE_THEME_URL, new PostChangeTheme());
+    get(REPLAY_URL, new GetReplayRoute(templateEngine, rManager));
     LOG.config("WebServer is initialized.");
   }
 }

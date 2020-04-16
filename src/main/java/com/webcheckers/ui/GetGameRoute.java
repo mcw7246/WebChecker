@@ -123,6 +123,8 @@ public class GetGameRoute implements Route
           {
             player.hasEnteredGame();
           }
+          player.endGame(true);
+          gameManager.getOpponent(username).endGame(false);
           return templateEngine.render(new ModelAndView(vm, VIEW_NAME));
         }
         else
@@ -135,6 +137,8 @@ public class GetGameRoute implements Route
           {
             player.hasEnteredGame();
           }
+          player.endGame(false);
+          gameManager.getOpponent(username).endGame(true);
           return templateEngine.render(new ModelAndView(vm, VIEW_NAME));
         }
       }
@@ -151,6 +155,8 @@ public class GetGameRoute implements Route
         {
           player.hasEnteredGame();
         }
+        player.endGame(false);
+        gameManager.getOpponent(username).endGame(true);
         return templateEngine.render(new ModelAndView(vm, VIEW_NAME));
       } else
       {
@@ -176,6 +182,8 @@ public class GetGameRoute implements Route
           {
             player.hasEnteredGame();
           }
+          player.endGame(true);
+          gameManager.getOpponent(username).endGame(false);
           return templateEngine.render(new ModelAndView(vm, VIEW_NAME));
         }
       }
@@ -188,6 +196,15 @@ public class GetGameRoute implements Route
         if(inGame)
         {
           player.hasEnteredGame();
+        }
+        if(gameOverStatus.contains(username))
+        {
+          player.endGame(false);
+          gameManager.getOpponent(username).endGame(true);
+        } else
+        {
+          player.endGame(true);
+          gameManager.getOpponent(username).endGame(false);
         }
         vm.put("modeOptionsAsJSON", gson.toJson(modeOptions));
         return templateEngine.render(new ModelAndView(vm, VIEW_NAME));

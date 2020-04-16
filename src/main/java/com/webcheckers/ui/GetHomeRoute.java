@@ -72,20 +72,20 @@ public class GetHomeRoute implements Route
   public Object handle(Request request, Response response)
   {
     // retrieve the HTTP session
-    final Session httpSession = request.session();
+    final Session session = request.session();
 
     // start building the View-Model
     final Map<String, Object> vm = new HashMap<>();
 
     vm.put(TITLE_ATTR, TITLE);
-    Player player = httpSession.attribute(PLAYER_KEY);
+    Player player = session.attribute(PLAYER_KEY);
 
-    String msg = httpSession.attribute(MESSAGE);
+    String msg = session.attribute(MESSAGE);
     if (msg != null)
     {
       vm.put(MESSAGE, Message.info(msg));
     }
-    String errorMsg = httpSession.attribute(ERROR_MESSAGE_KEY);
+    String errorMsg = session.attribute(ERROR_MESSAGE_KEY);
     if (errorMsg != null)
     {
       if (msg != null)
@@ -96,8 +96,8 @@ public class GetHomeRoute implements Route
         vm.put(MESSAGE, Message.error(errorMsg));
       }
     }
-    httpSession.attribute(PLAYER_LOBBY_KEY, lobby);
-    httpSession.attribute(GAME_MANAGER_KEY, manager);
+    session.attribute(PLAYER_LOBBY_KEY, lobby);
+    session.attribute(GAME_MANAGER_KEY, manager);
     // if this is a brand new browser session or a session that timed out
     if (player == null)
     {
@@ -109,6 +109,7 @@ public class GetHomeRoute implements Route
       vm.put(NEW_PLAYER_ATTR, true);
     } else
     {
+      player.enterOrExitArchive(false);
       // If the player is currently in a game, then they need to be redirected
       // to the game screen.
       if (player.isInGame())
@@ -121,14 +122,15 @@ public class GetHomeRoute implements Route
         if(gameID != -1)
         {
           manager.endGame(gameID);
+          manager.removeFromGame(player.getUsername());
         }
         vm.put(SIGN_IN_KEY, true);
-        httpSession.attribute(RESIGN_ATTR, false);
+        session.attribute(RESIGN_ATTR, false);
         vm.put(CURRENT_USER_ATTR, player.getUsername());
         Map<String, String> challenges = lobby.getChallenges();
         if (challenges.containsKey(player.getUsername()))
         {
-          httpSession.attribute(CHALLENGE_USER_KEY,
+          session.attribute(CHALLENGE_USER_KEY,
                   challenges.get(player.getUsername()));
           vm.put(CHALLENGED_KEY, true);
           vm.put(CHALLENGE_USER_KEY, challenges.get(player.getUsername()));
