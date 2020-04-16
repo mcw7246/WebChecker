@@ -76,7 +76,6 @@ public class WebServer
   public static final String NEXT_TURN = "/replay/nextTurn";
   public static final String PREVIOUS_TURN = "/replay/previousTurn";
   public static final String REPLAY_STOP_WATCHING = "/replay/stopWatching";
-  public static final String SPECTATOR_CHECK_TURN_URL = "/sppectator/checkTurn";
   public static final String EXIT_SPECTATOR_GAME_URL = "/spectator/stopWatching";
 
   //

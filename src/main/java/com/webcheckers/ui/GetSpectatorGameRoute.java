@@ -52,6 +52,7 @@ public class GetSpectatorGameRoute implements Route
     if (spectator != null)
     {
       String redUsername = request.queryParams("watchGameRequest");
+      redUsername = redUsername.replace('-', ' ');
       if (redUsername != null)
       {
         session.attribute(RED_PLAYER, redUsername);

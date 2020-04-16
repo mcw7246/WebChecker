@@ -6,7 +6,8 @@
                     .getWhitePlayer().getUsername()}:
                 <form action='./spectator/game' method="GET">
                     <button type="submit" name="watchGameRequest"
-                            value=${game.getRedPlayer().getUsername()}>Watch
+                            value=${game.getRedPlayer().getUsername()
+                    ?replace(" ", "-")}>Watch
                         Game</button>
                 </form>
             <#else>
