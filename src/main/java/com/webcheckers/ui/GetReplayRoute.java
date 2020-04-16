@@ -66,6 +66,8 @@ public class GetReplayRoute implements Route
       if(!games.isEmpty())
       {
         vm.put(REPLAY_GAMES, games);
+      } else {
+        vm.put(REPLAY_GAMES, games);
       }
       return engine.render(new ModelAndView(vm, VIEW_NAME));
     } else
