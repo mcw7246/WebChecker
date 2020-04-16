@@ -23,8 +23,8 @@ import static spark.Spark.halt;
  * page using a 'GET /game' URL.
  *
  * @author Austin Miller 'akm8654'
- *
- *
+ * <p>
+ * <p>
  * Added functionality for King
  * @author Mario Castano 'mac3186'
  * @author Mikayla Wishart 'mcw7246'
@@ -70,18 +70,17 @@ public class PostSubmitTurnRoute implements Route
 
       //Once moves are validated, king any pieces that made it to the edge of the board
       final ArrayList<Move> moves = session.attribute(PostValidateMoveRoute.MOVE_LIST_ID);
-      final Position lastPos = moves.get(moves.size() -1).getEnd();
+      final Position lastPos = moves.get(moves.size() - 1).getEnd();
       final int lastMoveColumn = lastPos.getCell();
-      if(
+      if (
         //lastMove.getEnd().getRow() == 0
-          lastPos.equals(new Position(0, lastMoveColumn))
-          && game.getColor() == Piece.Color.RED)
+              lastPos.equals(new Position(0, lastMoveColumn))
+                      && game.getColor() == Piece.Color.RED)
       {
         game.getBoard().kingPieceAt(lastPos);
-      }
-      else if(
-        lastPos.equals(new Position(7, lastMoveColumn))
-        && game.getColor() == Piece.Color.WHITE)
+      } else if (
+              lastPos.equals(new Position(7, lastMoveColumn))
+                      && game.getColor() == Piece.Color.WHITE)
       {
         game.getBoard().kingPieceAt(lastPos);
       }
@@ -94,16 +93,15 @@ public class PostSubmitTurnRoute implements Route
        *
        */
       Space jumpSpace;
-      while((jumpSpace = game.getJumpedPiece()) != null)
+      while ((jumpSpace = game.getJumpedPiece()) != null)
       {
         jumpSpace.setPiece(null);
         madeJump = true;
       }
 
 
-
       //made a jump that was a valid jump
-      if(madeJump)
+      if (madeJump)
       {
         RequireMove requireMove = new RequireMove(game.getBoard(), color);
         //gets all the jumps that are valid for the given board
@@ -112,42 +110,39 @@ public class PostSubmitTurnRoute implements Route
         int listSize = listMoves.size();
         Move lastMove = listMoves.get(listSize - 1);
         jumpEndSpace = game.getBoard().getSpaceAt(lastMove.getEnd().getRow(),
-               lastMove.getEnd().getCell());
+                lastMove.getEnd().getCell());
 
         //can only go in one direction (the player is a single piece)
         if (jumpEndSpace.getPiece().getType() != Piece.Type.KING)
         {
+          Stack<Move> validMoves = requireMove.getValidMoves(game.getBoard(),
+                  jumpEndSpace, color);
           //if there is still valid moves that are jumps
-          if (requireMove.getValidMoves(game.getBoard(), jumpEndSpace, color) != null)
+          //a list of all the valid moves
+          int colorFactor = 1;
+          if (color.equals(Piece.Color.WHITE))
           {
-            //a list of all the valid moves
-            Stack<Move> validMoves = new Stack<>();
-            int colorFactor = 1;
-            if (color.equals(Piece.Color.WHITE))
+            colorFactor = -1;
+          }
+          validMoves = requireMove.addMovesRowOneDirection(validMoves,
+                  game.getBoard(), jumpEndSpace.getPiece(), jumpEndSpace, colorFactor);
+          while (true)
+          {
+            if (validMoves.isEmpty())
             {
-              colorFactor = -1;
-            }
-            validMoves = requireMove.addMovesRowOneDirection(validMoves,
-                    game.getBoard(), jumpEndSpace.getPiece(), jumpEndSpace, colorFactor);
-            Move availableMove;
-            while(true)
+              break;
+            } else if (!validMoves.get(0).getStatus().equals(Move.MoveStatus.VALID))
             {
-              if (validMoves.isEmpty())
-              {
-                break;
-              } else if(!validMoves.get(0).getStatus().equals(Move.MoveStatus.VALID))
-              {
-                break;
-              } else
-              {
-                validMoves.pop();
-              }
-            }
-            if (validMoves.size() != 0)
+              break;
+            } else
             {
-              return gson.toJson(error("There is still an available jump. You" +
-                      " must make this move before you end your turn."));
+              validMoves.pop();
             }
+          }
+          if (validMoves.size() != 0)
+          {
+            return gson.toJson(error("There is still an available jump. You" +
+                    " must make this move before you end your turn."));
           }
         }
 
@@ -179,7 +174,7 @@ public class PostSubmitTurnRoute implements Route
             try
             {
               int cell = startPos.get(end.getRow());
-              if(cell == end.getCell())
+              if (cell == end.getCell())
               {
                 return gson.toJson(error("You doubled back on yourself. That is" +
                         " corrupt monarchy! And that is not allowed here!"));
@@ -194,7 +189,8 @@ public class PostSubmitTurnRoute implements Route
           }
         }
         //Jump not made
-      } else {
+      } else
+      {
         CheckerGame originalGame = manager.getGame(gameID);
         RequireMove requireMove = new RequireMove(originalGame.getBoard(), color);
         Map<Move.MoveStatus, List<Move>> validMoves = requireMove.getAllMoves();
