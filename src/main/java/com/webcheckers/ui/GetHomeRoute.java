@@ -76,6 +76,7 @@ public class GetHomeRoute implements Route
 
     // start building the View-Model
     final Map<String, Object> vm = new HashMap<>();
+
     vm.put(TITLE_ATTR, TITLE);
     Player player = httpSession.attribute(PLAYER_KEY);
 

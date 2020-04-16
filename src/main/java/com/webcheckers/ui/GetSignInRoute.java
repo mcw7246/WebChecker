@@ -5,13 +5,11 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.logging.Logger;
 
-import spark.ModelAndView;
-import spark.Request;
-import spark.Response;
-import spark.Route;
-import spark.TemplateEngine;
+import spark.*;
 
 import com.webcheckers.util.Message;
+
+import javax.servlet.http.HttpSession;
 
 /**
  * The UI Controller to GET the Home page.
@@ -52,6 +50,7 @@ public class GetSignInRoute implements Route
   {
     LOG.finer("GetSignInRoute is invoked.");
     Map<String, Object> vm = new HashMap<>();
+
     vm.put("title", "Sign-in");
     // display a user message in the Home page
     vm.put("message", SIGNIN_MSG);

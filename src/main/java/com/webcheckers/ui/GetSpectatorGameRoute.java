@@ -19,6 +19,7 @@ public class GetSpectatorGameRoute implements Route
 {
   public static String TURN = "turn";
 
+  private static final String RED_PLAYER = "redPlayer";
   private static final Logger LOG = Logger.getLogger(GetHomeRoute.class.getName());
   private Gson gson = new Gson();
   private final TemplateEngine templateEngine;
@@ -39,9 +40,23 @@ public class GetSpectatorGameRoute implements Route
     final Session session = request.session();
     final Player spectator = session.attribute(GetHomeRoute.PLAYER_KEY);
 
+    String theme = session.attribute("theme");
+    if(theme != null)
+    {
+      vm.put("theme", true);
+    } else {
+      vm.put("theme", false);
+    }
+
     if(spectator != null)
     {
       String redUsername = request.queryParams("watchGameRequest");
+      if (redUsername != null)
+      {
+        session.attribute(RED_PLAYER, redUsername);
+      } else {
+        redUsername = session.attribute(RED_PLAYER);
+      }
       GameManager manager = session.attribute(GetHomeRoute.GAME_MANAGER_KEY);
       String CURRENT_PLAYER = "currentUser";
       vm.put(CURRENT_PLAYER, spectator.getUsername());
