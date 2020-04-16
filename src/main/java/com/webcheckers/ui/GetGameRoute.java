@@ -63,6 +63,11 @@ public class GetGameRoute implements Route
       CheckerGame game;
       int gameIdNum = gameManager.getGameID(player.getUsername());
       game = gameManager.getGame(gameIdNum);
+      if (game == null)
+      {
+        response.redirect(HOME_URL);
+        return null;
+      }
       Player redPlayer = game.getRedPlayer();
       Player whitePlayer = game.getWhitePlayer();
       vm.put(VIEW_MODE, Player.ViewMode.PLAY);
@@ -93,44 +98,10 @@ public class GetGameRoute implements Route
       final Map<String, Object> modeOptions = new HashMap<>(2);
 
       boolean inGame = player.isInGame();
-
-      if(availableMoves.get(Move.MoveStatus.JUMP).isEmpty() &&
-              availableMoves.get(Move.MoveStatus.VALID).isEmpty())
-      {
-        modeOptions.put("isGameOver", true);
-        modeOptions.put("gameOverMessage", oppUsername + " has stopped you " +
-                "from moving! You've lost!");
-        vm.put("modeOptionsAsJSON", gson.toJson(modeOptions));
-      } else
-      {
-        if(color == RED)
-        {
-          color = WHITE;
-        } else
-        {
-          color = RED;
-        }
-        requireMove.updateColor(color);
-        availableMoves = requireMove.getAllMoves();
-        if(availableMoves.get(Move.MoveStatus.JUMP).isEmpty() &&
-                availableMoves.get(Move.MoveStatus.VALID).isEmpty())
-        {
-          modeOptions.put("isGameOver", true);
-          modeOptions.put("gameOverMessage", oppUsername + " cannot " +
-                  "move! You win!");
-          vm.put(ACTIVE_COLOR, game.getColor());
-          vm.put("modeOptionsAsJSON", gson.toJson(modeOptions));
-          gameManager.setGameOver(gameIdNum, "NO MOVE");
-          if(inGame)
-          {
-            player.hasEnteredGame();
-          }
-          return templateEngine.render(new ModelAndView(vm, VIEW_NAME));
-        }
-      }
+      vm.put(ACTIVE_COLOR, game.getColor());
       int redPieces = game.getNumRedPieces();
       int whitePieces = game.getNumWhitePieces();
-      vm.put(ACTIVE_COLOR, game.getColor());
+
       if((redPieces == 0) || (whitePieces == 0))
       {
         modeOptions.put("isGameOver", true);
@@ -159,6 +130,48 @@ public class GetGameRoute implements Route
           return templateEngine.render(new ModelAndView(vm, VIEW_NAME));
         }
       }
+
+      if(availableMoves.get(Move.MoveStatus.JUMP).isEmpty() &&
+              availableMoves.get(Move.MoveStatus.VALID).isEmpty())
+      {
+        modeOptions.put("isGameOver", true);
+        modeOptions.put("gameOverMessage", oppUsername + " has stopped you " +
+                "from moving! You've lost!");
+        vm.put("modeOptionsAsJSON", gson.toJson(modeOptions));
+        gameManager.setGameOver(gameIdNum, "NO MOVE");
+        if(inGame)
+        {
+          player.hasEnteredGame();
+        }
+        return templateEngine.render(new ModelAndView(vm, VIEW_NAME));
+      } else
+      {
+        if(color == RED)
+        {
+          color = WHITE;
+        } else
+        {
+          color = RED;
+        }
+        requireMove.updateColor(color);
+        availableMoves = requireMove.getAllMoves();
+        if(availableMoves.get(Move.MoveStatus.JUMP).isEmpty() &&
+                availableMoves.get(Move.MoveStatus.VALID).isEmpty())
+        {
+          modeOptions.put("isGameOver", true);
+          modeOptions.put("gameOverMessage", oppUsername + " cannot " +
+                  "move! You win!");
+          vm.put(ACTIVE_COLOR, game.getColor());
+          vm.put("modeOptionsAsJSON", gson.toJson(modeOptions));
+          gameManager.setGameOver(gameIdNum, "NO MOVE");
+          if(inGame)
+          {
+            player.hasEnteredGame();
+          }
+          return templateEngine.render(new ModelAndView(vm, VIEW_NAME));
+        }
+      }
+
       String gameOverStatus = gameManager.getGameOverStatus(gameIdNum);
       if(gameOverStatus.contains("resigned"))
       {
