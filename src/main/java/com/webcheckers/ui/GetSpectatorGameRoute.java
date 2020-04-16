@@ -15,6 +15,8 @@ import java.util.logging.Logger;
 import static com.webcheckers.ui.GetGameRoute.*;
 import static com.webcheckers.ui.GetReplayGameRoute.NOT_REPLAY;
 import static com.webcheckers.ui.WebServer.HOME_URL;
+import static com.webcheckers.util.Message.info;
+import static java.awt.SystemColor.info;
 
 public class GetSpectatorGameRoute implements Route
 {
@@ -87,6 +89,22 @@ public class GetSpectatorGameRoute implements Route
       vm.put(VIEWERS, manager.getViewers(gameIdNum));
       manager.addSpectator(spectator.getUsername(), gameIdNum);
       vm.put(NOT_REPLAY, true);
+      String status = manager.getGameOverStatus(gameIdNum);
+      if(!status.equals("No"))
+      {
+        if(status.contains("Your")){
+           status = status.replace(", Your", "");
+           status = status.replace("You Lose!", "Game Over!");
+        } else if (status.contains("You Win!")) {
+          status = status.replace("You Win!", "");
+        } else if (status.contains("You've Lost!"))
+        {
+          status = status.replace("You've Lost!", "");
+          status = status.replace("has stopped you from moving!", "has " +
+                  "stopped their opponent from moving!");
+        }
+        vm.put("message", info(status));
+      }
       return templateEngine.render(new ModelAndView(vm, VIEW_NAME));
     } else
     {

@@ -117,10 +117,11 @@ public class GetGameRoute implements Route
         modeOptions.put("isGameOver", true);
         if(whitePieces == 0)
         {
-          modeOptions.put("gameOverMessage", oppUsername + "'s pieces " +
-                  "were all taken! You win!");
+          String gameOverMessage = oppUsername + "'s pieces " +
+                  "were all taken! You win!";
+          gameManager.setGameOver(gameIdNum, gameOverMessage);
+          modeOptions.put("gameOverMessage", gameOverMessage);
           vm.put("modeOptionsAsJSON", gson.toJson(modeOptions));
-          gameManager.setGameOver(gameIdNum, "TAKEN");
           if(inGame)
           {
             player.hasEnteredGame();
@@ -131,10 +132,11 @@ public class GetGameRoute implements Route
         }
         else
         {
-          modeOptions.put("gameOverMessage", "Your pieces " +
-                  "were all taken! You lose!");
+          String gameOverMessage = username + ", Your pieces " +
+                  "were all taken! You lose!";
+          modeOptions.put("gameOverMessage", gameOverMessage);
+          gameManager.setGameOver(gameIdNum, gameOverMessage);
           vm.put("modeOptionsAsJSON", gson.toJson(modeOptions));
-          gameManager.setGameOver(gameIdNum, "TAKEN");
           if(inGame)
           {
             player.hasEnteredGame();
@@ -149,10 +151,11 @@ public class GetGameRoute implements Route
               availableMoves.get(Move.MoveStatus.VALID).isEmpty())
       {
         modeOptions.put("isGameOver", true);
-        modeOptions.put("gameOverMessage", oppUsername + " has stopped you " +
-                "from moving! You've lost!");
+        String gameOverMessage = oppUsername + " has stopped you " +
+                "from moving! You've lost!";
+        modeOptions.put("gameOverMessage", gameOverMessage);
+        gameManager.setGameOver(gameIdNum, gameOverMessage);
         vm.put("modeOptionsAsJSON", gson.toJson(modeOptions));
-        gameManager.setGameOver(gameIdNum, "NO MOVE");
         if(inGame)
         {
           player.hasEnteredGame();
@@ -175,11 +178,12 @@ public class GetGameRoute implements Route
                 availableMoves.get(Move.MoveStatus.VALID).isEmpty())
         {
           modeOptions.put("isGameOver", true);
-          modeOptions.put("gameOverMessage", oppUsername + " cannot " +
-                  "move! You win!");
+          String gameOverMessage = oppUsername + " cannot " +
+                  "move! You win!";
+          modeOptions.put("gameOverMessage", gameOverMessage);
+          gameManager.setGameOver(gameIdNum, gameOverMessage);
           vm.put(ACTIVE_COLOR, game.getColor());
           vm.put("modeOptionsAsJSON", gson.toJson(modeOptions));
-          gameManager.setGameOver(gameIdNum, "NO MOVE");
           if(inGame)
           {
             player.hasEnteredGame();
