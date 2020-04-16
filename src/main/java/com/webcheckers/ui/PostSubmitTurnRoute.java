@@ -209,7 +209,7 @@ public class PostSubmitTurnRoute implements Route
       manager.updateGame(gameID, game);
       manager.removeClientSideGame(player.getUsername());
       game.updateTurn();
-      rManager.addMove(gameID, game.getBoard());
+      rManager.addMove(gameID, game);
       return gson.toJson(info("Valid Move"));
     } else
     {

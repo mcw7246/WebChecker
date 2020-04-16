@@ -36,6 +36,8 @@ public class CheckerGame
 
   private int numRedPieces, numWhitePieces;
 
+  public int gameID;
+
   /**
    * Constructor
    */

@@ -67,7 +67,9 @@ public class GameManager
     HashMap<String, String> pairToAdd = new HashMap<>();
     pairToAdd.put(challenger, victim);
     this.pairs.put(gameIDNum, pairToAdd);
-    games.put(gameIDNum, new CheckerGame(player1, player2, new Board()));
+    CheckerGame game = new CheckerGame(player1, player2, new Board());
+    game.gameID = gameIDNum;
+    games.put(gameIDNum, game);
     gameOver.put(gameIDNum, "No");
     activeGames.add(gameIDNum);
   }
@@ -219,8 +221,10 @@ public class GameManager
     {
       game.updateTurn();
     }
+    game.gameID = gameIDNum;
     games.put(gameIDNum, game);
     gameOver.put(gameIDNum, "No");
+    activeGames.add(gameIDNum);
   }
 
   /**

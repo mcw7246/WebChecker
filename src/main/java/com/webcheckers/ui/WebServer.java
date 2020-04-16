@@ -10,7 +10,6 @@ import com.google.gson.Gson;
 import com.webcheckers.application.GameManager;
 import com.webcheckers.application.PlayerLobby;
 import com.webcheckers.application.ReplayManager;
-import com.webcheckers.model.Player;
 import spark.TemplateEngine;
 
 
@@ -73,6 +72,7 @@ public class WebServer
   public static final String SIGNOUT_URL = "/signout";
   public static final String CHANGE_THEME_URL = "/changeTheme";
   public static final String REPLAY_URL = "/replay";
+  public static final String REPLAY_GAME = "/replay/game";
 
   //
   // Attributes
@@ -171,6 +171,7 @@ public class WebServer
     post(SIGNOUT_URL, new PostSignOutRoute(templateEngine, playerLobby));
     post(CHANGE_THEME_URL, new PostChangeTheme());
     get(REPLAY_URL, new GetReplayRoute(templateEngine, rManager));
+    get(REPLAY_GAME, new GetReplayGameRoute(templateEngine, rManager));
     LOG.config("WebServer is initialized.");
   }
 }
