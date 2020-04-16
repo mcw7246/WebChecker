@@ -13,6 +13,7 @@ import java.util.logging.Logger;
 
 import static com.webcheckers.model.Piece.Color.RED;
 import static com.webcheckers.model.Piece.Color.WHITE;
+import static com.webcheckers.ui.GetReplayGameRoute.NOT_REPLAY;
 import static com.webcheckers.ui.PostRequestGameRoute.MESSAGE;
 import static com.webcheckers.ui.PostResignRoute.RESIGN_ATTR;
 import static com.webcheckers.ui.WebServer.HOME_URL;
@@ -76,6 +77,7 @@ public class GetGameRoute implements Route
         response.redirect(HOME_URL);
         return null;
       }
+      vm.put(NOT_REPLAY, true);
       Player redPlayer = game.getRedPlayer();
       Player whitePlayer = game.getWhitePlayer();
       vm.put(VIEW_MODE, Player.ViewMode.PLAY);

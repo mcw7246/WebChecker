@@ -2,6 +2,7 @@ package com.webcheckers.ui;
 
 import com.webcheckers.application.GameManager;
 import com.webcheckers.application.PlayerLobby;
+import com.webcheckers.application.ReplayManager;
 import com.webcheckers.model.Player;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
@@ -27,8 +28,9 @@ public class GetGameRouteTest
 
     //Friendly objects
     private PlayerLobby lobby;
-    private GameManager gameManager;
+    private GameManager manager;
     private Player player1, player2;
+    private ReplayManager rManager;
 
     //Mock objects
     private Request request;
@@ -40,7 +42,8 @@ public class GetGameRouteTest
     public void setup()
     {
         lobby = new PlayerLobby();
-        gameManager = new GameManager(lobby);
+        rManager = new ReplayManager();
+        manager = new GameManager(lobby, rManager);
         player1 = new Player(lobby);
         player1.setUsername("player1");
         player2 = new Player(lobby);
@@ -60,11 +63,11 @@ public class GetGameRouteTest
     {
         lobby.newPlayer(player1);
         lobby.newPlayer(player2);
-        gameManager.startGame(player1.getUsername(), player2.getUsername());
+        manager.startGame(player1.getUsername(), player2.getUsername());
 
         when(request.session()).thenReturn(session);
         when(session.attribute(GetHomeRoute.PLAYER_KEY)).thenReturn(player1);
-        when(session.attribute(GetHomeRoute.GAME_MANAGER_KEY)).thenReturn(gameManager);
+        when(session.attribute(GetHomeRoute.GAME_MANAGER_KEY)).thenReturn(manager);
 
         TemplateEngineTest testHelper = new TemplateEngineTest();
         when(engine.render(any(ModelAndView.class))).thenAnswer(testHelper.makeAnswer());
@@ -78,11 +81,11 @@ public class GetGameRouteTest
     {
         lobby.newPlayer(player1);
         lobby.newPlayer(player2);
-        gameManager.startGame(player1.getUsername(), player2.getUsername());
+        manager.startGame(player1.getUsername(), player2.getUsername());
 
         when(request.session()).thenReturn(session);
         when(session.attribute(GetHomeRoute.PLAYER_KEY)).thenReturn(player2);
-        when(session.attribute(GetHomeRoute.GAME_MANAGER_KEY)).thenReturn(gameManager);
+        when(session.attribute(GetHomeRoute.GAME_MANAGER_KEY)).thenReturn(manager);
 
         TemplateEngineTest testHelper = new TemplateEngineTest();
         when(engine.render(any(ModelAndView.class))).thenAnswer(testHelper.makeAnswer());
@@ -96,11 +99,11 @@ public class GetGameRouteTest
     {
         lobby.newPlayer(player1);
         lobby.newPlayer(player2);
-        gameManager.startGame(player1.getUsername(), player2.getUsername());
+        manager.startGame(player1.getUsername(), player2.getUsername());
 
         when(request.session()).thenReturn(session);
         when(session.attribute(GetHomeRoute.PLAYER_KEY)).thenReturn(null);
-        when(session.attribute(GetHomeRoute.GAME_MANAGER_KEY)).thenReturn(gameManager);
+        when(session.attribute(GetHomeRoute.GAME_MANAGER_KEY)).thenReturn(manager);
 
         TemplateEngineTest testHelper = new TemplateEngineTest();
         when(engine.render(any(ModelAndView.class))).thenAnswer(testHelper.makeAnswer());

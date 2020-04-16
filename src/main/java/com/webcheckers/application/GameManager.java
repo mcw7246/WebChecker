@@ -32,10 +32,12 @@ public class GameManager
   private static Map<Integer, Integer> spectatorNum = new HashMap<>();
   private static Map<Integer, String> gameOver = new HashMap<>();
   private static Set<Integer> activeGames = new HashSet<>();
+  private final ReplayManager rManager;
 
-  public GameManager(PlayerLobby lobby)
+  public GameManager(PlayerLobby lobby, ReplayManager rManager)
   {
     playerLobby = lobby;
+    this.rManager = rManager;
   }
 
   public Set<String> getInGame()
@@ -68,10 +70,11 @@ public class GameManager
     pairToAdd.put(challenger, victim);
     this.pairs.put(gameIDNum, pairToAdd);
     CheckerGame game = new CheckerGame(player1, player2, new Board());
-    game.gameID = gameIDNum;
+    game.setGameID(gameIDNum);
     games.put(gameIDNum, game);
     gameOver.put(gameIDNum, "No");
     activeGames.add(gameIDNum);
+    rManager.addMove(gameIDNum, game);
   }
 
   /**
@@ -221,7 +224,7 @@ public class GameManager
     {
       game.updateTurn();
     }
-    game.gameID = gameIDNum;
+    game.setGameID(gameIDNum);
     games.put(gameIDNum, game);
     gameOver.put(gameIDNum, "No");
     activeGames.add(gameIDNum);

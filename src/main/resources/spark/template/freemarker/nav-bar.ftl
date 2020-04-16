@@ -4,8 +4,7 @@
       <form id="signout" action="/signout" method="post">
         <a href="#" onclick="event.preventDefault(); signout.submit();">sign out
           [${currentUser}]</a>
-      </form>
-      | <form id="changeTheme" action="/changeTheme" method="post">
+      </form> | <form id="changeTheme" action="/changeTheme" method="post">
       <a href="#" onclick="ChangeTheme(); changeTheme.submit();">switch
         theme</a>
     </form>

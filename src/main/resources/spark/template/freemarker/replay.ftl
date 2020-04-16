@@ -21,7 +21,8 @@
             .getWhitePlayer()
             .getWinPercentage()}):
         <form action="./replay/game" method="GET">
-          <button type="submit" name="replayRequest" value=${games.gameID}>Watch
+          <button type="submit" name="replayRequest" value=${games
+          .getGameID()}>Watch
             Game
           </button>
         </form></p>

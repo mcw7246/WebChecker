@@ -36,7 +36,7 @@ public class CheckerGame
 
   private int numRedPieces, numWhitePieces;
 
-  public int gameID;
+  private int gameID;
 
   /**
    * Constructor
@@ -65,6 +65,26 @@ public class CheckerGame
     jumpedPieces = new Stack<Space>();
     numRedPieces = 12;
     numWhitePieces = 12;
+  }
+
+  /**
+   * Gets the game ID.
+   *
+   * @return the integer gameID.
+   */
+  public int getGameID()
+  {
+    return gameID;
+  }
+
+  /**
+   * Sets the game ID to the specified value.
+   *
+   * @param gameID the game Id to be set to.
+   */
+  public void setGameID(int gameID)
+  {
+    this.gameID = gameID;
   }
 
   /**

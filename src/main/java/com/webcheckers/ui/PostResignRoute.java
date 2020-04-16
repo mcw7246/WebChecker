@@ -11,6 +11,7 @@ import java.util.Map;
 
 import static com.webcheckers.ui.GetHomeRoute.*;
 import static com.webcheckers.ui.WebServer.HOME_URL;
+import static com.webcheckers.util.Message.error;
 import static com.webcheckers.util.Message.info;
 
 public class PostResignRoute implements Route
@@ -39,9 +40,16 @@ public class PostResignRoute implements Route
       session.attribute(RESIGN_ATTR, true);
       GameManager manager = session.attribute(GAME_MANAGER_KEY);
       int gameID = manager.getGameID(player.getUsername());
-      manager.setGameOver(gameID, player.getUsername() + " has resigned" +
-              ".");
-      return gson.toJson(info("Resign Successful"));
+      String status = manager.getGameOverStatus(gameID);
+      if(status.equals("No"))
+      {
+        manager.setGameOver(gameID, player.getUsername() + " has resigned" +
+                ".");
+        return gson.toJson(info("Resign Successful"));
+      } else {
+        return gson.toJson(error("You can't resign: " + status + " \nRefresh " +
+                "page to update!"));
+      }
     } else
     {
       response.redirect(HOME_URL);

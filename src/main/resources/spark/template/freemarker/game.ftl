@@ -94,7 +94,9 @@
       </div>
     </div>
   </div>
-  <h3>Current Spectators: ${viewers}</h3>
+  <#if notReplay>
+    <h3>Current Spectators: ${viewers}</h3>
+  </#if>
 </div>
 
 <#if theme>

@@ -98,7 +98,7 @@ public class WebServer
     //
     this.templateEngine = templateEngine;
     playerLobby = new PlayerLobby();
-    gameManager = new GameManager(playerLobby);
+    gameManager = new GameManager(playerLobby, rManager);
   }
 
   //

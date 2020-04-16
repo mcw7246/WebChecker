@@ -74,7 +74,8 @@ public class ReplayManager
    */
   public int maxMoves(int gameID)
   {
-    return (gameMoves.get(gameID).size());
+    List<CheckerGame> games = gameMoves.get(gameID);
+    return (games.size());
   }
 
   /**

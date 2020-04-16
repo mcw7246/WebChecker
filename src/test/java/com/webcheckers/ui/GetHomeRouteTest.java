@@ -33,7 +33,7 @@ public class GetHomeRouteTest
    */
   private PlayerLobby lobby;
   private Player p1, p2;
-  private GameManager gameManager;
+  private GameManager manager;
 
   /*
      Mock objects
@@ -60,9 +60,10 @@ public class GetHomeRouteTest
     p2.setUsername("Username2");
     lobby.newPlayer(p1);
     lobby.newPlayer(p2);
-    gameManager = new GameManager(lobby);
+    rManager = new ReplayManager();
+    manager = new GameManager(lobby, rManager);
     //Create a unique CuT for each test.
-    CuT = new GetHomeRoute(engine, lobby, gameManager, rManager);
+    CuT = new GetHomeRoute(engine, lobby, manager, rManager);
   }
 
   /**
@@ -118,7 +119,7 @@ public class GetHomeRouteTest
 
 
     lobby.challenge(p1.getUsername(), p2.getUsername());
-    gameManager.startGame(p2.getUsername(), p1.getUsername());
+    manager.startGame(p2.getUsername(), p1.getUsername());
     assertTrue(p1.isInGame());
 
 

@@ -25,6 +25,7 @@ public class GetReplayGameRoute implements Route
   private static final String MODE_OPTIONS_AS_JSON = "modeOptionsAsJSON";
   private static final String HAS_NEXT = "hasNext";
   private static final String HAS_PREVIOUS = "hasPrevious";
+  public static final String NOT_REPLAY = "notReplay";
   private final ReplayManager rManager;
   private Gson gson = new Gson();
   private final TemplateEngine engine;
@@ -58,7 +59,7 @@ public class GetReplayGameRoute implements Route
 
     if (watcher != null)
     {
-      String gameIDStr = request.queryParams("gameID");
+      String gameIDStr = request.queryParams("replayRequest");
       int gameID;
       if (gameIDStr != null)
       {
@@ -101,10 +102,12 @@ public class GetReplayGameRoute implements Route
       {
         vm.put("message",
                 info("You have started viewing " + game.getRedPlayer().getUsername() +
-                        "against " + game.getWhitePlayer().getUsername() +
+                        " v. " + game.getWhitePlayer().getUsername() +
                         "!"));
       }
-      return null;
+      vm.put(NOT_REPLAY, false);
+      vm.put(VIEWERS, "No viewers in replay mode!");
+      return engine.render(new ModelAndView(vm, VIEW_NAME));
     } else
     {
       response.redirect(HOME_URL);

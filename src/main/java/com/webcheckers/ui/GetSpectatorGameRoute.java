@@ -13,6 +13,7 @@ import java.util.Objects;
 import java.util.logging.Logger;
 
 import static com.webcheckers.ui.GetGameRoute.*;
+import static com.webcheckers.ui.GetReplayGameRoute.NOT_REPLAY;
 import static com.webcheckers.ui.WebServer.HOME_URL;
 
 public class GetSpectatorGameRoute implements Route
@@ -84,6 +85,7 @@ public class GetSpectatorGameRoute implements Route
       vm.put(ACTIVE_COLOR, game.getColor());
       vm.put(VIEWERS, manager.getViewers(gameIdNum));
       manager.addSpectator(spectator.getUsername(), gameIdNum);
+      vm.put(NOT_REPLAY, true);
       return templateEngine.render(new ModelAndView(vm, VIEW_NAME));
     } else
     {
