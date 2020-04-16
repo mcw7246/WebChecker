@@ -171,7 +171,7 @@ public class WebServer
     get(SPECTATOR_GAME_URL, new GetSpectatorGameRoute(templateEngine));
     post(SPECTATOR_CHECK_TURN_URL, new PostSpectatorCheckTurnRoute());
     post(SIGNOUT_URL, new PostSignOutRoute(templateEngine, playerLobby));
-    post(CHANGE_THEME_URL, new PostChangeTheme());
+    post(CHANGE_THEME_URL, new PostChangeTheme(rManager));
     get(REPLAY_URL, new GetReplayRoute(templateEngine, rManager));
     get(REPLAY_GAME, new GetReplayGameRoute(templateEngine, rManager));
     post(PREVIOUS_TURN, new PostReplayPreviousTurnRoute(rManager));
