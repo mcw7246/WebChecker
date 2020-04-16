@@ -48,6 +48,11 @@ public class ReplayManager
     return 0;
   }
 
+  public void stopWatching(String username)
+  {
+    activeReplays.remove(username);
+  }
+
   /**
    * Used to get the move that a current player is looking at. Starting to
    * watch if they aren't currently watching that game.

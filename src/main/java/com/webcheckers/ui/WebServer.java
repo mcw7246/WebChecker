@@ -75,6 +75,7 @@ public class WebServer
   public static final String REPLAY_GAME = "/replay/game";
   public static final String NEXT_TURN = "/replay/nextTurn";
   public static final String PREVIOUS_TURN = "/replay/previousTurn";
+  public static final String REPLAY_STOP_WATCHING = "/replay/stopWatching";
 
   //
   // Attributes
@@ -176,6 +177,7 @@ public class WebServer
     get(REPLAY_GAME, new GetReplayGameRoute(templateEngine, rManager));
     post(PREVIOUS_TURN, new PostReplayPreviousTurnRoute(rManager));
     post(NEXT_TURN, new PostReplayNextTurnRoute(rManager));
+    get(REPLAY_STOP_WATCHING, new PostReplayStopWatchingRoute(rManager));
     LOG.config("WebServer is initialized.");
   }
 }
