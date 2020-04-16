@@ -54,26 +54,26 @@ public class PostRequestResponseRoute implements Route
   {
     if (username.equals("TEST MULTI KING JUMP"))
     {
-      manager.startTestGame(opponent, username, KING_JUMP, 2);
+      manager.startTestGame(username, opponent, KING_JUMP, 2);
     } else if (username.equals("TEST REQUIRE JUMP"))
     {
-      manager.startTestGame(opponent, username, REQUIRE_JUMP, 1);
+      manager.startTestGame(username, opponent, REQUIRE_JUMP, 1);
     } else if (username.equals("TEST NECESSARY WHITE"))
     {
-      manager.startTestGame(opponent, username, NECESSARY_JUMP_WHITE, 2);
+      manager.startTestGame(username, opponent, NECESSARY_JUMP_WHITE, 2);
     } else if (username.equals("TEST NO MORE MOVES"))
     {
-      manager.startTestGame(opponent, username, NO_MORE_MOVES, 1);
+      manager.startTestGame(username, opponent, NO_MORE_MOVES, 1);
     } else if (username.equals("TEST MULTI JUMP REQUIRE"))
     {
-      manager.startTestGame(opponent, username,
+      manager.startTestGame(username, opponent,
               MULTI_JUMP_STILL_REQUIRED_WRONG, 1);
     } else if (username.equals("ABOUT TO JUMP ALL"))
     {
-      manager.startTestGame(opponent, username, ABOUT_JUMP_ALL, 1);
+      manager.startTestGame(username, opponent, ABOUT_JUMP_ALL, 1);
     } else
     {
-      manager.startGame(opponent, username);
+      manager.startGame(username, opponent);
     }
   }
 
