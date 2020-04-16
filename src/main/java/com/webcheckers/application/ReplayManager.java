@@ -8,7 +8,8 @@ import java.util.*;
 
 public class ReplayManager
 {
-  private Map<Integer, List<Board>> pastGames = new HashMap<>();
+  private Map<Integer, List<Board>> gameMoves = new HashMap<>();
+  private Set<Integer> pastGames = new HashSet<>();
 
   /**
    * adds a move to the list for whatever board.
@@ -18,15 +19,15 @@ public class ReplayManager
    */
   public void addMove(int gameID, Board board)
   {
-    if(pastGames.containsKey(gameID))
+    if(gameMoves.containsKey(gameID))
     {
-      List<Board> currentList = pastGames.get(gameID);
+      List<Board> currentList = gameMoves.get(gameID);
       currentList.add(board);
-      pastGames.replace(gameID, currentList);
+      gameMoves.replace(gameID, currentList);
     } else {
       List<Board> currentList = new ArrayList<>();
       currentList.add(board);
-      pastGames.put(gameID, currentList);
+      gameMoves.put(gameID, currentList);
     }
   }
 
@@ -39,7 +40,7 @@ public class ReplayManager
    */
   public Board getGameAtMove(int gameID, int move)
   {
-    List<Board> currentList = pastGames.get(gameID);
+    List<Board> currentList = gameMoves.get(gameID);
     if (currentList != null){
       return currentList.get(move);
     } else {
@@ -47,10 +48,25 @@ public class ReplayManager
     }
   }
 
+  /**
+   * Ending the game with the given id.
+   *
+   * @param gameID the id to end.
+   */
+  public void endGame(int gameID)
+  {
+    pastGames.add(gameID);
+  }
+
+  /**
+   * Returns all of the games that have ended.
+   *
+   * @return the list of all games that are over.
+   */
   public List<Integer> getGameOverIDs()
   {
     List<Integer> list = new ArrayList<>();
-    Object[] array = pastGames.keySet().toArray();
+    Object[] array = pastGames.toArray();
     Integer[] intArray = new Integer[array.length];
     System.arraycopy(array, 0, intArray, 0, array.length);
     Collections.addAll(list, intArray);

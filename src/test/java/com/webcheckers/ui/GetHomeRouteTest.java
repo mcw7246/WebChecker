@@ -2,6 +2,7 @@ package com.webcheckers.ui;
 
 import com.webcheckers.application.GameManager;
 import com.webcheckers.application.PlayerLobby;
+import com.webcheckers.application.ReplayManager;
 import com.webcheckers.model.Player;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -41,6 +42,7 @@ public class GetHomeRouteTest
   private Session session;
   private Response response;
   private TemplateEngine engine;
+  private ReplayManager rManager;
 
   @BeforeEach
   public void setup()
@@ -50,6 +52,7 @@ public class GetHomeRouteTest
     when(request.session()).thenReturn(session);
     engine = mock(TemplateEngine.class);
     response = mock(Response.class);
+    rManager = mock(ReplayManager.class);
     lobby = new PlayerLobby();
     p1 = new Player(lobby);
     p1.setUsername("Username1");
@@ -59,7 +62,7 @@ public class GetHomeRouteTest
     lobby.newPlayer(p2);
     gameManager = new GameManager(lobby);
     //Create a unique CuT for each test.
-    CuT = new GetHomeRoute(engine, lobby, gameManager);
+    CuT = new GetHomeRoute(engine, lobby, gameManager, rManager);
   }
 
   /**

@@ -8,6 +8,7 @@ import java.util.logging.Logger;
 
 import com.webcheckers.application.GameManager;
 import com.webcheckers.application.PlayerLobby;
+import com.webcheckers.application.ReplayManager;
 import com.webcheckers.model.CheckerGame;
 import com.webcheckers.model.Player;
 import spark.*;
@@ -42,9 +43,11 @@ public class GetHomeRoute implements Route
   static final String CHALLENGED_KEY = "pendingChallenge";
   static final String ERROR_MESSAGE_KEY = "errorMessage";
   private static final Logger LOG = Logger.getLogger(GetHomeRoute.class.getName());
+
   private final TemplateEngine templateEngine;
   private final PlayerLobby lobby;
   private final GameManager manager;
+  private final ReplayManager rManager;
 
   /**
    * Create the Spark Route (UI controller) to handle all {@code GET /} HTTP requests.
@@ -52,12 +55,14 @@ public class GetHomeRoute implements Route
    * @param templateEngine the HTML template rendering engine
    */
   public GetHomeRoute(final TemplateEngine templateEngine,
-                      PlayerLobby playerLobby, GameManager gameManager)
+                      PlayerLobby playerLobby, GameManager gameManager,
+                      ReplayManager rManager)
   {
     this.lobby = playerLobby;
     this.manager = gameManager;
     this.templateEngine = Objects.requireNonNull(templateEngine, "templateEngine is required");
     //
+    this.rManager = rManager;
     LOG.config("GetHomeRoute is initialized.");
   }
 
@@ -121,6 +126,7 @@ public class GetHomeRoute implements Route
         int gameID = manager.getGameID(player.getUsername());
         if(gameID != -1)
         {
+          rManager.endGame(gameID);
           manager.endGame(gameID);
           manager.removeFromGame(player.getUsername());
         }

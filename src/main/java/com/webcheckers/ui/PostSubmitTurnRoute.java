@@ -2,6 +2,7 @@ package com.webcheckers.ui;
 
 import com.google.gson.Gson;
 import com.webcheckers.application.GameManager;
+import com.webcheckers.application.ReplayManager;
 import com.webcheckers.model.*;
 import spark.Request;
 import spark.Response;
@@ -30,6 +31,12 @@ import static spark.Spark.halt;
  */
 public class PostSubmitTurnRoute implements Route
 {
+  private ReplayManager rManager;
+
+  public PostSubmitTurnRoute(ReplayManager rManager)
+  {
+    this.rManager = rManager;
+  }
 
   @Override
   public Object handle(Request request, Response response)
@@ -202,6 +209,7 @@ public class PostSubmitTurnRoute implements Route
       manager.updateGame(gameID, game);
       manager.removeClientSideGame(player.getUsername());
       game.updateTurn();
+      rManager.addMove(gameID, game.getBoard());
       return gson.toJson(info("Valid Move"));
     } else
     {

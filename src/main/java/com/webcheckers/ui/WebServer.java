@@ -153,7 +153,8 @@ public class WebServer
     //// Create separate Route classes to handle each route; this keeps your
     //// code clean; using small classes.
     // Shows the Checkers game Home page.
-    get(HOME_URL, new GetHomeRoute(templateEngine, playerLobby, gameManager));
+    get(HOME_URL, new GetHomeRoute(templateEngine, playerLobby, gameManager,
+            rManager));
     //Shows signin page
     get(SIGNIN_URL, new GetSignInRoute(templateEngine));
     post(SIGNIN_URL, new PostSignInRoute(templateEngine, playerLobby));
@@ -162,7 +163,7 @@ public class WebServer
     get(GAME_URL, new GetGameRoute(templateEngine));
     post(CHECK_TURN_URL, new PostCheckTurnRoute());
     post(VALIDATE_MOVE_URL, new PostValidateMoveRoute());
-    post(SUBMIT_TURN_URL, new PostSubmitTurnRoute());
+    post(SUBMIT_TURN_URL, new PostSubmitTurnRoute(rManager));
     post(BACKUP_MOVE_URL, new PostBackupMoveRoute());
     post(RESIGN_GAME_URL, new PostResignRoute(templateEngine));
     get(SPECTATOR_GAME_URL, new GetSpectatorGameRoute(templateEngine));
