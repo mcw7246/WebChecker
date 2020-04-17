@@ -103,43 +103,37 @@ public class PostSubmitTurnRoute implements Route
         RequireMove requireMove = new RequireMove(game.getBoard(), color);
         //gets all the jumps that are valid for the given board
         List<Move> listMoves = session.attribute(PostValidateMoveRoute.MOVE_LIST_ID);
+
         Space jumpEndSpace;
         int listSize = listMoves.size();
         Move lastMove = listMoves.get(listSize - 1);
         jumpEndSpace = game.getBoard().getSpaceAt(lastMove.getEnd().getRow(),
                 lastMove.getEnd().getCell());
-
+        if (jumpEndSpace.getPiece().getType() == Piece.Type.KING)
+        {
+          Set<Move> movesSet = new HashSet<>();
+          for (Move move : moves)
+          {
+            boolean exist = movesSet.add(move);
+            if (!exist)
+            {
+              return gson.toJson(error("You doubled back on yourself. That is" +
+                      " corrupt monarchy! And that is not allowed here!"));
+            }
+            exist = movesSet.add(new Move(move.getEnd(), move.getStart()));
+            if (!exist)
+            {
+              return gson.toJson(error("You doubled back on yourself. That is" +
+                      " corrupt monarchy! And that is not allowed here!"));
+            }
+          }
+          //go through the stack of valid moves for the given space
+        }
         //can only go in one direction (the player is a single piece)
         Stack<Move> validMoves = requireMove.getValidMoves(game.getBoard(),
                 jumpEndSpace, color);
         //if there is still valid moves that are jumps
         //a list of all the valid moves
-        //if it is a king
-        if (jumpEndSpace.getPiece().getType() == Piece.Type.KING)
-        {
-          Map<Integer, Integer> startPos = new HashMap<>();
-          for (Move move : moves)
-          {
-            Position start = move.getStart();
-            Position end = move.getEnd();
-            try
-            {
-              int cell = startPos.get(end.getRow());
-              if (cell == end.getCell())
-              {
-                return gson.toJson(error("You doubled back on yourself. That is" +
-                        " corrupt monarchy! And that is not allowed here!"));
-              } else
-              {
-                startPos.put(start.getRow(), start.getCell());
-              }
-            } catch (NullPointerException e)
-            {
-              startPos.put(start.getRow(), start.getCell());
-            }
-          }
-          //go through the stack of valid moves for the given space
-        }
         while (true)
         {
           if (validMoves.isEmpty())
@@ -176,5 +170,4 @@ public class PostSubmitTurnRoute implements Route
     }
     return "Redirected Home";
   }
-
 }
