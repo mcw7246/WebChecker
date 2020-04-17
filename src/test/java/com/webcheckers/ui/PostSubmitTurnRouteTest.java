@@ -47,7 +47,14 @@ public class PostSubmitTurnRouteTest
           "/webcheckers/test" +
           "-boards/ToBeKingedMultiJumpWhite.JSON";
   private static final String REQUIRE_JUMP = "src/test/java/com/webcheckers" +
-          "/test-boards/necesssaryJumpWhite.JSON";
+          "/test-boards/requireJumpBoard.JSON";
+
+  private static final String NO_MORE_MOVES = "src/test/java/com/webcheckers" +
+          "/test-boards/no-more-moves.JSON";
+  private static final String MULTI_JUMP_REQUIRE = "src/test/java/com/webcheckers" +
+          "/test-boards/multiJumpBoardStillJump.JSON";
+  private static final String MULTI_JUMP_KING_REQUIRE = "src/test/java/com/webcheckers" +
+          "/test-boards/kingRequireMultiJump.JSON";
 
   /**
    * The component-under-test (CuT)
@@ -268,7 +275,6 @@ public class PostSubmitTurnRouteTest
 
     assertEquals(gson.toJson(info("Valid Move")), CuT.handle(request,
             response));
-    System.out.println(board.getSpaceAt(0, 7).getPiece().getType());
     assertEquals(Piece.Type.KING, board.getSpaceAt(0, 7).getPiece().getType());
   }
 
@@ -327,37 +333,52 @@ public class PostSubmitTurnRouteTest
   public void opponent_cannot_move()
   {
     //TODO
+    Board gameBoard;
+    try
+    {
+      gameBoard = gson.fromJson(new FileReader(NO_MORE_MOVES), Board.class);
+    }
+    catch (FileNotFoundException e)
+    {
+      fail("Initial Board was not found from given path");
+      gameBoard = new Board();
+    }
 
+    CheckerGame newGame = new CheckerGame(player, player2, gameBoard);
+    System.out.println(game);
+    Piece piece = new Piece(Piece.Color.RED, Piece.Type.SINGLE);
+
+    List<Move> moves = new ArrayList<>();
+    when(session.attribute(PostValidateMoveRoute.MOVE_LIST_ID)).thenReturn(moves);
+//
+    CuT.handle(request, response);
+   // assertEquals(gson.toJson("Redirected Home"), CuT.handle(request, response));
 
   }
 
   @Test
   public void required_move_not_made()
   {
+    Board notMockedBoard;
     try
     {
-      this.board = gson.fromJson(new FileReader(REQUIRE_JUMP), Board.class);
+      notMockedBoard = gson.fromJson(new FileReader(KING_JUMP_WHITE), Board.class);
+    }  catch (FileNotFoundException e) {
+      fail("ERROR: FILE NOT FOUND STARTING GAME FROM SCRATCH");
+      notMockedBoard = new Board();
     }
-    catch (FileNotFoundException e)
-    {
-      fail("Initial Board was not found from given path");
-    }
+    CheckerGame newGame = new CheckerGame(player, player2, notMockedBoard);
     int gameID = manager.getGameID(player.getUsername());
     when(manager.getGameID(player.getUsername())).thenReturn(gameID);
-    when(manager.getGame(gameID)).thenReturn(game);
-    when(player.getPlayerNum()).thenReturn(1);
-
-    System.out.println(gameID);
+    when(manager.getGame(gameID)).thenReturn(newGame);
+    when(player.getPlayerNum()).thenReturn(2);
 
     when(session.attribute(GetHomeRoute.PLAYER_KEY)).thenReturn(player);
 
     List<Move> jumpMoves = new ArrayList<>();
     Map<Move.MoveStatus, List<Move>> requiredMoves = new HashMap<>();
-
-    Piece redPiece = new Piece(Piece.Color.RED, Piece.Type.SINGLE);
     Piece whitePiece = new Piece(Piece.Color.WHITE, Piece.Type.SINGLE);
-    Space jumpStart = new Space(0, 1, true, redPiece);
-    Space jumpSpace = new Space(1, 2, true, whitePiece);
+    Space jumpStart = new Space(0, 1, true, whitePiece);
     Space jumpEnd = new Space(2, 3, true);
 
     Stack<Move> validMoves = new Stack<>();
@@ -366,87 +387,137 @@ public class PostSubmitTurnRouteTest
     validMoves.push(requiredJumpMove);
     requiredMoves.put(Move.MoveStatus.JUMP, jumpMoves);
 
-    Piece movedRed = new Piece(Piece.Color.RED,Piece.Type.SINGLE);
-    Space startSpace = new Space(4, 5, true, movedRed);
+    Piece movedWhite = new Piece(Piece.Color.WHITE,Piece.Type.SINGLE);
+    Space startSpace = new Space(4, 5, true, movedWhite);
     Space endSpace = new Space(5, 6, true);
 
     Move moveMade = new Move(new Position(startSpace.getRowIndex(), startSpace.getColumnIndex()), new Position(endSpace.getRowIndex(), endSpace.getColumnIndex()));
 
     List<Move> movesMadeList = new ArrayList<>();
     movesMadeList.add(moveMade);
-    //when(board.getSpaceAt(jumpStart.getRowIndex(), jumpStart.getColumnIndex())).thenReturn(jumpStart);
-    //when(board.getSpaceAt(jumpEnd.getRowIndex(), jumpEnd.getColumnIndex())).thenReturn(jumpEnd);
 
     when(session.attribute(PostValidateMoveRoute.MOVE_LIST_ID)).thenReturn(movesMadeList);
     when(requireMove.getAllMoves()).thenReturn(requiredMoves);
-    System.out.println(requiredMoves);
-    CuT.handle(request, response);
 
+    assertEquals(gson.toJson(error("There is still an available jump. You must make this move before you end your turn.")), CuT.handle(request, response));
+
+  }
+
+  @Test
+  public void require_multiple_jump(){
+    Board setBoard;
+    try
+    {
+      setBoard = gson.fromJson(new FileReader(MULTI_JUMP_REQUIRE), Board.class);
+    }  catch (FileNotFoundException e) {
+      fail("ERROR: FILE NOT FOUND STARTING GAME FROM SCRATCH");
+      setBoard = new Board();
+    }
+    int gameID = manager.getGameID(player.getUsername());
+    when(player.getPlayerNum()).thenReturn(1);
+
+    when(session.attribute(GetHomeRoute.GAME_MANAGER_KEY)).thenReturn(manager);
+    when(player.getPlayerNum()).thenReturn(1);
+    when(session.attribute(GetHomeRoute.PLAYER_KEY)).thenReturn(player);
+    CheckerGame newGame = new CheckerGame(player, player2, setBoard);
+    when(manager.getGame(gameID)).thenReturn(newGame);
+    RequireMove newRequireMove = new RequireMove(setBoard, Piece.Color.RED);
+    List<Move> listMoves = new ArrayList<>();
+    Map<Move.MoveStatus, List<Move>> moves = newRequireMove.getAllMoves();
+    Piece whitePiece = new Piece(Piece.Color.WHITE, Piece.Type.SINGLE);
+    Space jumpedSpace = new Space(4, 5, true, whitePiece);
+
+    Move moveMade = new Move(new Position(5, 4), new Position(3, 6), Move.MoveStatus.JUMP);
+    listMoves.add(moveMade);
+    when(session.attribute(PostValidateMoveRoute.MOVE_LIST_ID)).thenReturn(listMoves);
+    ;
+    newGame.addJumpedPieces(jumpedSpace);
+    System.out.println(game.getJumpedPiece());
+    newGame.makeMove(moveMade);
+    assertEquals(gson.toJson(error("There is still an available jump. You must make this move before you end your turn.")), CuT.handle(request, response));
+  }
+
+  @Test
+  public void king_multi_jump_required(){
+    Board setBoard;
+    try
+    {
+      setBoard = gson.fromJson(new FileReader(MULTI_JUMP_KING_REQUIRE), Board.class);
+    }  catch (FileNotFoundException e) {
+      fail("ERROR: FILE NOT FOUND STARTING GAME FROM SCRATCH");
+      setBoard = new Board();
+    }
+
+    int gameID = manager.getGameID(player.getUsername());
+    when(player.getPlayerNum()).thenReturn(1);
+
+    when(session.attribute(GetHomeRoute.GAME_MANAGER_KEY)).thenReturn(manager);
+    when(player.getPlayerNum()).thenReturn(1);
+    when(session.attribute(GetHomeRoute.PLAYER_KEY)).thenReturn(player);
+    CheckerGame newGame = new CheckerGame(player, player2, setBoard);
+    when(manager.getGame(gameID)).thenReturn(newGame);
+    RequireMove newRequireMove = new RequireMove(setBoard, Piece.Color.RED);
+    List<Move> listMoves = new ArrayList<>();
+    Map<Move.MoveStatus, List<Move>> moves = newRequireMove.getAllMoves();
+    System.out.println(moves.get(Move.MoveStatus.JUMP));
+    Piece whitePiece = new Piece(Piece.Color.WHITE, Piece.Type.SINGLE);
+    //Space jumpedSpace = new Space(4, 5, true, whitePiece);
+
+    Move moveMade = new Move(new Position(0, 1), new Position(1, 0), Move.MoveStatus.VALID);
+    listMoves.add(moveMade);
+    when(session.attribute(PostValidateMoveRoute.MOVE_LIST_ID)).thenReturn(listMoves);
+    ;
+    //newGame.addJumpedPieces(jumpedSpace);
+    //System.out.println(game.getJumpedPiece());
 
 
     /**
-    when(manager.getGameID(player.getUsername())).thenReturn(GAME_ID);
-    when(manager.getGame(GAME_ID)).thenReturn(game);
+    CheckerGame newGame = new CheckerGame(player, player2, setBoard);
+    int gameID = manager.getGameID(player.getUsername());
+    when(manager.getGame(gameID)).thenReturn(newGame);
 
+    when(session.attribute(GetHomeRoute.GAME_MANAGER_KEY)).thenReturn(manager);
+    when(session.attribute(GetHomeRoute.PLAYER_KEY)).thenReturn(player);
+    RequireMove newRequireMove = new RequireMove(setBoard, Piece.Color.RED);
 
-    System.out.println(player.getPlayerNum());
-    System.out.println(player2.getPlayerNum());
-    System.out.println(game.getTurn());
-    System.out.println(game.getColor());
-    Map<Move.MoveStatus, List<Move>> allMoves = requireMove.getAllMoves();
+    List<Move> jumpMoves = newRequireMove.getAllMoves().get(Move.MoveStatus.JUMP);
+    List<Move> normMoves = newRequireMove.getAllMoves().get(Move.MoveStatus.VALID);
+    System.out.println(newRequireMove.getAllMoves());
 
+    System.out.println("Start: [" + jumpMoves.get(0).getStart().getRow()
+        + ", " + jumpMoves.get(0).getStart().getCell() + "]"
+    );
+    System.out.println("End: [" + jumpMoves.get(0).getEnd().getRow()
+            + ", " + jumpMoves.get(0).getEnd().getCell() + "]"
+    );
+    System.out.println("norm start: [" + normMoves.get(0).getStart().getRow()
+            + ", " + normMoves.get(0).getStart().getCell() + "]"
+    );
+    System.out.println("norm end: [" + normMoves.get(0).getEnd().getRow()
+            + ", " + normMoves.get(0).getEnd().getCell() + "]"
+    );
 
-    List<Move> jumpMoves = new ArrayList<>();
+    Piece piece = new Piece(Piece.Color.RED, Piece.Type.KING);
+    Space start = new Space(0, 1, true, piece);
+    Space end = new Space(2, 3, true);
 
-    //creates the move that should have been made
-    Piece redPiece = new Piece(Piece.Color.RED, Piece.Type.SINGLE);
-    Piece whitePiece = new Piece(Piece.Color.WHITE, Piece.Type.SINGLE);
-    Space jumpStart = new Space(0, 1, true, redPiece);
-    Space whiteJumpSpace = new Space(1, 2, true, whitePiece);
-    Space jumpEnd = new Space(2, 3, true);
+    Move requiredMove = new Move(new Position(0, 1), new Position(2, 3));
+    jumpMoves.add(requiredMove);
+    Map<Move.MoveStatus, List<Move>> validMoves = requireMove.getAllMoves();
 
-    Move jumpMove = new Move(new Position(jumpStart.getRowIndex(), jumpStart.getColumnIndex()), new Position(jumpEnd.getRowIndex(), jumpEnd.getColumnIndex()), Move.MoveStatus.JUMP);
+    validMoves.put(Move.MoveStatus.JUMP, jumpMoves);
 
-    jumpMoves.add(jumpMove);
+    List<Move> listMoves = new ArrayList<>();
 
+    Move moveMade = new Move(new Position(0, 1), new Position(1, 0));
+    listMoves.add(moveMade);
+    when(session.attribute(PostValidateMoveRoute.MOVE_LIST_ID)).thenReturn(listMoves);
+    */
 
-    allMoves.put(Move.MoveStatus.JUMP, jumpMoves);
-
-    System.out.println(allMoves);
-    System.out.println(jumpMoves);
-
-    //creates the move that was made
-    Piece redMoved = new Piece(Piece.Color.RED, Piece.Type.SINGLE);
-
-    Space startSpace = new Space(3, 4, true, redMoved);
-    Space endSpace = new Space(4, 5, true);
-
-    Move moveMade = new Move(new Position(startSpace.getRowIndex(), startSpace.getColumnIndex()), new Position(endSpace.getRowIndex(), endSpace.getColumnIndex()));
-    List<Move> movesList = new ArrayList<>();
-
-    Stack<Move> movesStack = new Stack<>();
-
-    movesStack.push(moveMade);
-    movesList.add(moveMade);
-
-    when(player.getPlayerNum()).thenReturn(1);
-    when(session.attribute(PostValidateMoveRoute.MOVE_LIST_ID)).thenReturn(movesList);
-
-    when(requireMove.getAllMoves()).thenReturn(allMoves);
-
-    when(requireMove.getValidMoves(board, jumpSpace, Piece.Color.RED)).thenReturn(movesStack);
-    when(board.getSpaceAt(startSpace.getRowIndex(), startSpace.getColumnIndex())).thenReturn(startSpace);
-    when(board.getSpaceAt(endSpace.getRowIndex(), endSpace.getColumnIndex())).thenReturn(endSpace);
-    when(board.getSpaceAt(whiteJumpSpace.getRowIndex(), whiteJumpSpace.getColumnIndex())).thenReturn(whiteJumpSpace);
-    when(board.getSpaceAt(jumpEnd.getRowIndex(), jumpEnd.getColumnIndex())).thenReturn(jumpEnd);
-    when(manager.getLocalGame(player.getUsername())).thenReturn(game);
-    when(board.getSpaceAt(jumpStart.getRowIndex(), jumpStart.getColumnIndex())).thenReturn(jumpStart);
     CuT.handle(request, response);
-    //assertEquals(gson.toJson(error("There is still an available jump. You must make this move before you end your turn.")), CuT.handle(request, response));
-*/
+    assertEquals(gson.toJson(error("There is still an available jump. You must make this move before you end your turn.")), CuT.handle(request, response));
+
   }
-
-
 }
 
 
