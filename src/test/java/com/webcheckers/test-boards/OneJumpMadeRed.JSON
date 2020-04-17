@@ -258,11 +258,7 @@
         {
           "isBlack": true,
           "columnIndex": 5,
-          "rowIndex": 4,
-          "piece": {
-            "color": "WHITE",
-            "type": "SINGLE"
-          }
+          "rowIndex": 4
         },
         {
           "isBlack": false,
