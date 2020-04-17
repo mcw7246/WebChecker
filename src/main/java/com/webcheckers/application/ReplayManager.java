@@ -47,6 +47,11 @@ public class ReplayManager
     return 0;
   }
 
+  /**
+   * A helper method to represent that someone has stopped watching a replay.
+   *
+   * @param username the username of the person to stop watching
+   */
   public void stopWatching(String username)
   {
     activeReplays.remove(username);
