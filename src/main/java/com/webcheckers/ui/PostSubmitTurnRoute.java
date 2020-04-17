@@ -55,7 +55,6 @@ public class PostSubmitTurnRoute implements Route
         game = manager.getGame(gameID);
         if (game == null)
         {
-          System.out.println("REDIRECTING HOME");
           response.redirect(WebServer.HOME_URL);
           return "Redirected Home";
         }

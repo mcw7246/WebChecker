@@ -258,11 +258,7 @@
         {
           "isBlack": true,
           "columnIndex": 5,
-          "rowIndex": 4,
-          "piece": {
-            "color": "WHITE",
-            "type": "SINGLE"
-          }
+          "rowIndex": 4
         },
         {
           "isBlack": false,
@@ -347,7 +343,7 @@
           "rowIndex": 6,
           "piece": {
             "color": "RED",
-            "type": "SINGLE"
+            "type": "KING"
           }
         },
         {
@@ -402,8 +398,8 @@
           "columnIndex": 0,
           "rowIndex": 7,
           "piece": {
-            "color": "RED",
-            "type": "SINGLE"
+            "color": "WHITE",
+            "type": "KING"
           }
         },
         {
