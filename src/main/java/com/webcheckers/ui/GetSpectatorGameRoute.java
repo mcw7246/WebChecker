@@ -12,6 +12,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.logging.Logger;
 
+import static com.webcheckers.model.Player.ViewMode.SPECTATOR;
 import static com.webcheckers.ui.GetGameRoute.*;
 import static com.webcheckers.ui.GetReplayGameRoute.NOT_REPLAY;
 import static com.webcheckers.ui.WebServer.HOME_URL;
@@ -55,17 +56,11 @@ public class GetSpectatorGameRoute implements Route
     {
       String redUsername = request.queryParams("watchGameRequest");
       redUsername = redUsername.replace('-', ' ');
-      if (redUsername != null)
-      {
-        session.attribute(RED_PLAYER, redUsername);
-      } else
-      {
-        redUsername = session.attribute(RED_PLAYER);
-      }
+      session.attribute(RED_PLAYER, redUsername);
       GameManager manager = session.attribute(GetHomeRoute.GAME_MANAGER_KEY);
       String CURRENT_PLAYER = "currentUser";
       vm.put(CURRENT_PLAYER, spectator.getUsername());
-      vm.put(GetGameRoute.VIEW_MODE, Player.ViewMode.SPECTATOR);
+      vm.put(GetGameRoute.VIEW_MODE, SPECTATOR);
       CheckerGame game;
       int gameIdNum = manager.getGameID(redUsername);
       game = manager.getGame(gameIdNum);
@@ -92,17 +87,6 @@ public class GetSpectatorGameRoute implements Route
       String status = manager.getGameOverStatus(gameIdNum);
       if(!status.equals("No"))
       {
-        if(status.contains("Your")){
-           status = status.replace(", Your", "");
-           status = status.replace("You Lose!", "Game Over!");
-        } else if (status.contains("You Win!")) {
-          status = status.replace("You Win!", "");
-        } else if (status.contains("You've Lost!"))
-        {
-          status = status.replace("You've Lost!", "");
-          status = status.replace("has stopped you from moving!", "has " +
-                  "stopped their opponent from moving!");
-        }
         vm.put("message", info(status));
       }
       return templateEngine.render(new ModelAndView(vm, VIEW_NAME));

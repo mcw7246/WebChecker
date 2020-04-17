@@ -5,19 +5,25 @@ import com.webcheckers.application.PlayerLobby;
 import com.webcheckers.application.ReplayManager;
 import com.webcheckers.model.Board;
 import com.webcheckers.model.CheckerGame;
+import com.webcheckers.model.Piece;
 import com.webcheckers.model.Player;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import spark.Request;
-import spark.Response;
-import spark.Session;
-import spark.TemplateEngine;
+import spark.*;
 
+import static com.webcheckers.model.Player.ViewMode.SPECTATOR;
+import static com.webcheckers.ui.GetGameRoute.*;
+import static com.webcheckers.ui.GetReplayGameRoute.NOT_REPLAY;
+import static com.webcheckers.util.Message.info;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+/**
+ * A test for rendering the game.ftl for the spectator.
+ */
 public class GetSpectatorGameRouteTest
 {
   private GetSpectatorGameRoute CuT;
@@ -26,9 +32,7 @@ public class GetSpectatorGameRouteTest
   private Player player1;
   private Player player2;
   private ReplayManager rManager;
-
-
-
+  TemplateEngineTest testHelper;
 
   private TemplateEngine engine;
   private CheckerGame game;
@@ -39,7 +43,8 @@ public class GetSpectatorGameRouteTest
   private Board board;
 
   @BeforeEach
-  public void setUp(){
+  public void setUp()
+  {
     rManager = new ReplayManager();
     player1 = new Player(lobby);
     player1.setUsername("player1");
@@ -48,8 +53,7 @@ public class GetSpectatorGameRouteTest
     board = new Board();
     game = new CheckerGame(player1, player2, board);
 
-
-
+    testHelper = new TemplateEngineTest();
     engine = mock(TemplateEngine.class);
     manager = mock(GameManager.class);
     session = mock(Session.class);
@@ -62,20 +66,82 @@ public class GetSpectatorGameRouteTest
     CuT = new GetSpectatorGameRoute(engine);
   }
 
+  /**
+   * Tests that when there is no player that it is redirected home.
+   */
   @Test
-  public void testSpectator(){
+  public void noPlayer()
+  {
+    when(session.attribute(GetHomeRoute.PLAYER_KEY)).thenReturn(null);
+    assertEquals("Home Redirect", CuT.handle(request, response));
+  }
+
+  @Test
+  public void testSpectator()
+  {
     int gameID = manager.getGameID(player1.getUsername());
 
     when(manager.getGameID(player1.getUsername())).thenReturn(gameID);
     when(manager.getGame(gameID)).thenReturn(game);
     when(session.attribute(GetHomeRoute.PLAYER_KEY)).thenReturn(player1);
     when(session.attribute(GetHomeRoute.GAME_MANAGER_KEY)).thenReturn(manager);
+    when(manager.getGameOverStatus(gameID)).thenReturn("No");
 
-    String status = manager.getGameOverStatus(gameID);
-    System.out.println(status);
-    when(manager.getGameOverStatus(gameID)).thenReturn(status);
-
+    when(engine.render(any(ModelAndView.class))).thenAnswer(testHelper.makeAnswer());
     CuT.handle(request, response);
     assertNotNull(player1);
+    testHelper.assertViewModelExists();
+    testHelper.assertViewModelAttribute(VIEWERS, 0);
+    testHelper.assertViewModelAttribute(NOT_REPLAY, true);
+  }
+
+  /**
+   * Tests when the game has the white players turn and the theme is selected.
+   */
+  @Test
+  public void test_white_turn_theme()
+  {
+    when(session.attribute("theme")).thenReturn("True");
+
+    int gameID = manager.getGameID(player1.getUsername());
+
+    when(manager.getGameID(player1.getUsername())).thenReturn(gameID);
+    when(manager.getGame(gameID)).thenReturn(game);
+    when(session.attribute(GetHomeRoute.PLAYER_KEY)).thenReturn(player1);
+    when(session.attribute(GetHomeRoute.GAME_MANAGER_KEY)).thenReturn(manager);
+    when(manager.getGameOverStatus(gameID)).thenReturn("No");
+    game.updateTurn();
+
+    when(engine.render(any(ModelAndView.class))).thenAnswer(testHelper.makeAnswer());
+    CuT.handle(request, response);
+
+    testHelper.assertViewModelAttribute("theme", true);
+    testHelper.assertViewModelAttribute(ACTIVE_COLOR, Piece.Color.WHITE);
+    testHelper.assertViewModelAttribute(VIEW_MODE, SPECTATOR);
+  }
+
+  /**
+   * Tests what happens when the game has ended.
+   */
+  @Test
+  public void game_over()
+  {
+    when(session.attribute("theme")).thenReturn("True");
+
+    int gameID = manager.getGameID(player1.getUsername());
+
+    when(manager.getGameID(player1.getUsername())).thenReturn(gameID);
+    when(manager.getGame(gameID)).thenReturn(game);
+    when(session.attribute(GetHomeRoute.PLAYER_KEY)).thenReturn(player1);
+    when(session.attribute(GetHomeRoute.GAME_MANAGER_KEY)).thenReturn(manager);
+    when(manager.getGameOverStatus(gameID)).thenReturn("Austin has resigned.");
+    game.updateTurn();
+
+    when(engine.render(any(ModelAndView.class))).thenAnswer(testHelper.makeAnswer());
+    CuT.handle(request, response);
+
+    testHelper.assertViewModelAttribute("theme", true);
+    testHelper.assertViewModelAttribute(ACTIVE_COLOR, Piece.Color.WHITE);
+    testHelper.assertViewModelAttribute(VIEW_MODE, SPECTATOR);
   }
 }
