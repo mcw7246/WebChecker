@@ -117,33 +117,66 @@ public class GetGameRoute implements Route
         modeOptions.put("isGameOver", true);
         if(whitePieces == 0)
         {
-          String gameOverMessage = oppUsername + "'s pieces " +
-                  "were all taken! You win!";
-          gameManager.setGameOver(gameIdNum, gameOverMessage);
-          modeOptions.put("gameOverMessage", gameOverMessage);
-          vm.put("modeOptionsAsJSON", gson.toJson(modeOptions));
-          if(inGame)
+          if(player.equals(game.getRedPlayer()))
           {
-            player.hasEnteredGame();
+            String gameOverMessage = oppUsername + "'s pieces " +
+                    "were all taken! You win!";
+            gameManager.setGameOver(gameIdNum, gameOverMessage);
+            modeOptions.put("gameOverMessage", gameOverMessage);
+            vm.put("modeOptionsAsJSON", gson.toJson(modeOptions));
+            if (inGame) {
+              player.hasEnteredGame();
+            }
+            player.endGame(true);
+            gameManager.getOpponent(username).endGame(false);
+            return templateEngine.render(new ModelAndView(vm, VIEW_NAME));
           }
-          player.endGame(true);
-          gameManager.getOpponent(username).endGame(false);
-          return templateEngine.render(new ModelAndView(vm, VIEW_NAME));
+          else
+          {
+            String gameOverMessage = username + ", Your pieces " +
+                    "were all taken! You lose!";
+            modeOptions.put("gameOverMessage", gameOverMessage);
+            gameManager.setGameOver(gameIdNum, gameOverMessage);
+            vm.put("modeOptionsAsJSON", gson.toJson(modeOptions));
+            if(inGame)
+            {
+              player.hasEnteredGame();
+            }
+            player.endGame(false);
+            gameManager.getOpponent(username).endGame(true);
+            return templateEngine.render(new ModelAndView(vm, VIEW_NAME));
+          }
         }
         else
         {
-          String gameOverMessage = username + ", Your pieces " +
-                  "were all taken! You lose!";
-          modeOptions.put("gameOverMessage", gameOverMessage);
-          gameManager.setGameOver(gameIdNum, gameOverMessage);
-          vm.put("modeOptionsAsJSON", gson.toJson(modeOptions));
-          if(inGame)
-          {
-            player.hasEnteredGame();
+          if(player.equals(game.getWhitePlayer())) {
+            String gameOverMessage = oppUsername + "'s pieces " +
+                    "were all taken! You win!";
+            gameManager.setGameOver(gameIdNum, gameOverMessage);
+            modeOptions.put("gameOverMessage", gameOverMessage);
+            vm.put("modeOptionsAsJSON", gson.toJson(modeOptions));
+            if (inGame) {
+              player.hasEnteredGame();
+            }
+            player.endGame(true);
+            gameManager.getOpponent(username).endGame(false);
+            return templateEngine.render(new ModelAndView(vm, VIEW_NAME));
           }
-          player.endGame(false);
-          gameManager.getOpponent(username).endGame(true);
-          return templateEngine.render(new ModelAndView(vm, VIEW_NAME));
+          else
+          {
+            String gameOverMessage = username + ", Your pieces " +
+                    "were all taken! You lose!";
+            modeOptions.put("gameOverMessage", gameOverMessage);
+            gameManager.setGameOver(gameIdNum, gameOverMessage);
+            vm.put("modeOptionsAsJSON", gson.toJson(modeOptions));
+            if(inGame)
+            {
+              player.hasEnteredGame();
+            }
+            player.endGame(false);
+            gameManager.getOpponent(username).endGame(true);
+            return templateEngine.render(new ModelAndView(vm, VIEW_NAME));
+          }
         }
       }
 
