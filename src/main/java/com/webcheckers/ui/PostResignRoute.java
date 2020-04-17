@@ -7,28 +7,27 @@ import spark.*;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 import static com.webcheckers.ui.GetHomeRoute.*;
 import static com.webcheckers.ui.WebServer.HOME_URL;
+import static com.webcheckers.util.Message.error;
 import static com.webcheckers.util.Message.error;
 import static com.webcheckers.util.Message.info;
 
 public class PostResignRoute implements Route
 {
   final public static String RESIGN_ATTR = "resigned";
-  final Map<String, Object> modeOptions = new HashMap<>(2);
-
   Gson gson = new Gson();
 
-  final TemplateEngine templateEngine;
-
-
-  public PostResignRoute(TemplateEngine templateEngine)
-  {
-    this.templateEngine = templateEngine;
-  }
-
-
+  /**
+   * Handle the player resignation request by removing them from the game and sending a notification
+   * via Json to the server/opponent.
+   * @param request The Request object
+   * @param response The Response object
+   * @return the Gson.toJson() message indicating a successful resignation, or Null if the resignation fails
+   * (which should only occur due to timed-out session).
+   */
   @Override
   public Object handle(Request request, Response response) throws Exception
   {
