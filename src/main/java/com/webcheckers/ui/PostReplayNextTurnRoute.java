@@ -31,7 +31,6 @@ public class PostReplayNextTurnRoute implements Route
     {
       String username = player.getUsername();
       int gameID = session.attribute(GAME_ID);
-      int move = rManager.getMove(username, gameID) + 1;
       rManager.nextMove(username, gameID);
       return gson.toJson(info("true"));
     } else
