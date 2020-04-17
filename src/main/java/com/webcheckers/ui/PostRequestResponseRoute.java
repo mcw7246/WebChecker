@@ -39,6 +39,8 @@ public class PostRequestResponseRoute implements Route
           "-boards/test-demo-1.JSON";
   private static final String ABOUT_MOVES_NONE = "src/test/java/com" +
           "/webcheckers/test-boards/about-to-no-more-moves";
+  private static final String KING_BACK_AGAIN = "src/test/java/com" +
+          "/webcheckers/test-boards/kingBackOnSelf.JSON";
 
   /*
   This is all of the names to start preloaded games.
@@ -51,6 +53,7 @@ public class PostRequestResponseRoute implements Route
   public static final String ABOUTA_JUMP = "ABOUT TO JUMP ALL";
   public static final String ABOUT_NO_MORE_MOVES = "ABOUT NO MOVES";
   public static final String TEST_DEM1 = "TEST DEMO 1";
+  public static final String KING_BACK = "KING BACK AGAIN";
 
 
   /**
@@ -92,7 +95,10 @@ public class PostRequestResponseRoute implements Route
     } else if (username.equals(ABOUT_NO_MORE_MOVES))
     {
       manager.startTestGame(username, opponent, ABOUT_MOVES_NONE, 1);
-    } else
+    } else if (username.equals(KING_BACK))
+    {
+      manager.startTestGame(username, opponent, KING_BACK_AGAIN, 1);
+    }else
     {
       manager.startGame(username, opponent);
     }

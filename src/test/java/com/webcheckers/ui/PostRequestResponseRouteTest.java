@@ -153,7 +153,7 @@ public class PostRequestResponseRouteTest
     ArrayList<String> game_names = new ArrayList<String>(
             Arrays.asList(MULTI_KING, REQUIRE_JUMP_, NEC_WHITE, NO_MOVES,
                     MULTI_JUMP_REQ, ABOUTA_JUMP, ABOUT_NO_MORE_MOVES,
-                    TEST_DEM1));
+                    TEST_DEM1, KING_BACK));
     for (String username : game_names)
     {
       when(session.attribute(GetHomeRoute.CHALLENGE_USER_KEY)).thenReturn(username);
