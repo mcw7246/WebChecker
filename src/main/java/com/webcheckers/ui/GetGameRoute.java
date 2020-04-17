@@ -227,7 +227,13 @@ public class GetGameRoute implements Route
         } else
         {
           player.endGame(true);
-          gameManager.getOpponent(username).endGame(false);
+          try
+          {
+            gameManager.getOpponent(username).endGame(false);
+          } catch(NullPointerException e)
+          {
+            //
+          }
         }
         vm.put("modeOptionsAsJSON", gson.toJson(modeOptions));
         return templateEngine.render(new ModelAndView(vm, VIEW_NAME));

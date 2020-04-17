@@ -136,6 +136,7 @@ public class Move
           {
             status = MoveStatus.JUMP;
             game.addJumpedPieces(jumpSpace);
+            this.regStatus = status;
             return status;
           } else if (colorFactor * rowDiff > 0)
           {
@@ -161,6 +162,7 @@ public class Move
         status = game.hasMoved() ? MoveStatus.ALREADY_MOVED : MoveStatus.VALID;
       }
     }
+    this.regStatus = status;
     return status;
   }
 

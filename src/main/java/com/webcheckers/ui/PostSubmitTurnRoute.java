@@ -99,16 +99,15 @@ public class PostSubmitTurnRoute implements Route
       {
         RequireMove requireMove = new RequireMove(game.getBoard(), color);
         //gets all the jumps that are valid for the given board
-        List<Move> listMoves = session.attribute(PostValidateMoveRoute.MOVE_LIST_ID);
 
         Space jumpEndSpace;
-        int listSize = listMoves.size();
-        Move lastMove = listMoves.get(listSize - 1);
+        int listSize = moves.size();
+        Move lastMove = moves.get(listSize - 1);
         jumpEndSpace = game.getBoard().getSpaceAt(lastMove.getEnd().getRow(),
                 lastMove.getEnd().getCell());
+        Set<Move> movesSet = new HashSet<>();
         if (jumpEndSpace.getPiece().getType() == Piece.Type.KING)
         {
-          Set<Move> movesSet = new HashSet<>();
           for (Move move : moves)
           {
             boolean exist = movesSet.add(move);
@@ -136,7 +135,10 @@ public class PostSubmitTurnRoute implements Route
           if (validMoves.isEmpty())
           {
             break;
-          } else if (!(validMoves.pop().getStatus()).equals(Move.MoveStatus.VALID))
+          }
+          Move activeMove = validMoves.pop();
+         // boolean exist = movesSet.add(activeMove);
+          if (!(activeMove.getStatus()).equals(Move.MoveStatus.VALID))
           {
             return gson.toJson(error("There is still an available jump. You" +
                     " must make this move before you end your turn."));
@@ -155,7 +157,6 @@ public class PostSubmitTurnRoute implements Route
                   "You must make this move before you end your turn."));
         }
       }
-
       manager.updateGame(gameID, game);
       manager.removeClientSideGame(player.getUsername());
       game.updateTurn();

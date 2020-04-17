@@ -313,6 +313,17 @@ public class GameManager
   }
 
   /**
+   * Updates the local game
+   *
+   * @param username the username to change
+   * @param game the game to be changed to.
+   */
+  public void updateLocalGame(String username, CheckerGame game)
+  {
+    clientSideGames.replace(username, game);
+  }
+
+  /**
    * A move has been made! Update the game.
    *
    * @param id   the gameID

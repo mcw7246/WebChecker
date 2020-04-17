@@ -201,10 +201,7 @@ public class CheckerGame
           numWhitePieces--;
         }
         return sp;
-    }catch(EmptyStackException ese) {
-      System.err.println("(CheckerGame.java) Stack empty");
-      return null;
-    }catch(NullPointerException e) {
+    }catch(EmptyStackException | NullPointerException ese) {
       return null;
     }
   }
