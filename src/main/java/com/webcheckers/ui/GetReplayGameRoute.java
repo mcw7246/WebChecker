@@ -18,18 +18,30 @@ import static com.webcheckers.ui.GetGameRoute.GAME_BOARD_VIEW;
 import static com.webcheckers.ui.WebServer.HOME_URL;
 import static com.webcheckers.util.Message.info;
 
+/**
+ * Used to retrieve the game.ftl for the requested game starting at the very
+ * beginnning.
+ *
+ * @author Austin Miller 'akm8654'
+ */
 public class GetReplayGameRoute implements Route
 {
   public static final String GAME_ID = "gameID";
   private static final String RED_PLAYER = "redPlayer";
-  private static final String MODE_OPTIONS_AS_JSON = "modeOptionsAsJSON";
-  private static final String HAS_NEXT = "hasNext";
-  private static final String HAS_PREVIOUS = "hasPrevious";
+  public static final String MODE_OPTIONS_AS_JSON = "modeOptionsAsJSON";
+  public static final String HAS_NEXT = "hasNext";
+  public static final String HAS_PREVIOUS = "hasPrevious";
   public static final String NOT_REPLAY = "notReplay";
   private final ReplayManager rManager;
   private Gson gson = new Gson();
   private final TemplateEngine engine;
 
+  /**
+   * Constructor method
+   *
+   * @param templateEngine the engine for rendering the view
+   * @param replayManager the manager of all replays for the server.
+   */
   public GetReplayGameRoute(TemplateEngine templateEngine,
                             ReplayManager replayManager)
   {
@@ -40,7 +52,7 @@ public class GetReplayGameRoute implements Route
   }
 
   @Override
-  public Object handle(Request request, Response response) throws Exception
+  public Object handle(Request request, Response response)
   {
     final Map<String, Object> vm = new HashMap<>();
     vm.put(GetHomeRoute.TITLE_ATTR, "Web Checkers");
@@ -74,7 +86,6 @@ public class GetReplayGameRoute implements Route
       String username = watcher.getUsername();
       vm.put(CURRENT_PLAYER, username);
       vm.put(GetGameRoute.VIEW_MODE, Player.ViewMode.REPLAY);
-      GameManager manager = session.attribute(GetHomeRoute.GAME_MANAGER_KEY);
 
       int move = rManager.getMove(username, gameID);
       boolean hasPrevious = move > 0;

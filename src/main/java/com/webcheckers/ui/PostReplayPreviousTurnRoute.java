@@ -12,8 +12,15 @@ import static com.webcheckers.ui.GetReplayGameRoute.GAME_ID;
 import static com.webcheckers.ui.WebServer.HOME_URL;
 import static com.webcheckers.util.Message.info;
 
+/**
+ * A route to go to the previous move in replay mode.
+ * Returns a JSON object of the info message true when successful.
+ *
+ * @author Austin Miller 'akm8654'
+ */
 public class PostReplayPreviousTurnRoute implements Route
 {
+  //the replay manager
   private final ReplayManager rManager;
 
   public PostReplayPreviousTurnRoute(ReplayManager rManager)
@@ -31,7 +38,6 @@ public class PostReplayPreviousTurnRoute implements Route
     {
       String username = player.getUsername();
       int gameID = session.attribute(GAME_ID);
-      int move = rManager.getMove(username, gameID) + 1;
       rManager.previousMove(username, gameID);
       return gson.toJson(info("true"));
     } else

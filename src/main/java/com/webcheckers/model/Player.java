@@ -7,7 +7,8 @@ import java.util.regex.Pattern;
 //import static jdk.vm.ci.meta.JavaKind.Char;
 
 /**
- * placeholder for actual code and information
+ * The player that each logged in user creates. this is what is manipulated
+ * throughout the code.
  *
  * @author Austin Miller 'akm8654' Mikayla Wishart 'mcw7246'
  */
@@ -147,10 +148,9 @@ public class Player
 
     boolean userContains = Pattern.matches("[a-zA-Z0-9\\s]+", username);
     boolean containsSpace = Pattern.compile(" ").matcher(username).find();
-    System.out.println(containsSpace);
     boolean numContains = Pattern.compile("[0-9]").matcher(username).find();
     if (!userContains || username.length() < 6 || username.length() > 25 ||
-            username.startsWith("[0-9]+"))
+            username.matches("^[0-9].*$"))
     {
       result = UsernameResult.INVALID;
       return result;
@@ -194,6 +194,7 @@ public class Player
 
   /**
    * @param o object that you are compete
+   *
    * @return whether the two objects are equal or not.
    */
   @Override

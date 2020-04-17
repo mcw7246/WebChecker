@@ -67,7 +67,6 @@ public class PostSubmitTurnRoute implements Route
         color = Piece.Color.RED;
         oppColor = Piece.Color.WHITE;
       }
-
       //Once moves are validated, king any pieces that made it to the edge of the board
       final ArrayList<Move> moves = session.attribute(PostValidateMoveRoute.MOVE_LIST_ID);
       final Position lastPos = moves.get(moves.size() - 1).getEnd();
@@ -90,7 +89,6 @@ public class PostSubmitTurnRoute implements Route
       /*
        * see if the person made a jump
        * get the space they jumped from
-       *
        */
       Space jumpSpace;
       while ((jumpSpace = game.getJumpedPiece()) != null)
@@ -99,60 +97,49 @@ public class PostSubmitTurnRoute implements Route
         madeJump = true;
       }
 
-
       //made a jump that was a valid jump
       if (madeJump)
       {
         RequireMove requireMove = new RequireMove(game.getBoard(), color);
         //gets all the jumps that are valid for the given board
         List<Move> listMoves = session.attribute(PostValidateMoveRoute.MOVE_LIST_ID);
+
         Space jumpEndSpace;
         int listSize = listMoves.size();
         Move lastMove = listMoves.get(listSize - 1);
         jumpEndSpace = game.getBoard().getSpaceAt(lastMove.getEnd().getRow(),
                 lastMove.getEnd().getCell());
-
+        if (jumpEndSpace.getPiece().getType() == Piece.Type.KING)
+        {
+          Set<Move> movesSet = new HashSet<>();
+          for (Move move : moves)
+          {
+            boolean exist = movesSet.add(move);
+            if (!exist)
+            {
+              return gson.toJson(error("You doubled back on yourself. That is" +
+                      " corrupt monarchy! And that is not allowed here!"));
+            }
+            exist = movesSet.add(new Move(move.getEnd(), move.getStart()));
+            if (!exist)
+            {
+              return gson.toJson(error("You doubled back on yourself. That is" +
+                      " corrupt monarchy! And that is not allowed here!"));
+            }
+          }
+          //go through the stack of valid moves for the given space
+        }
         //can only go in one direction (the player is a single piece)
         Stack<Move> validMoves = requireMove.getValidMoves(game.getBoard(),
                 jumpEndSpace, color);
         //if there is still valid moves that are jumps
         //a list of all the valid moves
-        //if it is a king
-        if (jumpEndSpace.getPiece().getType() == Piece.Type.KING)
+        while (true)
         {
-          Map<Integer, Integer> startPos = new HashMap<>();
-          for (Move move : moves)
+          if (validMoves.isEmpty())
           {
-            Position start = move.getStart();
-            Position end = move.getEnd();
-            try
-            {
-              int cell = startPos.get(end.getRow());
-              if (cell == end.getCell())
-              {
-                return gson.toJson(error("You doubled back on yourself. That is" +
-                        " corrupt monarchy! And that is not allowed here!"));
-              } else
-              {
-                startPos.put(start.getRow(), start.getCell());
-              }
-            } catch (NullPointerException e)
-            {
-              startPos.put(start.getRow(), start.getCell());
-            }
-          }
-          //go through the stack of valid moves for the given space
-          while (true)
-          {
-            if (validMoves.isEmpty())
-            {
-              break;
-            } else if (!validMoves.pop().getStatus().equals(Move.MoveStatus.VALID))
-            {
-              break;
-            }
-          }
-          if (validMoves.size() != 0)
+            break;
+          } else if (!(validMoves.pop().getStatus()).equals(Move.MoveStatus.VALID))
           {
             return gson.toJson(error("There is still an available jump. You" +
                     " must make this move before you end your turn."));
@@ -183,5 +170,4 @@ public class PostSubmitTurnRoute implements Route
     }
     return "Redirected Home";
   }
-
 }

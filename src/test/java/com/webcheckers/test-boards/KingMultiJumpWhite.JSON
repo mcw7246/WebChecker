@@ -94,11 +94,7 @@
         {
           "isBlack": true,
           "columnIndex": 4,
-          "rowIndex": 1,
-          "piece": {
-            "color": "WHITE",
-            "type": "SINGLE"
-          }
+          "rowIndex": 1
         },
         {
           "isBlack": false,
@@ -146,7 +142,11 @@
         {
           "isBlack": true,
           "columnIndex": 3,
-          "rowIndex": 2
+          "rowIndex": 2,
+          "piece": {
+            "color": "WHITE",
+            "type": "SINGLE"
+          }
         },
         {
           "isBlack": false,
@@ -194,11 +194,7 @@
         {
           "isBlack": true,
           "columnIndex": 2,
-          "rowIndex": 3,
-          "piece": {
-            "color": "WHITE",
-            "type": "SINGLE"
-          }
+          "rowIndex": 3
         },
         {
           "isBlack": false,
@@ -282,7 +278,11 @@
         {
           "isBlack": true,
           "columnIndex": 0,
-          "rowIndex": 5
+          "rowIndex": 5,
+          "piece": {
+            "color": "RED",
+            "type": "SINGLE"
+          }
         },
         {
           "isBlack": false,
@@ -306,11 +306,7 @@
         {
           "isBlack": true,
           "columnIndex": 4,
-          "rowIndex": 5,
-          "piece": {
-            "color": "RED",
-            "type": "SINGLE"
-          }
+          "rowIndex": 5
         },
         {
           "isBlack": false,
@@ -347,7 +343,7 @@
           "rowIndex": 6,
           "piece": {
             "color": "RED",
-            "type": "SINGLE"
+            "type": "KING"
           }
         },
         {
@@ -360,7 +356,7 @@
           "columnIndex": 3,
           "rowIndex": 6,
           "piece": {
-            "color": "RED",
+            "color": "WHITE",
             "type": "SINGLE"
           }
         },
@@ -402,8 +398,8 @@
           "columnIndex": 0,
           "rowIndex": 7,
           "piece": {
-            "color": "RED",
-            "type": "SINGLE"
+            "color": "WHITE",
+            "type": "KING"
           }
         },
         {
@@ -428,11 +424,7 @@
         {
           "isBlack": true,
           "columnIndex": 4,
-          "rowIndex": 7,
-          "piece": {
-            "color": "RED",
-            "type": "SINGLE"
-          }
+          "rowIndex": 7
         },
         {
           "isBlack": false,

@@ -44,7 +44,7 @@ public class PostRequestGameRoute implements Route
     final GameManager gameManager = httpSession.attribute(GetHomeRoute.GAME_MANAGER_KEY);
     final PlayerLobby playerLobby =
             httpSession.attribute(GetHomeRoute.PLAYER_LOBBY_KEY);
-    final Player player = httpSession.attribute(GetHomeRoute.PLAYER_KEY);
+      final Player player = httpSession.attribute(GetHomeRoute.PLAYER_KEY);
 
     /* A null playerLobby indicates a timed out session or an illegal request on this URL.
      * In either case, we will redirect back to home.
@@ -55,6 +55,7 @@ public class PostRequestGameRoute implements Route
       String challengerStr = request.queryParams(REQUEST_VAL);
       challengerStr = challengerStr.replace('-', ' ');
       String username = player.getUsername();
+      //if the victim is being
       if (playerLobby.getChallenges().get(username) != null)
       {
         httpSession.attribute(ERROR_MESSAGE_KEY, "Request Not Sent! You have a pending request.");

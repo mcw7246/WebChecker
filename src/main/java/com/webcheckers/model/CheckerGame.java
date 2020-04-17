@@ -204,6 +204,8 @@ public class CheckerGame
     }catch(EmptyStackException ese) {
       System.err.println("(CheckerGame.java) Stack empty");
       return null;
+    }catch(NullPointerException e) {
+      return null;
     }
   }
 

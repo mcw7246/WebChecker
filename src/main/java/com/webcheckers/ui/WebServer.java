@@ -91,14 +91,12 @@ public class WebServer
    * The constructor for the Web Server.
    *
    * @param templateEngine The default {@link TemplateEngine} to render page-level HTML views.
-   * @param gson           The Google JSON parser object used to render Ajax responses.
    * @throws NullPointerException If any of the parameters are {@code null}.
    */
-  public WebServer(final TemplateEngine templateEngine, final Gson gson)
+  public WebServer(final TemplateEngine templateEngine)
   {
     // validation
     Objects.requireNonNull(templateEngine, "templateEngine must not be null");
-    Objects.requireNonNull(gson, "gson must not be null");
     //
     this.templateEngine = templateEngine;
     playerLobby = new PlayerLobby();
@@ -159,7 +157,6 @@ public class WebServer
     // Shows the Checkers game Home page.
     get(HOME_URL, new GetHomeRoute(templateEngine, playerLobby, gameManager,
             rManager));
-    //Shows signin page
     get(SIGNIN_URL, new GetSignInRoute(templateEngine));
     post(SIGNIN_URL, new PostSignInRoute(templateEngine, playerLobby));
     post(REQUEST_GAME_URL, new PostRequestGameRoute());
@@ -173,13 +170,13 @@ public class WebServer
     get(SPECTATOR_GAME_URL, new GetSpectatorGameRoute(templateEngine));
     post(SPECTATOR_CHECK_TURN_URL, new PostSpectatorCheckTurnRoute());
     post(SIGNOUT_URL, new PostSignOutRoute(templateEngine, playerLobby));
-    post(CHANGE_THEME_URL, new PostChangeTheme(rManager));
+    post(CHANGE_THEME_URL, new PostChangeThemeRoute(rManager));
     get(REPLAY_URL, new GetReplayRoute(templateEngine, rManager));
     get(REPLAY_GAME, new GetReplayGameRoute(templateEngine, rManager));
     post(PREVIOUS_TURN, new PostReplayPreviousTurnRoute(rManager));
     post(NEXT_TURN, new PostReplayNextTurnRoute(rManager));
     get(REPLAY_STOP_WATCHING, new PostReplayStopWatchingRoute(rManager));
-    get(EXIT_SPECTATOR_GAME_URL, new GetStopWatchingRoute(templateEngine));
+    get(EXIT_SPECTATOR_GAME_URL, new GetStopWatchingRoute());
     LOG.config("WebServer is initialized.");
   }
 }

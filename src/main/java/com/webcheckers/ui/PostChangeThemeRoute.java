@@ -12,17 +12,24 @@ import static com.webcheckers.ui.GetHomeRoute.GAME_MANAGER_KEY;
 import static com.webcheckers.ui.GetHomeRoute.PLAYER_KEY;
 import static com.webcheckers.ui.WebServer.*;
 
-public class PostChangeTheme implements Route
+/**
+ * A route that helps store the theme into the local storage when switching
+ * between routes to be read later.
+ *
+ * @author Austin Miller 'akm8654'
+ */
+public class PostChangeThemeRoute implements Route
 {
   public static String THEME = "theme";
   private ReplayManager replayManager;
 
-  public PostChangeTheme(ReplayManager rManager){
+  public PostChangeThemeRoute(ReplayManager rManager)
+  {
     replayManager = rManager;
   }
 
   @Override
-  public Object handle(Request request, Response response) throws Exception
+  public Object handle(Request request, Response response)
   {
     Session session = request.session();
     String theme = session.attribute(THEME);
@@ -40,23 +47,28 @@ public class PostChangeTheme implements Route
       if (player.isInGame())
       {
         response.redirect(GAME_URL);
+        return "Redirected Game";
       } else if (manager.isSpectator(player.getUsername()))
       {
         response.redirect(SPECTATOR_GAME_URL);
+        return "Redirected Spectator";
       } else if (player.inArchive())
       {
         response.redirect(REPLAY_URL);
+        return "Redirected Replay Archive";
       } else if (replayManager.isWatching(player.getUsername()))
       {
         response.redirect(REPLAY_GAME);
+        return "Redirected Replay";
       } else
       {
         response.redirect(HOME_URL);
+        return "Redirected Home";
       }
     } else
     {
       response.redirect(HOME_URL);
+      return "Redirected Home";
     }
-    return null;
   }
 }
