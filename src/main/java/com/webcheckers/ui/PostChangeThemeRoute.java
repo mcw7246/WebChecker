@@ -12,12 +12,19 @@ import static com.webcheckers.ui.GetHomeRoute.GAME_MANAGER_KEY;
 import static com.webcheckers.ui.GetHomeRoute.PLAYER_KEY;
 import static com.webcheckers.ui.WebServer.*;
 
+/**
+ * A route that helps store the theme into the local storage when switching
+ * between routes to be read later.
+ *
+ * @author Austin Miller 'akm8654'
+ */
 public class PostChangeThemeRoute implements Route
 {
   public static String THEME = "theme";
   private ReplayManager replayManager;
 
-  public PostChangeThemeRoute(ReplayManager rManager){
+  public PostChangeThemeRoute(ReplayManager rManager)
+  {
     replayManager = rManager;
   }
 
