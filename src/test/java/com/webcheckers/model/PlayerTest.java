@@ -193,4 +193,29 @@ public class PlayerTest
     CuT = new Player(lobby);
     assertEquals(UsernameResult.INVALID, CuT.isValidUsername(SPECIAL_CHAR));
   }
+
+  @Test
+  public void win_percentage(){
+    CuT = new Player(lobby);
+    CuT.setUsername("player1");
+    lobby.newPlayer(CuT);
+
+    CuT.endGame(true);
+    CuT.endGame(false);
+
+    assertEquals(50, CuT.getWinPercentage());
+  }
+  @Test
+  public void win_percentage_no_games_played(){
+    CuT = new Player(lobby);
+    assertEquals(0, CuT.getWinPercentage());
+  }
+
+  @Test
+  public void endGameTest(){
+    CuT = new Player(lobby);
+    CuT.endGame(true);
+
+    assertEquals(100, CuT.getWinPercentage());
+  }
 }
