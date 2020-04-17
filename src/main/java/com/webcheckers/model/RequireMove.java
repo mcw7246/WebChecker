@@ -2,6 +2,13 @@ package com.webcheckers.model;
 
 import java.util.*;
 
+/**
+ * Determines whether a move is required or not, mostly produces methods but
+ * stores some values to value again quickly.
+ *
+ * @author Austin Miller 'akm8654'
+ * @author Mikayla Wishart 'mcw7246'
+ */
 public class RequireMove
 {
   private final Board board;

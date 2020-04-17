@@ -11,6 +11,12 @@ import static com.webcheckers.ui.GetHomeRoute.PLAYER_KEY;
 import static com.webcheckers.ui.GetReplayGameRoute.GAME_ID;
 import static com.webcheckers.ui.WebServer.HOME_URL;
 
+/**
+ * The method that is called when the user decides they no longer want to
+ * watch the replay.
+ *
+ * @author Austin Miller 'akm8654'
+ */
 public class PostReplayStopWatchingRoute implements Route
 {
   private final ReplayManager rManager;

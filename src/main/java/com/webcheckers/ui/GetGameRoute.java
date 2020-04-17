@@ -18,6 +18,14 @@ import static com.webcheckers.ui.PostRequestGameRoute.MESSAGE;
 import static com.webcheckers.ui.PostResignRoute.RESIGN_ATTR;
 import static com.webcheckers.ui.WebServer.HOME_URL;
 
+/**
+ * Used to get the game and render the game.ftl by using the Spark interface
+ * for Model and View and the template engine that is defined within the top
+ * level WebServer
+ *
+ * @author Austin Miller 'akm8654'
+ * @author Zehra Amena Baig 'zab1166'
+ */
 public class GetGameRoute implements Route
 {
   //Constants

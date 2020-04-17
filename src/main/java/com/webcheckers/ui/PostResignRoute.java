@@ -15,6 +15,12 @@ import static com.webcheckers.util.Message.error;
 import static com.webcheckers.util.Message.error;
 import static com.webcheckers.util.Message.info;
 
+/**
+ * A route that handles resigning the game during a game being played.
+ *
+ * @author Austin Miller 'akm8654'
+ * @author Sean Bergen 'sdb2139'
+ */
 public class PostResignRoute implements Route
 {
   final public static String RESIGN_ATTR = "resigned";

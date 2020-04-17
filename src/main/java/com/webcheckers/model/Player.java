@@ -7,7 +7,8 @@ import java.util.regex.Pattern;
 //import static jdk.vm.ci.meta.JavaKind.Char;
 
 /**
- * placeholder for actual code and information
+ * The player that each logged in user creates. this is what is manipulated
+ * throughout the code.
  *
  * @author Austin Miller 'akm8654' Mikayla Wishart 'mcw7246'
  */

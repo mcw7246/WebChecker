@@ -11,6 +11,11 @@ import java.util.*;
 import static com.webcheckers.ui.WebServer.GAME_URL;
 import static com.webcheckers.ui.WebServer.HOME_URL;
 
+/**
+ * The route that is called when the player wants to enter the replay archive.
+ *
+ * @author Austin Miller 'akm8654'
+ */
 public class GetReplayRoute implements Route
 {
   private final ReplayManager rManager;
