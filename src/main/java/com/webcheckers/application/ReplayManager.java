@@ -6,6 +6,12 @@ import com.webcheckers.model.Move;
 
 import java.util.*;
 
+/**
+ * A class designed to manage all players and their interactions with players
+ * and the game. Helps to reach the required software design principles
+ *
+ * @author Austin Miller 'akm8654'
+ */
 public class ReplayManager
 {
   private Map<Integer, List<CheckerGame>> gameMoves = new HashMap<>();
@@ -16,16 +22,17 @@ public class ReplayManager
    * adds a move to the list for whatever game.
    *
    * @param gameID the game ID to get
-   * @param game the game to add
+   * @param game   the game to add
    */
   public void addMove(int gameID, CheckerGame game)
   {
-    if(gameMoves.containsKey(gameID))
+    if (gameMoves.containsKey(gameID))
     {
       List<CheckerGame> currentList = gameMoves.get(gameID);
       currentList.add(game);
       gameMoves.replace(gameID, currentList);
-    } else {
+    } else
+    {
       List<CheckerGame> currentList = new ArrayList<>();
       currentList.add(game);
       gameMoves.put(gameID, currentList);
@@ -36,7 +43,7 @@ public class ReplayManager
    * Used to have a player start watching the game.
    *
    * @param username the username of the player watching
-   * @param gameID the gameID they're watching
+   * @param gameID   the gameID they're watching
    * @return 0 as it is the first move of the game
    */
   public int startWatching(String username, int gameID)
@@ -47,6 +54,11 @@ public class ReplayManager
     return 0;
   }
 
+  /**
+   * A helper method to represent that someone has stopped watching a replay.
+   *
+   * @param username the username of the person to stop watching
+   */
   public void stopWatching(String username)
   {
     activeReplays.remove(username);
@@ -57,15 +69,16 @@ public class ReplayManager
    * watch if they aren't currently watching that game.
    *
    * @param username the username of the player watching
-   * @param gameID the gameId of the game they're watching
+   * @param gameID   the gameId of the game they're watching
    * @return the move currently at
    */
   public int getMove(String username, int gameID)
   {
-    if(activeReplays.containsKey(username))
+    if (activeReplays.containsKey(username))
     {
       return activeReplays.get(username).get(gameID);
-    } else {
+    } else
+    {
       return startWatching(username, gameID);
     }
   }
@@ -97,7 +110,7 @@ public class ReplayManager
    * Advances the player to watch the next turn
    *
    * @param username the player who is watching
-   * @param gameID the game they are watching
+   * @param gameID   the game they are watching
    */
   public void nextMove(String username, int gameID)
   {
@@ -109,7 +122,7 @@ public class ReplayManager
    * Takes the player back to the move that they decide to be at.
    *
    * @param username the username of the player watching
-   * @param gameID the game they are watching.
+   * @param gameID   the game they are watching.
    */
   public void previousMove(String username, int gameID)
   {
@@ -121,15 +134,17 @@ public class ReplayManager
    * Returns the board at the current move value.
    *
    * @param gameID the game to get
-   * @param move the move value to have
+   * @param move   the move value to have
    * @return the CheckerGame at the given move index.
    */
   public CheckerGame getGameAtMove(int gameID, int move)
   {
     List<CheckerGame> currentList = gameMoves.get(gameID);
-    if (currentList != null){
+    if (currentList != null)
+    {
       return currentList.get(move);
-    } else {
+    } else
+    {
       return null;
     }
   }
