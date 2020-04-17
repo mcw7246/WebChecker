@@ -150,7 +150,7 @@ public class Player
     boolean containsSpace = Pattern.compile(" ").matcher(username).find();
     boolean numContains = Pattern.compile("[0-9]").matcher(username).find();
     if (!userContains || username.length() < 6 || username.length() > 25 ||
-            username.startsWith("[0-9]+"))
+            username.matches("^[0-9].*$"))
     {
       result = UsernameResult.INVALID;
       return result;
