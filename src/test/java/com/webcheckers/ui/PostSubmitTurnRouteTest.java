@@ -39,7 +39,7 @@ public class PostSubmitTurnRouteTest
 {
   private static final int GAME_ID = 1;
   private static final String PLAYER1 = "player1";
-  private static final String INITIAL_BOARD = "src/test/java/com/webcheckers" +
+  public static final String INITIAL_BOARD = "src/test/java/com/webcheckers" +
           "/test-boards/InitialBoard.JSON";
   private static final String ONE_MOVE = "src/test/java/com/webcheckers/test" +
           "-boards/OneMove.JSON";

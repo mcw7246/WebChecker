@@ -31,7 +31,7 @@ public class PostRequestResponseRoute implements Route
           "/webcheckers/test-boards/necesssaryJumpWhite.JSON";
   private static final String MULTI_JUMP_STILL_REQUIRED_WRONG = "src/test" +
           "/java/com/webcheckers/test-boards/multiJumpBoardStillJump.JSON";
-  private static final String NO_MORE_MOVES = "src/test/java/com/webcheckers" +
+  public static final String NO_MORE_MOVES = "src/test/java/com/webcheckers" +
           "/test-boards/no-more-moves.JSON";
   private static final String ABOUT_JUMP_ALL = "src/test/java/com/webcheckers" +
           "/test-boards/about-to-all-pieces-jumped.JSON";

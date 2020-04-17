@@ -157,9 +157,6 @@ public class GameManager
     }
   }
 
-  public Map<String, Integer> getSpectators(){
-    return spectators;
-  }
   /**
    * Returns the amount of viewers currently watching the game
    *
