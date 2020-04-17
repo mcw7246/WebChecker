@@ -66,6 +66,9 @@ public class GameManagerTest
 
   }
 
+  /**
+   * Test starting a game normally.
+   */
   @Test
   public void test_Start_Game()
   {
@@ -80,6 +83,9 @@ public class GameManagerTest
     assertEquals(pair, CuT.getPair(CuT.getGameID(P1_NAME)));
   }
 
+  /**
+   * Test getting an opponent
+   */
   @Test
   public void test_Get_Opponent()
   {
@@ -91,6 +97,9 @@ public class GameManagerTest
     assertEquals(p1, p2Opp);
   }
 
+  /**
+   * Test returning of a clients local copy of the game.
+   */
   @Test
   public void testGet_local_game()
   {
@@ -99,9 +108,11 @@ public class GameManagerTest
     CheckerGame clientGame = CuT.makeClientSideGame(gameID, p1.getUsername());
     CuT.getLocalGame(p1.getUsername());
     assertEquals(clientGame, CuT.getLocalGame(p1.getUsername()));
-
   }
 
+  /**
+   * Test making a client side game.
+   */
   @Test
   public void testMake_client_side_game()
   {
@@ -117,6 +128,9 @@ public class GameManagerTest
     assertEquals(p2ClientSideGame, p2Game);
   }
 
+  /**
+   * Test updating a game
+   */
   @Test
   public void testUpdate_game()
   {
@@ -165,6 +179,9 @@ public class GameManagerTest
     assertEquals(pair, CuT.getPair(CuT.getGameID(P1_NAME)));
   }
 
+  /**
+   * Test ending a game in teh manager.
+   */
   @Test
   public void test_end_Game()
   {
@@ -177,6 +194,9 @@ public class GameManagerTest
     assertFalse(inGame.contains(P2_NAME));
   }
 
+  /**
+   * Test ending the game when the players are both null.
+   */
   @Test
   public void test_end_game_no_players()
   {
@@ -191,6 +211,9 @@ public class GameManagerTest
     CuT.endGame(gameID);
   }
 
+  /**
+   * Test adding or removing a spectator in the manager.
+   */
   @Test
   public void test_add_and_remove_spectator()
   {
