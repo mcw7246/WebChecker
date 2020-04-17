@@ -29,8 +29,8 @@
   --controls-background : #f2caff;
   --red-url : url("../img/duck/single-piece-red-duck.svg");
   --white-url : url("../img/duck/single-piece-white-duck.svg");
-  --red-king-url : url("../img/duck/king-piece-red.svg");
-  --white-king-url : url("../img/duck/king-piece-white.svg");
+  --red-king-url : url("../img/duck/king-piece-red-duck.svg");
+  --white-king-url : url("../img/duck/king-piece-white-duck.svg");
   --board-url : url("../img/duck/chess_board_pink.svg");
 }
 
