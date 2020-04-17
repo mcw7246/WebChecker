@@ -24,6 +24,8 @@ import static org.mockito.Mockito.when;
 @Tag("Application-tier")
 public class GameManagerTest
 {
+  public final String INTIAL_BOARD = "src/test/java/com/webcheckers/test" +
+          "-boards/InitialBoard.JSON";
   private final String P1_NAME = "player1";
   private final String P2_NAME = "player2";
 
@@ -90,7 +92,8 @@ public class GameManagerTest
   }
 
   @Test
-  public void testGet_local_game(){
+  public void testGet_local_game()
+  {
     CuT.startGame(P1_NAME, P2_NAME);
     int gameID = CuT.getGameID(P1_NAME);
     CheckerGame clientGame = CuT.makeClientSideGame(gameID, p1.getUsername());
@@ -98,8 +101,10 @@ public class GameManagerTest
     assertEquals(clientGame, CuT.getLocalGame(p1.getUsername()));
 
   }
+
   @Test
-  public void testMake_client_side_game(){
+  public void testMake_client_side_game()
+  {
     CuT.startGame(p1.getUsername(), p2.getUsername());
     int gameID = CuT.getGameID(p1.getUsername());
 
@@ -113,7 +118,8 @@ public class GameManagerTest
   }
 
   @Test
-  public void testUpdate_game(){
+  public void testUpdate_game()
+  {
     CuT.startGame(p1.getUsername(), p2.getUsername());
 
     int gameID = CuT.getGameID(p1.getUsername());
@@ -125,5 +131,74 @@ public class GameManagerTest
     assertEquals(updatedGame, CuT.getGame(gameID));
   }
 
+  /**
+   * Tests the game using a file path with red turn,.
+   */
+  @Test
+  public void testStart_test_Game_Red()
+  {
+    CuT.startTestGame(P1_NAME, P2_NAME, INTIAL_BOARD, 1);
+    Set<String> inGame = CuT.getInGame();
+    assertTrue(inGame.contains(P1_NAME));
+    assertTrue(inGame.contains(P2_NAME));
+    assertEquals(CuT.getGameID(P1_NAME), CuT.getGameID(P2_NAME));
 
+    HashMap<String, String> pair = new HashMap<>();
+    pair.put(P1_NAME, P2_NAME);
+    assertEquals(pair, CuT.getPair(CuT.getGameID(P1_NAME)));
+  }
+
+  /**
+   * Tests the game with an unknown file path and white's turn.
+   */
+  @Test
+  public void testStart_test_Game_White_Bad_File()
+  {
+    CuT.startTestGame(P1_NAME, P2_NAME, "ERROR", 2);
+    Set<String> inGame = CuT.getInGame();
+    assertTrue(inGame.contains(P1_NAME));
+    assertTrue(inGame.contains(P2_NAME));
+    assertEquals(CuT.getGameID(P1_NAME), CuT.getGameID(P2_NAME));
+
+    HashMap<String, String> pair = new HashMap<>();
+    pair.put(P1_NAME, P2_NAME);
+    assertEquals(pair, CuT.getPair(CuT.getGameID(P1_NAME)));
+  }
+
+  @Test
+  public void test_end_Game()
+  {
+    CuT.startGame(p1.getUsername(), p2.getUsername());
+    int gameID = CuT.getGameID(p1.getUsername());
+
+    CuT.endGame(gameID);
+    Set<String> inGame = CuT.getInGame();
+    assertFalse(inGame.contains(P1_NAME));
+    assertFalse(inGame.contains(P2_NAME));
+  }
+
+  @Test
+  public void test_end_game_no_players()
+  {
+    CuT.startGame(p1.getUsername(), p2.getUsername());
+    int gameID = CuT.getGameID(p1.getUsername());
+
+    Map<String, Player> players = new HashMap<>();
+    players.put(P1_NAME, null);
+    players.put(P2_NAME, null);
+    when(lobby.getPlayers()).thenReturn(players);
+
+    CuT.endGame(gameID);
+  }
+
+  @Test
+  public void test_add_and_remove_spectator()
+  {
+    CuT.startGame(p1.getUsername(), p2.getUsername());
+    CuT.addSpectator(P1_NAME, 2);
+    assertTrue(CuT.isSpectator(P1_NAME));
+    CuT.addSpectator(P1_NAME, 1);
+
+    CuT.removeSpectator(P1_NAME);
+  }
 }
