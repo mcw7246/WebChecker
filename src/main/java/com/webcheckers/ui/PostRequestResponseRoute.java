@@ -128,11 +128,13 @@ public class PostRequestResponseRoute implements Route
       {
         case "yes":
           lobby.removeChallenger(oppPlayer);
+          lobby.removeChallenger(usernameStr);
           startGameOrTest(oppPlayer, usernameStr, gameManager);
           response.redirect(WebServer.GAME_URL);
           return "Game redirect";
         case "no":
           lobby.removeChallenger(oppPlayer);
+          lobby.removeChallenger(usernameStr);
           response.redirect(WebServer.HOME_URL);
           return "Home Redirect";
         //Act upon the player's response to a game request
