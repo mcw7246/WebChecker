@@ -40,6 +40,9 @@ public class ReplayManagerTest
     game2 = mock(CheckerGame.class);
   }
 
+  /**
+   * used to see if the replay starts the test
+   */
   @Test
   public void startWatchingTest()
   {
@@ -49,6 +52,9 @@ public class ReplayManagerTest
     assertTrue(CuT.isWatching(PLAYER1));
   }
 
+  /**
+   * Adds the move and ensures that the move isn't updated in the manager
+   */
   @Test
   public void add_move_and_get()
   {
@@ -60,6 +66,9 @@ public class ReplayManagerTest
     assertEquals(game1, CuT.getGameAtMove(gameID, move));
   }
 
+  /**
+   * Stops a player from watching the test.
+   */
   @Test
   public void stop_watching_test()
   {
@@ -70,6 +79,9 @@ public class ReplayManagerTest
     assertFalse(CuT.isWatching(PLAYER1));
   }
 
+  /**
+   * Determines if the maximum is returned correctly.
+   */
   @Test
   public void max_moves()
   {
@@ -81,6 +93,9 @@ public class ReplayManagerTest
     assertEquals(3, CuT.maxMoves(gameID));
   }
 
+  /**
+   * Tells the user to go to the next move
+   */
   @Test
   public void next_and_previous_move()
   {
@@ -96,12 +111,19 @@ public class ReplayManagerTest
     assertEquals(move, 0);
   }
 
+  /**
+   * Tries to break the program and ensures it is caught
+   */
   @Test
   public void bad_list_test()
   {
     assertNull(CuT.getGameAtMove(gameID, 0));
   }
 
+  /**
+   * Simulates an end of game called and that the ids are successfully casted
+   * to a list.
+   */
   @Test
   public void end_game_and_IDS()
   {
