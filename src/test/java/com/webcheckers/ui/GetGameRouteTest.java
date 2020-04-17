@@ -22,6 +22,8 @@ public class GetGameRouteTest
      *
      * @author Zehra Amena Baig 'zab1166'
      */
+    private static final String USERNAME = "username";
+    private static final int gameID = 69;
 
     //The component under test (CuT)
     private GetGameRoute CuT;
@@ -38,6 +40,9 @@ public class GetGameRouteTest
     private Response response;
     private TemplateEngine engine;
 
+    /**
+     * Setup necessary mock objects and associations for testing
+     */
     @BeforeEach
     public void setup()
     {
@@ -58,6 +63,9 @@ public class GetGameRouteTest
         CuT = new GetGameRoute(engine);
     }
 
+    /**
+     * Ensure that the game is retrieved for player one.
+     */
     @Test
     public void playerOneTest()
     {
@@ -76,6 +84,9 @@ public class GetGameRouteTest
         testHelper.assertViewModelAttribute(GetGameRoute.RED_PLAYER, player1);
     }
 
+    /**
+     * Ensure that the game is retrieved for player 2.
+     */
     @Test
     public void playerTwoTest()
     {
@@ -94,6 +105,9 @@ public class GetGameRouteTest
         testHelper.assertViewModelAttribute(GetGameRoute.RED_PLAYER, player1);
     }
 
+    /**
+     * Ensure that if the player object is null, that the user is redirected home.
+     */
     @Test
     public void nullPlayerTest()
     {
@@ -111,10 +125,26 @@ public class GetGameRouteTest
         assertEquals("Home Redirect", CuT.handle(request, response));
     }
 
+    /**
+     * Ensure that if the checker game object is null, that the user is redirected
+     * to the homepage,
+     */
+    @Test
+    public void null_game_test()
+    {
+        when(request.session()).thenReturn(session);
+        when(session.attribute(GetHomeRoute.PLAYER_KEY)).thenReturn(player1);
+        GameManager MANAGER = mock(GameManager.class);
+        when(session.attribute(GetHomeRoute.GAME_MANAGER_KEY)).thenReturn(MANAGER);
+        when(MANAGER.getGame(any(Integer.class))).thenReturn(null);
+
+        assertNull(CuT.handle(request, response));
+    }
+
     @Test
     public void cannot_move()
     {
-        //TODO
+        assertNotNull(CuT.handle(request, response));
     }
 
 }

@@ -1,6 +1,8 @@
 package com.webcheckers.application;
 
+import com.webcheckers.model.Board;
 import com.webcheckers.model.CheckerGame;
+import com.webcheckers.model.Move;
 
 import java.util.*;
 

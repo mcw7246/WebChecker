@@ -26,7 +26,7 @@ public class PostRequestResponseRoute implements Route
   static final String GAME_ACCEPT = "gameAccept";
   private final PlayerLobby lobby;
   private static final String KING_JUMP = "src/test/java/com/webcheckers/test" +
-          "-boards/ToBeKingedMultiJumpWhite.JSON";
+          "-boards/multiJumpLongAfterKing.JSON";
   private static final String REQUIRE_JUMP = "src/test/java/com/webcheckers" +
           "/test-boards/requireJumpBoard.JSON";
   private static final String NECESSARY_JUMP_WHITE = "src/test/java/com" +
@@ -37,6 +37,8 @@ public class PostRequestResponseRoute implements Route
           "/test-boards/no-more-moves.JSON";
   private static final String ABOUT_JUMP_ALL = "src/test/java/com/webcheckers" +
           "/test-boards/about-to-all-pieces-jumped.JSON";
+  private static final String DEMO_1 = "src/test/java/com/webcheckers/test" +
+          "-boards/test-demo-1.JSON";
 
   /**
    * Constructor for the {@code GET/game} route handler.
@@ -54,7 +56,7 @@ public class PostRequestResponseRoute implements Route
   {
     if (username.equals("TEST MULTI KING JUMP"))
     {
-      manager.startTestGame(username, opponent, KING_JUMP, 2);
+      manager.startTestGame(username, opponent, KING_JUMP, 1);
     } else if (username.equals("TEST REQUIRE JUMP"))
     {
       manager.startTestGame(username, opponent, REQUIRE_JUMP, 1);
@@ -71,7 +73,10 @@ public class PostRequestResponseRoute implements Route
     } else if (username.equals("ABOUT TO JUMP ALL"))
     {
       manager.startTestGame(username, opponent, ABOUT_JUMP_ALL, 1);
-    } else
+    } else if (username.equals("TEST DEMO 1")){
+      manager.startTestGame(username, opponent, DEMO_1, 1);
+  } else
+
     {
       manager.startGame(username, opponent);
     }

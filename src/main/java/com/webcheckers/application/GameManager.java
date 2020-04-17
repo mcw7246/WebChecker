@@ -149,9 +149,12 @@ public class GameManager
    */
   public void addSpectator(String username, int gameId)
   {
-    spectators.put(username, gameId);
-    int viewers = spectatorNum.get(gameId);
-    spectatorNum.put(gameId, viewers+1);
+    if(!spectators.containsKey(username))
+    {
+      spectators.put(username, gameId);
+      int viewers = spectatorNum.get(gameId);
+      spectatorNum.put(gameId, viewers + 1);
+    }
   }
 
   public Map<String, Integer> getSpectators(){
