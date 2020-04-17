@@ -47,8 +47,7 @@ public class CheckerGame
     this.PLAYER_TWO = PLAYER_TWO;
     this.board = board;
     jumpedPieces = new Stack<Space>();
-    numRedPieces = 12;
-    numWhitePieces = 12;
+    countInitialPieces();
   }
 
   /**
@@ -64,8 +63,7 @@ public class CheckerGame
     this.turn = original.turn;
     this.gameID = original.getGameID();
     jumpedPieces = new Stack<Space>();
-    numRedPieces = 12;
-    numWhitePieces = 12;
+    countInitialPieces();
   }
 
   /**
@@ -209,6 +207,33 @@ public class CheckerGame
     }
   }
 
+  private void countInitialPieces()
+  {
+    numRedPieces = 0;
+    numWhitePieces = 0;
+
+    for(Row r : board)
+    {
+      for(Space s : r)
+      {
+        if(s.isValidSpace())
+        {
+          if(s.getPiece() != null)
+          {
+            if(s.getPiece().getColor().equals(Piece.Color.RED))
+            {
+              numRedPieces++;
+            }
+            else if(s.getPiece().getColor().equals(Piece.Color.WHITE))
+            {
+              numWhitePieces++;
+            }
+          }
+        }
+      }
+    }
+  }
+
   public boolean hasMoved()
   {
     return moved;
@@ -228,5 +253,4 @@ public class CheckerGame
   {
     return numWhitePieces;
   }
-
 }
