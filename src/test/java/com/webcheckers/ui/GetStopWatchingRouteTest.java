@@ -57,9 +57,22 @@ public class GetStopWatchingRouteTest
     CuT = new GetStopWatchingRoute();
   }
 
+  /**
+   * Tests when there is a spectator.
+   */
   @Test
   public void spectator_exists()
   {
+    assertEquals("Redirected Home", CuT.handle(request, response));
+  }
+
+  /**
+   * Tests that when there is no player that it is redirected home.
+   */
+  @Test
+  public void noPlayer()
+  {
+    when(session.attribute(GetHomeRoute.PLAYER_KEY)).thenReturn(null);
     assertEquals("Redirected Home", CuT.handle(request, response));
   }
 }
