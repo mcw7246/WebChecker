@@ -107,32 +107,6 @@ public class PostSignInRouteTest
     testHelper.assertViewModelAttribute(GetHomeRoute.TITLE_ATTR, GetHomeRoute.TITLE);
 
   }
-
-  /**
-   * Ensure that a username which is already assigned to a player is rejected.
-   *//**
-  @Test
-  public void testTaken_username(){
-    when(request.queryParams(eq(PostSignInRoute.USERNAME_PARAM))).thenReturn(TAKEN_USERNAME);
-
-    try
-    {
-      final TemplateEngineTest testHelper = new TemplateEngineTest();
-      when(engine.render(any(ModelAndView.class))).thenAnswer(testHelper.makeAnswer());
-
-      CuT.handle(request, response);
-
-      testHelper.assertViewModelExists();
-      testHelper.assertViewModelIsaMap();
-
-      assertNotNull(PostSignInRoute.MESSAGE_ATTR);
-      testHelper.assertViewModelAttribute(GetHomeRoute.TITLE_ATTR, GetHomeRoute.TITLE);
-    } catch (HaltException e)
-    {
-      //Test passed
-    }
-  }
-*/
   /**
    * Ensure that a username which is valid in all regards is accepted.
    */
@@ -141,18 +115,6 @@ public class PostSignInRouteTest
     when(request.queryParams(eq(PostSignInRoute.USERNAME_PARAM))).thenReturn("testName1");
 
     final TemplateEngineTest testHelper = new TemplateEngineTest();
-
-    /**try{
-      CuT.handle(request, response);
-      fail("The username was somehow invalid");
-    }catch(spark.HaltException e){
-      //passes
-    }
-
-    //when(engine.render(any(ModelAndView.class))).thenAnswer(testHelper.makeAnswer());
-    assertEquals(player.isValidUsername(AVAILABLE_USERNAME), Player.UsernameResult.AVAILABLE);
-
-*/
   }
 
   /**
