@@ -132,12 +132,11 @@ public class PostSubmitTurnRoute implements Route
         //a list of all the valid moves
         while (true)
         {
-          if (validMoves.isEmpty())
+          if (validMoves == null || validMoves.isEmpty())
           {
             break;
           }
           Move activeMove = validMoves.pop();
-         // boolean exist = movesSet.add(activeMove);
           if (!(activeMove.getStatus()).equals(Move.MoveStatus.VALID))
           {
             return gson.toJson(error("There is still an available jump. You" +

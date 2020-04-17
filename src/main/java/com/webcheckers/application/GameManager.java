@@ -103,12 +103,15 @@ public class GameManager
     {
       String challenger = player1.getUsername();
       inGame.remove(challenger);
+      removeClientSideGame(challenger);
     }
     if (player2 != null)
     {
       String victim = player2.getUsername();
       inGame.remove(victim);
+      removeClientSideGame(victim);
     }
+
     spectatorNum.remove(gameIDNum);
     activeGames.remove(gameIDNum);
   }
