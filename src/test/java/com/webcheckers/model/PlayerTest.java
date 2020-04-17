@@ -14,6 +14,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * The unit test suite for the {@link Player} component.
  *
  * @author Austin Miller 'akm8654'
+ * @author Mikayla Wishart 'mcw7246'
  */
 @Tag("Model-tier")
 public class PlayerTest
@@ -194,6 +195,10 @@ public class PlayerTest
     assertEquals(UsernameResult.INVALID, CuT.isValidUsername(SPECIAL_CHAR));
   }
 
+  /**
+   * tests the win percentages for session
+   */
+
   @Test
   public void win_percentage(){
     CuT = new Player(lobby);
@@ -205,12 +210,19 @@ public class PlayerTest
 
     assertEquals(50, CuT.getWinPercentage());
   }
+
+  /**
+   * test win percentage for no games played yet
+   */
   @Test
   public void win_percentage_no_games_played(){
     CuT = new Player(lobby);
     assertEquals(0, CuT.getWinPercentage());
   }
 
+  /**
+   * tests the ending of a game
+   */
   @Test
   public void endGameTest(){
     CuT = new Player(lobby);
