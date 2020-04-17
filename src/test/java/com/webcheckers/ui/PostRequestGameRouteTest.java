@@ -66,7 +66,6 @@ public class PostRequestGameRouteTest
     player2 = mock(Player.class);
     other = mock(Player.class);
     lobby = new PlayerLobby();
-    manager = new GameManager(lobby);
 
     when(player1.getUsername()).thenReturn(PLAYER1);
     when(player2.getUsername()).thenReturn(PLAYER2);

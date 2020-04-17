@@ -47,7 +47,7 @@ public class PostSubmitTurnRouteTest
           "/webcheckers/test" +
           "-boards/ToBeKingedMultiJumpWhite.JSON";
   private static final String REQUIRE_JUMP = "src/test/java/com/webcheckers" +
-          "/test-boards/requireJumpBoard.JSON";
+          "/test-boards/necesssaryJumpWhite.JSON";
 
   /**
    * The component-under-test (CuT)
@@ -94,7 +94,6 @@ public class PostSubmitTurnRouteTest
     when(manager.getGameID(player.getUsername())).thenReturn(GAME_ID);
     game = new CheckerGame(player, player2, board);
     requireMove = mock(RequireMove.class);
-    CuT = new PostSubmitTurnRoute();
     CuT = new PostSubmitTurnRoute(rManager);
     //when(manager.getLocalGame(player.getUsername())).thenReturn(game);
   }
@@ -335,7 +334,14 @@ public class PostSubmitTurnRouteTest
   @Test
   public void required_move_not_made()
   {
-    board = mock(Board.class);
+    try
+    {
+      this.board = gson.fromJson(new FileReader(REQUIRE_JUMP), Board.class);
+    }
+    catch (FileNotFoundException e)
+    {
+      fail("Initial Board was not found from given path");
+    }
     int gameID = manager.getGameID(player.getUsername());
     when(manager.getGameID(player.getUsername())).thenReturn(gameID);
     when(manager.getGame(gameID)).thenReturn(game);
@@ -368,13 +374,13 @@ public class PostSubmitTurnRouteTest
 
     List<Move> movesMadeList = new ArrayList<>();
     movesMadeList.add(moveMade);
-    when(board.getSpaceAt(jumpStart.getRowIndex(), jumpStart.getColumnIndex())).thenReturn(jumpStart);
-    when(board.getSpaceAt(jumpEnd.getRowIndex(), jumpEnd.getColumnIndex())).thenReturn(jumpEnd);
+    //when(board.getSpaceAt(jumpStart.getRowIndex(), jumpStart.getColumnIndex())).thenReturn(jumpStart);
+    //when(board.getSpaceAt(jumpEnd.getRowIndex(), jumpEnd.getColumnIndex())).thenReturn(jumpEnd);
 
     when(session.attribute(PostValidateMoveRoute.MOVE_LIST_ID)).thenReturn(movesMadeList);
     when(requireMove.getAllMoves()).thenReturn(requiredMoves);
     System.out.println(requiredMoves);
-    //CuT.handle(request, response);
+    CuT.handle(request, response);
 
 
 
