@@ -19,7 +19,8 @@ import static spark.Spark.halt;
 public class GetStopWatchingRoute implements Route
 {
   @Override
-  public Object handle(Request request, Response response){
+  public Object handle(Request request, Response response)
+  {
     final Session session = request.session();
 
     //gets the spectator player
@@ -27,7 +28,8 @@ public class GetStopWatchingRoute implements Route
     GameManager manager = session.attribute(GetHomeRoute.GAME_MANAGER_KEY);
 
     //redirects them to the home page
-    if(spectator != null){
+    if (spectator != null)
+    {
       //removes them from the spectator list that is stored in game manager
       manager.removeSpectator(spectator.getUsername());
     }
