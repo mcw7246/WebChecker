@@ -18,6 +18,8 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.*;
 
+import static com.webcheckers.model.Piece.Color.RED;
+import static com.webcheckers.model.Piece.Color.WHITE;
 import static com.webcheckers.util.Message.error;
 import static com.webcheckers.util.Message.info;
 import static org.junit.jupiter.api.Assertions.*;
@@ -54,8 +56,12 @@ public class PostSubmitTurnRouteTest
   private static final String MULTI_JUMP_REQUIRE = "src/test/java/com/webcheckers" +
           "/test-boards/multiJumpBoardStillJump.JSON";
   private static final String MULTI_JUMP_KING_REQUIRE = "src/test/java/com/webcheckers" +
-          "/test-boards/kingRequireMultiJump.JSON";
+          "/test-boards/multi-jump-to-king.JSON";
 
+  private static final String TO_BE_KINGED_RED = "src/test/java/com/webcheckers" +
+          "/test-boards/ToBeKingedRed.JSON";
+  private static final String TO_BE_KINGED_WHITE = "src/test/java/com/webcheckers" +
+          "/test-boards/ToBeKingWhite.JSON";
   /**
    * The component-under-test (CuT)
    */
@@ -174,7 +180,7 @@ public class PostSubmitTurnRouteTest
     moves.add(new Move(new Position(4, 1), new Position(2, 3),
             Move.MoveStatus.JUMP));
 
-    Space endSpace = new Space(2, 3, true, new Piece(Piece.Color.RED));
+    Space endSpace = new Space(2, 3, true, new Piece(RED));
     when(session.attribute(PostValidateMoveRoute.MOVE_LIST_ID)).thenReturn(moves);
     game.makeMove(moves.get(0));
     when(manager.getLocalGame(player.getUsername())).thenReturn(game);
@@ -242,7 +248,7 @@ public class PostSubmitTurnRouteTest
   {
     try
     {
-      this.board = gson.fromJson(new FileReader(KING_JUMP), Board.class);
+      this.board = gson.fromJson(new FileReader(TO_BE_KINGED_RED), Board.class);
       game = new CheckerGame(player, player2, board);
     }
     catch (FileNotFoundException e)
@@ -250,68 +256,28 @@ public class PostSubmitTurnRouteTest
       fail("Initial Board was not found from given path");
     }
 
+    int gameID = manager.getGameID(player.getUsername());
     when(session.attribute(GetHomeRoute.PLAYER_KEY)).thenReturn(player);
     when(session.attribute(GetHomeRoute.GAME_MANAGER_KEY)).thenReturn(manager);
+    when(manager.getGame(gameID)).thenReturn(game);
 
-    int gameID = manager.getGameID(player.getUsername());
+    Space start = board.getSpaceAt(1, 0);
+    Space end = board.getSpaceAt(0,1);
 
-    RequireMove requireMove = new RequireMove(board, Piece.Color.RED);
-
+    Move moveMade = new Move(new Position(1, 0), new Position(0, 1), Move.MoveStatus.VALID);
     List<Move> movesList = new ArrayList<>();
 
-    when(session.attribute(PostValidateMoveRoute.MOVE_LIST_ID)).thenReturn(movesList);
-    when(manager.getGame(gameID)).thenReturn(game);
-    CuT.handle(request, response);
+    moveMade.validateMove(game, start, end);
 
-
-
-
-    /**
-    //board = new Board();
-
-
-    //game = new CheckerGame(player, player2, board);
-
-    when(session.attribute(GetHomeRoute.GAME_MANAGER_KEY)).thenReturn(manager);
-    List<Move> moves = new ArrayList<>();
-
-    int gameID = manager.getGameID(player.getUsername());
-
-    when(manager.getGame(gameID)).thenReturn(game);
-
-    RequireMove requireMove = new RequireMove(board, Piece.Color.WHITE);
-
-    Space startSpace = new Space(2, 5, true);
-    Space jumpSpace = new Space(1, 6, true);
-    Space endSpace = new Space(0, 7, true);
-
-    Piece jumpPiece = new Piece(Piece.Color.RED, Piece.Type.SINGLE);
-    Piece jumpedPiece = new Piece(Piece.Color.WHITE, Piece.Type.SINGLE);
-//    when(board.getSpaceAt(endSpace.getRowIndex(), endSpace.getColumnIndex())).thenReturn(endSpace);
-    startSpace.setPiece(jumpPiece);
-    jumpSpace.setPiece(jumpedPiece);
-
-
-    //System.out.println(board.getSpaceAt(2, 5).getPiece().getType());
-    when(manager.getLocalGame(player.getUsername())).thenReturn(game);
-
-    Move moveMade = new Move(new Position(startSpace.getRowIndex(), startSpace.getColumnIndex()), new Position(endSpace.getRowIndex(), endSpace.getColumnIndex()), Move.MoveStatus.JUMP);
-    moves.add(moveMade);
+    movesList.add(moveMade);
     game.makeMove(moveMade);
 
-    game.addJumpedPieces(jumpSpace);
-    System.out.println(game.getNumRedPieces());
-    //System.out.println(board.getSpaceAt(0,2).getPiece().getType());
+    when(session.attribute(PostValidateMoveRoute.MOVE_LIST_ID)).thenReturn(movesList);
 
-    System.out.println(board.getSpaceAt(0, 7).getPiece().getType());
-    game.getBoard().getSpaceAt(endSpace.getRowIndex(), endSpace.getColumnIndex()).setPiece(jumpPiece);
-    when(session.attribute(PostValidateMoveRoute.MOVE_LIST_ID)).thenReturn(moves);
-    //System.out.println(requireMove.getValidMoves(board, endSpace, Piece.Color.WHITE));
 
-    assertEquals(gson.toJson(info("Valid Move")), CuT.handle(request,
-            response));
-    assertEquals(Piece.Type.KING, board.getSpaceAt(0, 7).getPiece().getType());
-  */
+
+    assertEquals(gson.toJson(info("Valid Move")), CuT.handle(request, response));
+    assertEquals(Piece.Type.KING, board.getSpaceAt(0, 1).getPiece().getType());
   }
 
   /**
@@ -322,48 +288,39 @@ public class PostSubmitTurnRouteTest
   {
     try
     {
-      this.board = gson.fromJson(new FileReader(KING_JUMP), Board.class);
+      this.board = gson.fromJson(new FileReader(TO_BE_KINGED_WHITE), Board.class);
+      game = new CheckerGame(player, player2, board);
     }
     catch (FileNotFoundException e)
     {
       fail("Initial Board was not found from given path");
     }
-    game = new CheckerGame(player, player2, this.board);
-/**
-    when(manager.getLocalGame(player.getUsername())).thenReturn(game);
-    when(session.attribute(GetHomeRoute.GAME_MANAGER_KEY)).thenReturn(manager);
 
-
-    //makes it the white piece's turn
-    game.updateTurn();
 
     int gameID = manager.getGameID(player.getUsername());
-
+    when(session.attribute(GetHomeRoute.PLAYER_KEY)).thenReturn(player);
+    when(session.attribute(GetHomeRoute.GAME_MANAGER_KEY)).thenReturn(manager);
     when(manager.getGame(gameID)).thenReturn(game);
 
-    Piece redPiece = new Piece(Piece.Color.RED, Piece.Type.SINGLE);
-    Piece whitePiece = new Piece(Piece.Color.WHITE, Piece.Type.SINGLE);
+    game.updateTurn();
 
-    Space start = new Space(5, 5, true);
-    start.setPiece(whitePiece);
-    Space jumped = new Space(6, 6, true, redPiece);
-    Space end = new Space(7, 7, true);
+    Space start = board.getSpaceAt(6, 5);
+    Space end = board.getSpaceAt(7, 6);
 
-    Move moveMade = new Move(new Position(start.getRowIndex(), start.getColumnIndex()), new Position(end.getRowIndex(), end.getColumnIndex()), Move.MoveStatus.JUMP);
+    Move moveMade = new Move(new Position(6, 5), new Position(7, 6), Move.MoveStatus.VALID);
+    List<Move> movesList = new ArrayList<>();
 
-    Stack<Move> validMoves = requireMove.getValidMoves(board, end, Piece.Color.WHITE);
+    moveMade.validateMove(game, start, end);
+
+    movesList.add(moveMade);
+
+    when(session.attribute(PostValidateMoveRoute.MOVE_LIST_ID)).thenReturn(movesList);
+
 
     game.makeMove(moveMade);
 
-    List<Move> moveList = new ArrayList<>();
-    moveList.add(moveMade);
-
-    game.addJumpedPieces(jumped);
-    game.getBoard().getSpaceAt(end.getRowIndex(), end.getColumnIndex()).setPiece(whitePiece);
-    when(session.attribute(PostValidateMoveRoute.MOVE_LIST_ID)).thenReturn(moveList);
-
     assertEquals(gson.toJson(info("Valid Move")), CuT.handle(request, response));
-    assertEquals(Piece.Type.KING, game.getBoard().getSpaceAt(end.getRowIndex(), end.getColumnIndex()).getPiece().getType());*/
+    assertEquals(Piece.Type.KING, board.getSpaceAt(7, 6).getPiece().getType());
   }
 
   @Test
@@ -383,7 +340,7 @@ public class PostSubmitTurnRouteTest
 
     CheckerGame newGame = new CheckerGame(player, player2, gameBoard);
     System.out.println(game);
-    Piece piece = new Piece(Piece.Color.RED, Piece.Type.SINGLE);
+    Piece piece = new Piece(RED, Piece.Type.SINGLE);
 
     List<Move> moves = new ArrayList<>();
     when(session.attribute(PostValidateMoveRoute.MOVE_LIST_ID)).thenReturn(moves);
@@ -451,7 +408,7 @@ public class PostSubmitTurnRouteTest
       setBoard = new Board();
     }
 
-    /**
+
     int gameID = manager.getGameID(player.getUsername());
     when(player.getPlayerNum()).thenReturn(1);
 
@@ -460,7 +417,22 @@ public class PostSubmitTurnRouteTest
     when(session.attribute(GetHomeRoute.PLAYER_KEY)).thenReturn(player);
     CheckerGame newGame = new CheckerGame(player, player2, setBoard);
     when(manager.getGame(gameID)).thenReturn(newGame);
-    RequireMove newRequireMove = new RequireMove(setBoard, Piece.Color.RED);
+
+    RequireMove requiredMove = new RequireMove(setBoard, Piece.Color.RED);
+    int num = 1;
+    Map<Move.MoveStatus, List<Move>> movesList = requiredMove.getAllMoves();
+    for(Move move : movesList.get(Move.MoveStatus.JUMP)){
+      System.out.println("Start pos " + num + ": [" + move.getStart().getRow() + ", " + move.getStart().getCell() + "]");
+      System.out.println("End pos " + num + ": [" + move.getEnd().getRow() + ", " + move.getEnd().getCell() + "]");
+    }
+    Piece whitePiece1 = new Piece(Piece.Color.WHITE, Piece.Type.SINGLE);
+    Piece whitePiece2 = new Piece(Piece.Color.WHITE, Piece.Type.SINGLE);
+    Piece redPiece1 = new Piece(Piece.Color.RED, Piece.Type.SINGLE);
+
+
+    Move move = new Move(new Position())
+     /**
+     RequireMove newRequireMove = new RequireMove(setBoard, Piece.Color.RED);
     List<Move> listMoves = new ArrayList<>();
     Map<Move.MoveStatus, List<Move>> moves = newRequireMove.getAllMoves();
     Piece whitePiece = new Piece(Piece.Color.WHITE, Piece.Type.SINGLE);
@@ -496,7 +468,7 @@ public class PostSubmitTurnRouteTest
     when(session.attribute(GetHomeRoute.PLAYER_KEY)).thenReturn(player);
     CheckerGame newGame = new CheckerGame(player, player2, setBoard);
     when(manager.getGame(gameID)).thenReturn(newGame);
-    RequireMove newRequireMove = new RequireMove(setBoard, Piece.Color.RED);
+    RequireMove newRequireMove = new RequireMove(setBoard, RED);
     List<Move> listMoves = new ArrayList<>();
     Map<Move.MoveStatus, List<Move>> moves = newRequireMove.getAllMoves();
     System.out.println(moves.get(Move.MoveStatus.JUMP));
