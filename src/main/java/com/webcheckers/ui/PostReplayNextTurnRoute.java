@@ -12,6 +12,12 @@ import static com.webcheckers.ui.GetReplayGameRoute.GAME_ID;
 import static com.webcheckers.ui.WebServer.HOME_URL;
 import static com.webcheckers.util.Message.info;
 
+/**
+ * The route to go to the next move when inside the replay mode enhancement.
+ * Returns a JSON object of the info message true when successful.
+ *
+ * @author Austin Miller 'akm8654'
+ */
 public class PostReplayNextTurnRoute implements Route
 {
   private final ReplayManager rManager;
