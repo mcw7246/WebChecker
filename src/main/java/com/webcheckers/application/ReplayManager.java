@@ -1,6 +1,5 @@
 package com.webcheckers.application;
 
-import com.sun.javafx.image.IntPixelGetter;
 import com.webcheckers.model.Board;
 import com.webcheckers.model.CheckerGame;
 import com.webcheckers.model.Move;

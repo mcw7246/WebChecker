@@ -3,7 +3,6 @@ package com.webcheckers.ui;
 import com.google.gson.Gson;
 import com.webcheckers.application.GameManager;
 import com.webcheckers.model.Player;
-import javafx.geometry.Pos;
 import spark.*;
 
 import java.util.HashMap;
