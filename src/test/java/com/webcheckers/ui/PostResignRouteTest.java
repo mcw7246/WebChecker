@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.mockito.internal.matchers.Null;
 import spark.*;
+import spark.utils.Assert;
 
 import java.util.Map;
 import java.util.Set;
@@ -27,22 +28,20 @@ import static org.mockito.ArgumentMatchers.any;
 public class PostResignRouteTest
 {
     private static final String PLAYER1 = "player1Username";
-    private static final String PLAYER2 = "player2Username";
 
     private static final String VALID_RESIGN = "{\"text\":\"Resign Successful\",\"type\":\"INFO\"}";
 
     private Player player1;
-    private Player player2;
 
     private Request request;
     private Session session;
     private Response response;
-    private CheckerGame game;
 
     private GameManager manager;
 
-    private TemplateEngine templateEngine;
-
+    private Request badRequest;
+    private Session badSession;
+    private GameManager badManager;
 
     /**
      * the component under testing
@@ -57,14 +56,13 @@ public class PostResignRouteTest
         when(request.session()).thenReturn(session);
         response = mock(Response.class);
         player1 = mock(Player.class);
-        player2 = mock(Player.class);
-        game = mock(CheckerGame.class);
         when(session.attribute(GetHomeRoute.PLAYER_KEY)).thenReturn(player1);
         manager = mock(GameManager.class);
+        when(manager.getGameOverStatus(1)).thenReturn("No");
         when(session.attribute(GetHomeRoute.GAME_MANAGER_KEY)).thenReturn(manager);
         when(player1.getUsername()).thenReturn(PLAYER1);
         when(manager.getGameID(PLAYER1)).thenReturn(1);
-        this.CuT = new PostResignRoute(templateEngine);
+        this.CuT = new PostResignRoute();
     }
 
     /**
@@ -73,7 +71,7 @@ public class PostResignRouteTest
     @Test
     public void ctor_withArg()
     {
-        CuT = new PostResignRoute(templateEngine);
+        CuT = new PostResignRoute();
     }
 
 
@@ -89,6 +87,48 @@ public class PostResignRouteTest
             //System.out.println(CuT.handle(request,response).toString());
             //System.out.println(VALID_RESIGN);
             assertEquals(CuT.handle(request,response).toString(), VALID_RESIGN);
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Test for the handle method for resign routes
+     * Tests that the return from handle is not valid resign message
+     * since the status of game is bad
+     */
+    @Test
+    public void testBadGame()
+    {
+        try
+        {
+            badManager = mock(GameManager.class);
+            when(badManager.getGameOverStatus(1)).thenReturn("lmao this is bad message");
+            when(session.attribute(GetHomeRoute.GAME_MANAGER_KEY)).thenReturn(badManager);
+            assertNotEquals(VALID_RESIGN, CuT.handle(request,response).toString());
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Tests that the valid resign message will not be given
+     * if the player is null
+     */
+    @Test
+    public void testNoPlayer()
+    {
+        badRequest = mock(Request.class);
+        when(badRequest.session()).thenReturn(badSession);
+        badSession = mock(Session.class);
+        when(badSession.attribute(PLAYER1)).thenReturn(null);
+        try
+        {
+            assertNotEquals(CuT.handle(badRequest,response), VALID_RESIGN);
         }
         catch (Exception e)
         {

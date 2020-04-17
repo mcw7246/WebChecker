@@ -169,7 +169,7 @@ public class WebServer
     post(VALIDATE_MOVE_URL, new PostValidateMoveRoute());
     post(SUBMIT_TURN_URL, new PostSubmitTurnRoute(rManager));
     post(BACKUP_MOVE_URL, new PostBackupMoveRoute());
-    post(RESIGN_GAME_URL, new PostResignRoute(templateEngine));
+    post(RESIGN_GAME_URL, new PostResignRoute());
     get(SPECTATOR_GAME_URL, new GetSpectatorGameRoute(templateEngine));
     post(SPECTATOR_CHECK_TURN_URL, new PostSpectatorCheckTurnRoute());
     post(SIGNOUT_URL, new PostSignOutRoute(templateEngine, playerLobby));
