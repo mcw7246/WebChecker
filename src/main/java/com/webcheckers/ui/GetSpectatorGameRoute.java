@@ -19,6 +19,11 @@ import static com.webcheckers.ui.WebServer.HOME_URL;
 import static com.webcheckers.util.Message.info;
 import static java.awt.SystemColor.info;
 
+/**
+ * Class used to route the player to the game.ftl render for the spectator move
+ *
+ * @author Austin Miller 'akm8654'
+ */
 public class GetSpectatorGameRoute implements Route
 {
   public static String TURN = "turn";
@@ -85,7 +90,7 @@ public class GetSpectatorGameRoute implements Route
       manager.addSpectator(spectator.getUsername(), gameIdNum);
       vm.put(NOT_REPLAY, true);
       String status = manager.getGameOverStatus(gameIdNum);
-      if(!status.equals("No"))
+      if (!status.equals("No"))
       {
         vm.put("message", info(status));
       }
