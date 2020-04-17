@@ -49,7 +49,6 @@ public class PostRequestResponseRouteTest
   private Player opponentP2;
   private GameManager manager;
 
-
   /**
    * The Component-Under-Test (CuT).
    * <p>
