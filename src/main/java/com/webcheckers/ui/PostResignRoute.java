@@ -35,7 +35,7 @@ public class PostResignRoute implements Route
    * (which should only occur due to timed-out session).
    */
   @Override
-  public Object handle(Request request, Response response) throws Exception
+  public Object handle(Request request, Response response)
   {
     final Session session = request.session();
     final Player player = session.attribute(PLAYER_KEY);
@@ -57,7 +57,7 @@ public class PostResignRoute implements Route
     } else
     {
       response.redirect(HOME_URL);
-      return null;
+      return "Home Redirect";
     }
   }
 

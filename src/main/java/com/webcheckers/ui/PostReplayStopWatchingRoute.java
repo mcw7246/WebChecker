@@ -37,6 +37,6 @@ public class PostReplayStopWatchingRoute implements Route
       rManager.stopWatching(player.getUsername());
     }
     response.redirect(HOME_URL);
-    return null;
+    return "Redirect Home";
   }
 }

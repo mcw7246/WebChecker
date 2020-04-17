@@ -107,7 +107,7 @@ public final class Application
     final Gson gson = new Gson();
 
     // inject the game center and freemarker engine into web server
-    final WebServer webServer = new WebServer(templateEngine, gson);
+    final WebServer webServer = new WebServer(templateEngine);
 
     // inject web server into application
     final Application app = new Application(webServer);
