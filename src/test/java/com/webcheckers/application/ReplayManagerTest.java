@@ -108,6 +108,7 @@ public class ReplayManagerTest
     move = CuT.getMove(PLAYER1, gameID);
     assertEquals(move, 1);
     CuT.previousMove(PLAYER1, gameID);
+    move = CuT.getMove(PLAYER1, gameID);
     assertEquals(move, 0);
   }
 
