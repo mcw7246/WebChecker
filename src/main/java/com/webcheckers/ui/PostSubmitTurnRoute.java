@@ -89,7 +89,6 @@ public class PostSubmitTurnRoute implements Route
       /*
        * see if the person made a jump
        * get the space they jumped from
-       *
        */
       Space jumpSpace;
       while ((jumpSpace = game.getJumpedPiece()) != null)
@@ -140,17 +139,13 @@ public class PostSubmitTurnRoute implements Route
             }
           }
           //go through the stack of valid moves for the given space
-          while (true)
+        }
+        while (true)
+        {
+          if (validMoves.isEmpty())
           {
-            if (validMoves.isEmpty())
-            {
-              break;
-            } else if (!validMoves.pop().getStatus().equals(Move.MoveStatus.VALID))
-            {
-              break;
-            }
-          }
-          if (validMoves.size() != 0)
+            break;
+          } else if (!(validMoves.pop().getStatus()).equals(Move.MoveStatus.VALID))
           {
             return gson.toJson(error("There is still an available jump. You" +
                     " must make this move before you end your turn."));
