@@ -430,7 +430,7 @@ public class PostSubmitTurnRouteTest
     Piece redPiece1 = new Piece(Piece.Color.RED, Piece.Type.SINGLE);
 
 
-    Move move = new Move(new Position())
+    //Move move = new Move(new Position());
      /**
      RequireMove newRequireMove = new RequireMove(setBoard, Piece.Color.RED);
     List<Move> listMoves = new ArrayList<>();

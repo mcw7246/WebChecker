@@ -9,6 +9,11 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 
+/**
+ * The unit test for the {@link ReplayManager}
+ *
+ * @author Austin Miller 'akm8654'
+ */
 @Tag("Application-tier")
 public class ReplayManagerTest
 {
