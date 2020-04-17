@@ -147,7 +147,6 @@ public class Player
 
     boolean userContains = Pattern.matches("[a-zA-Z0-9\\s]+", username);
     boolean containsSpace = Pattern.compile(" ").matcher(username).find();
-    System.out.println(containsSpace);
     boolean numContains = Pattern.compile("[0-9]").matcher(username).find();
     if (!userContains || username.length() < 6 || username.length() > 25 ||
             username.startsWith("[0-9]+"))
