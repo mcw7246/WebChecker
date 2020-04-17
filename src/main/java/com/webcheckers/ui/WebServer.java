@@ -179,7 +179,7 @@ public class WebServer
     post(PREVIOUS_TURN, new PostReplayPreviousTurnRoute(rManager));
     post(NEXT_TURN, new PostReplayNextTurnRoute(rManager));
     get(REPLAY_STOP_WATCHING, new PostReplayStopWatchingRoute(rManager));
-    get(EXIT_SPECTATOR_GAME_URL, new GetStopWatchingRoute(templateEngine));
+    get(EXIT_SPECTATOR_GAME_URL, new GetStopWatchingRoute());
     LOG.config("WebServer is initialized.");
   }
 }

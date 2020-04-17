@@ -8,6 +8,7 @@ import com.webcheckers.model.CheckerGame;
 import com.webcheckers.model.Piece;
 import com.webcheckers.model.Player;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import spark.*;
 
@@ -23,7 +24,11 @@ import static org.mockito.Mockito.when;
 
 /**
  * A test for rendering the game.ftl for the spectator.
+ *
+ * @author Austin Miller 'akm8654'
+ * @author Mikayla Wishart
  */
+@Tag("UI-tier")
 public class GetSpectatorGameRouteTest
 {
   private GetSpectatorGameRoute CuT;
