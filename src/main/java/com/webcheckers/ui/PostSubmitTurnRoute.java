@@ -113,59 +113,13 @@ public class PostSubmitTurnRoute implements Route
                 lastMove.getEnd().getCell());
 
         //can only go in one direction (the player is a single piece)
-        if (jumpEndSpace.getPiece().getType() != Piece.Type.KING)
-        {
-          Stack<Move> validMoves = requireMove.getValidMoves(game.getBoard(),
-                  jumpEndSpace, color);
-          //if there is still valid moves that are jumps
-          //a list of all the valid moves
-          int colorFactor = 1;
-          if (color.equals(Piece.Color.WHITE))
-          {
-            colorFactor = -1;
-          }
-          validMoves = requireMove.addMovesRowOneDirection(validMoves,
-                  game.getBoard(), jumpEndSpace.getPiece(), jumpEndSpace, colorFactor);
-          while (true)
-          {
-            if (validMoves.isEmpty())
-            {
-              break;
-            } else if (!validMoves.get(0).getStatus().equals(Move.MoveStatus.VALID))
-            {
-              break;
-            } else
-            {
-              validMoves.pop();
-            }
-          }
-          if (validMoves.size() != 0)
-          {
-            return gson.toJson(error("There is still an available jump. You" +
-                    " must make this move before you end your turn."));
-          }
-        }
-
+        Stack<Move> validMoves = requireMove.getValidMoves(game.getBoard(),
+                jumpEndSpace, color);
+        //if there is still valid moves that are jumps
+        //a list of all the valid moves
         //if it is a king
-        else
+        if (jumpEndSpace.getPiece().getType() == Piece.Type.KING)
         {
-          if (requireMove.getValidMoves(game.getBoard(), jumpEndSpace, session.attribute(GetGameRoute.ACTIVE_COLOR)) != null)
-          {
-            Stack<Move> validMoves = requireMove.getValidMoves(game.getBoard(), jumpEndSpace, session.attribute(GetGameRoute.ACTIVE_COLOR));
-            //go through the stack of valid moves for the given space
-            do
-            {
-              //loops through to see if there is another valid jump that can me made
-              //if so then it will return a message saying it is necessary
-              if (validMoves.pop().getStatus() == Move.MoveStatus.JUMP)
-              {
-                return gson.toJson(error("There is still an available jump. " +
-                        "You must make this move before you end your turn."));
-              }
-            }
-            while (!validMoves.empty());
-          }
-          //stores row then cols.
           Map<Integer, Integer> startPos = new HashMap<>();
           for (Move move : moves)
           {
@@ -186,6 +140,22 @@ public class PostSubmitTurnRoute implements Route
             {
               startPos.put(start.getRow(), start.getCell());
             }
+          }
+          //go through the stack of valid moves for the given space
+          while (true)
+          {
+            if (validMoves.isEmpty())
+            {
+              break;
+            } else if (!validMoves.pop().getStatus().equals(Move.MoveStatus.VALID))
+            {
+              break;
+            }
+          }
+          if (validMoves.size() != 0)
+          {
+            return gson.toJson(error("There is still an available jump. You" +
+                    " must make this move before you end your turn."));
           }
         }
         //Jump not made

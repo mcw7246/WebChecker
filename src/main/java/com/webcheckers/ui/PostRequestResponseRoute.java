@@ -26,7 +26,7 @@ public class PostRequestResponseRoute implements Route
   static final String GAME_ACCEPT = "gameAccept";
   private final PlayerLobby lobby;
   private static final String KING_JUMP = "src/test/java/com/webcheckers/test" +
-          "-boards/ToBeKingedMultiJumpWhite.JSON";
+          "-boards/multiJumpLongAfterKing.JSON";
   private static final String REQUIRE_JUMP = "src/test/java/com/webcheckers" +
           "/test-boards/requireJumpBoard.JSON";
   private static final String NECESSARY_JUMP_WHITE = "src/test/java/com" +
@@ -56,7 +56,7 @@ public class PostRequestResponseRoute implements Route
   {
     if (username.equals("TEST MULTI KING JUMP"))
     {
-      manager.startTestGame(username, opponent, KING_JUMP, 2);
+      manager.startTestGame(username, opponent, KING_JUMP, 1);
     } else if (username.equals("TEST REQUIRE JUMP"))
     {
       manager.startTestGame(username, opponent, REQUIRE_JUMP, 1);
