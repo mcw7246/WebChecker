@@ -2,25 +2,18 @@ package com.webcheckers.ui;
 
 import com.google.gson.Gson;
 import com.webcheckers.application.GameManager;
-import com.webcheckers.application.PlayerLobby;
-import com.webcheckers.model.CheckerGame;
 import com.webcheckers.model.Player;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
-import org.mockito.internal.matchers.Null;
-import spark.*;
-import spark.utils.Assert;
+import spark.Request;
+import spark.Response;
+import spark.Session;
 
-import java.util.Map;
-import java.util.Set;
-
-import static com.webcheckers.ui.PostRequestGameRoute.MESSAGE;
 import static com.webcheckers.util.Message.error;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-import static org.mockito.ArgumentMatchers.any;
 
 /**
  * The unit test for the {@link PostRequestResponseRoute}
@@ -34,17 +27,13 @@ public class PostResignRouteTest
 
   private static final String VALID_RESIGN = "{\"text\":\"Resign Successful\",\"type\":\"INFO\"}";
 
-  private Player player1;
-
   private Request request;
   private Session session;
   private Response response;
 
   private GameManager manager;
 
-  private Request badRequest;
   private Session badSession;
-  private GameManager badManager;
 
   private Gson gson = new Gson();
 
@@ -60,7 +49,7 @@ public class PostResignRouteTest
     session = mock(Session.class);
     when(request.session()).thenReturn(session);
     response = mock(Response.class);
-    player1 = mock(Player.class);
+    Player player1 = mock(Player.class);
     when(session.attribute(GetHomeRoute.PLAYER_KEY)).thenReturn(player1);
     manager = mock(GameManager.class);
     when(manager.getGameOverStatus(gameID)).thenReturn("No");
@@ -115,7 +104,7 @@ public class PostResignRouteTest
   @Test
   public void testNoPlayer()
   {
-    badRequest = mock(Request.class);
+    Request badRequest = mock(Request.class);
     when(badRequest.session()).thenReturn(badSession);
     badSession = mock(Session.class);
     when(badSession.attribute(PLAYER1)).thenReturn(null);

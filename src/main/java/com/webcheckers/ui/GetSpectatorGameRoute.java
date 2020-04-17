@@ -1,6 +1,5 @@
 package com.webcheckers.ui;
 
-import com.google.gson.Gson;
 import com.webcheckers.application.GameManager;
 import com.webcheckers.model.BoardView;
 import com.webcheckers.model.CheckerGame;
@@ -10,14 +9,12 @@ import spark.*;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
-import java.util.logging.Logger;
 
 import static com.webcheckers.model.Player.ViewMode.SPECTATOR;
 import static com.webcheckers.ui.GetGameRoute.*;
 import static com.webcheckers.ui.GetReplayGameRoute.NOT_REPLAY;
 import static com.webcheckers.ui.WebServer.HOME_URL;
 import static com.webcheckers.util.Message.info;
-import static java.awt.SystemColor.info;
 
 /**
  * Class used to route the player to the game.ftl render for the spectator move
@@ -29,7 +26,6 @@ public class GetSpectatorGameRoute implements Route
   public static String TURN = "turn";
 
   private static final String RED_PLAYER = "redPlayer";
-  private static final Logger LOG = Logger.getLogger(GetHomeRoute.class.getName());
   private final TemplateEngine templateEngine;
 
   public GetSpectatorGameRoute(TemplateEngine templateEngine)

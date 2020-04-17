@@ -9,8 +9,6 @@ import spark.Response;
 import spark.Route;
 import spark.Session;
 
-import java.util.logging.Logger;
-
 import static com.webcheckers.util.Message.info;
 import static spark.Spark.halt;
 
@@ -21,9 +19,6 @@ import static spark.Spark.halt;
  */
 public class PostCheckTurnRoute implements Route
 {
-
-  private static final Logger LOG = Logger.getLogger(GetHomeRoute.class.getName());
-
   @Override
   public Object handle(Request request, Response response)
   {

@@ -1,7 +1,6 @@
 package com.webcheckers.ui;
 
 import com.google.gson.Gson;
-import com.webcheckers.application.GameManager;
 import com.webcheckers.application.ReplayManager;
 import com.webcheckers.model.BoardView;
 import com.webcheckers.model.CheckerGame;
@@ -14,7 +13,6 @@ import java.util.Map;
 import java.util.Objects;
 
 import static com.webcheckers.ui.GetGameRoute.*;
-import static com.webcheckers.ui.GetGameRoute.GAME_BOARD_VIEW;
 import static com.webcheckers.ui.WebServer.HOME_URL;
 import static com.webcheckers.util.Message.info;
 

@@ -17,7 +17,6 @@ import com.webcheckers.util.Message;
 
 import static com.webcheckers.ui.PostRequestGameRoute.MESSAGE;
 import static com.webcheckers.ui.PostResignRoute.RESIGN_ATTR;
-import static spark.Spark.halt;
 
 /**
  * The UI Controller to GET the Home page.

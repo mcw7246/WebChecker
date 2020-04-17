@@ -10,7 +10,6 @@ import spark.Route;
 import spark.Session;
 
 import static com.webcheckers.util.Message.info;
-import static spark.Spark.halt;
 
 /**
  * Determines whether the game the spectator is watching has changed or not.

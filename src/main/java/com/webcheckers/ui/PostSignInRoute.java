@@ -7,7 +7,6 @@ import spark.*;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.NoSuchElementException;
 import java.util.Objects;
 
 import static spark.Spark.halt;
@@ -15,7 +14,7 @@ import static spark.Spark.halt;
 /**
  * UI controller to POST a sign in
  *
- * @author: Mikayla Wishart 'mcw7246'
+ * @author Mikayla Wishart 'mcw7246'
  **/
 
 public class  PostSignInRoute implements Route
@@ -35,7 +34,6 @@ public class  PostSignInRoute implements Route
   //
   // Attributes
   //
-  private Player player;
   private PlayerLobby playerLobby;
 
 

@@ -70,37 +70,39 @@ public class PostRequestResponseRoute implements Route
   private void startGameOrTest(String username, String opponent,
                                GameManager manager)
   {
-    if (username.equals(MULTI_KING))
+    switch (username)
     {
-      manager.startTestGame(username, opponent, KING_JUMP, 1);
-    } else if (username.equals(REQUIRE_JUMP_))
-    {
-      manager.startTestGame(username, opponent, REQUIRE_JUMP, 1);
-    } else if (username.equals(NEC_WHITE))
-    {
-      manager.startTestGame(username, opponent, NECESSARY_JUMP_WHITE, 2);
-    } else if (username.equals(NO_MOVES))
-    {
-      manager.startTestGame(username, opponent, NO_MORE_MOVES, 1);
-    } else if (username.equals(MULTI_JUMP_REQ))
-    {
-      manager.startTestGame(username, opponent,
-              MULTI_JUMP_STILL_REQUIRED_WRONG, 1);
-    } else if (username.equals(ABOUTA_JUMP))
-    {
-      manager.startTestGame(username, opponent, ABOUT_JUMP_ALL, 1);
-    } else if (username.equals(TEST_DEM1))
-    {
-      manager.startTestGame(username, opponent, DEMO_1, 1);
-    } else if (username.equals(ABOUT_NO_MORE_MOVES))
-    {
-      manager.startTestGame(username, opponent, ABOUT_MOVES_NONE, 1);
-    } else if (username.equals(KING_BACK))
-    {
-      manager.startTestGame(username, opponent, KING_BACK_AGAIN, 1);
-    }else
-    {
-      manager.startGame(username, opponent);
+      case MULTI_KING:
+        manager.startTestGame(username, opponent, KING_JUMP, 1);
+        break;
+      case REQUIRE_JUMP_:
+        manager.startTestGame(username, opponent, REQUIRE_JUMP, 1);
+        break;
+      case NEC_WHITE:
+        manager.startTestGame(username, opponent, NECESSARY_JUMP_WHITE, 2);
+        break;
+      case NO_MOVES:
+        manager.startTestGame(username, opponent, NO_MORE_MOVES, 1);
+        break;
+      case MULTI_JUMP_REQ:
+        manager.startTestGame(username, opponent,
+                MULTI_JUMP_STILL_REQUIRED_WRONG, 1);
+        break;
+      case ABOUTA_JUMP:
+        manager.startTestGame(username, opponent, ABOUT_JUMP_ALL, 1);
+        break;
+      case TEST_DEM1:
+        manager.startTestGame(username, opponent, DEMO_1, 1);
+        break;
+      case ABOUT_NO_MORE_MOVES:
+        manager.startTestGame(username, opponent, ABOUT_MOVES_NONE, 1);
+        break;
+      case KING_BACK:
+        manager.startTestGame(username, opponent, KING_BACK_AGAIN, 1);
+        break;
+      default:
+        manager.startGame(username, opponent);
+        break;
     }
   }
 

@@ -13,7 +13,6 @@ import java.util.*;
 
 import static com.webcheckers.util.Message.error;
 import static com.webcheckers.util.Message.info;
-import static spark.Spark.halt;
 
 /**
  * Submits the user turn. This is only active when the game view is in a
@@ -61,11 +60,9 @@ public class PostSubmitTurnRoute implements Route
       }
 
       Piece.Color color = Piece.Color.WHITE;
-      Piece.Color oppColor = Piece.Color.RED;
       if (player.getPlayerNum() == 1)
       {
         color = Piece.Color.RED;
-        oppColor = Piece.Color.WHITE;
       }
       //Once moves are validated, king any pieces that made it to the edge of the board
       final ArrayList<Move> moves = session.attribute(PostValidateMoveRoute.MOVE_LIST_ID);

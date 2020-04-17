@@ -44,7 +44,7 @@ public class PostRequestGameRoute implements Route
     final GameManager gameManager = httpSession.attribute(GetHomeRoute.GAME_MANAGER_KEY);
     final PlayerLobby playerLobby =
             httpSession.attribute(GetHomeRoute.PLAYER_LOBBY_KEY);
-      final Player player = httpSession.attribute(GetHomeRoute.PLAYER_KEY);
+    final Player player = httpSession.attribute(GetHomeRoute.PLAYER_KEY);
 
     /* A null playerLobby indicates a timed out session or an illegal request on this URL.
      * In either case, we will redirect back to home.

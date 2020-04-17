@@ -15,7 +15,6 @@ import static com.webcheckers.model.Piece.Color.RED;
 import static com.webcheckers.model.Piece.Color.WHITE;
 import static com.webcheckers.ui.GetReplayGameRoute.NOT_REPLAY;
 import static com.webcheckers.ui.PostRequestGameRoute.MESSAGE;
-import static com.webcheckers.ui.PostResignRoute.RESIGN_ATTR;
 import static com.webcheckers.ui.WebServer.HOME_URL;
 
 /**

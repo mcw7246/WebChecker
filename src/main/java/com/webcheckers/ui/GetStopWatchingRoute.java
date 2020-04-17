@@ -2,12 +2,10 @@ package com.webcheckers.ui;
 
 import com.webcheckers.application.GameManager;
 import com.webcheckers.model.Player;
-import spark.*;
-
-import java.util.HashMap;
-import java.util.Map;
-
-import static spark.Spark.halt;
+import spark.Request;
+import spark.Response;
+import spark.Route;
+import spark.Session;
 
 /**
  * Class for if the user wanted to stop watching in spectator view

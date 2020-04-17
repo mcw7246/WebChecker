@@ -1,15 +1,12 @@
 package com.webcheckers.ui;
 
+import com.webcheckers.util.Message;
+import spark.*;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.logging.Logger;
-
-import spark.*;
-
-import com.webcheckers.util.Message;
-
-import javax.servlet.http.HttpSession;
 
 /**
  * The UI Controller to GET the Home page.
@@ -17,7 +14,7 @@ import javax.servlet.http.HttpSession;
  * @author <a href='mailto:bdbvse@rit.edu'>Bryan Basham</a>
  * <p>
  * code from GetHomeRoute has been adapted for this, GetSignInRoute
- * @author: Mikayla Wishart 'mcw7246'
+ * @author Mikayla Wishart 'mcw7246'
  */
 public class GetSignInRoute implements Route
 {

@@ -1,16 +1,14 @@
 package com.webcheckers.ui;
 
-import static spark.Spark.*;
-
-import java.util.Objects;
-import java.util.logging.Logger;
-
-import com.google.gson.Gson;
-
 import com.webcheckers.application.GameManager;
 import com.webcheckers.application.PlayerLobby;
 import com.webcheckers.application.ReplayManager;
 import spark.TemplateEngine;
+
+import java.util.Objects;
+import java.util.logging.Logger;
+
+import static spark.Spark.*;
 
 
 /**
