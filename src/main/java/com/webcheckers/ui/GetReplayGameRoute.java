@@ -97,16 +97,8 @@ public class GetReplayGameRoute implements Route
       vm.put(RED_PLAYER, game.getRedPlayer());
       vm.put(WHITE_PLAYER, game.getWhitePlayer());
       vm.put(ACTIVE_COLOR, game.getColor());
-      if (game.getColor() == Piece.Color.RED)
-      {
-        BoardView bV = new BoardView(game.getBoard());
-        vm.put(GAME_BOARD_VIEW, bV);
-      } else
-      {
-        BoardView bV = new BoardView(game.getBoard());
-        bV.flip();
-        vm.put(GAME_BOARD_VIEW, bV);
-      }
+      BoardView bV = new BoardView(game.getBoard());
+      vm.put(GAME_BOARD_VIEW, bV);
       if (gameIDStr != null)
       {
         vm.put("message",

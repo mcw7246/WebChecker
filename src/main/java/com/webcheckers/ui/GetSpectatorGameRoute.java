@@ -56,8 +56,13 @@ public class GetSpectatorGameRoute implements Route
     if (spectator != null)
     {
       String redUsername = request.queryParams("watchGameRequest");
-      redUsername = redUsername.replace('-', ' ');
-      session.attribute(RED_PLAYER, redUsername);
+      if (redUsername != null)
+      {
+        redUsername = redUsername.replace('-', ' ');
+        session.attribute(RED_PLAYER, redUsername);
+      } else {
+        redUsername = session.attribute(RED_PLAYER);
+      }
       GameManager manager = session.attribute(GetHomeRoute.GAME_MANAGER_KEY);
       String CURRENT_PLAYER = "currentUser";
       vm.put(CURRENT_PLAYER, spectator.getUsername());
