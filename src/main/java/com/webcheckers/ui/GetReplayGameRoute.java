@@ -4,7 +4,6 @@ import com.google.gson.Gson;
 import com.webcheckers.application.ReplayManager;
 import com.webcheckers.model.BoardView;
 import com.webcheckers.model.CheckerGame;
-import com.webcheckers.model.Piece;
 import com.webcheckers.model.Player;
 import spark.*;
 
