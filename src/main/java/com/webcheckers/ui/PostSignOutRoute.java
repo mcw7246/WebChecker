@@ -51,6 +51,7 @@ public class PostSignOutRoute implements Route
         int gameID = manager.getGameID(player.getUsername());
         manager.setGameOver(gameID, player.getUsername() + " has resigned.");
       }
+      playerLobby.removeChallenger(player.getUsername());
       playerLobby.removePlayer(player);
       session.attribute(PLAYER_KEY, null);
     }
