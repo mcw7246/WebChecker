@@ -27,11 +27,8 @@ a web micro-framework.
 4. Start a game and begin playing.
 
 ## Known bugs and disclaimers
-1. If you sign out in the middle of a request being sent to you, it will say
-    request not sent 
-
-Document any known bug or nuisance.
-If any shortcomings, make clear what these are and where they are located.
+1. If you change themes during spectator mode and refresh the page, then
+   a username was not produced in the params and produces a null pointer.
 
 ## How to run the demo test boards
 If you challenge a player with one of these names, a game will start with a 
