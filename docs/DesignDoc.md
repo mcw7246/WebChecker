@@ -310,29 +310,24 @@ So far three stories have passed all unit testing. These stories are the
 > code coverage met your targets. If there are any anomalies, discuss
 > those._
 
-The strategy for unit testing was to find the most complete (or what we
- thought were complete) classes and begin testing with those. However
- , originally we struggled finding the correct area to test because unit
-  testing only acquires so much. Until we exported boards as JSON objects and
-   allowed them to be used in Unit Testing.
-
 The strategy that we used for unit testing was we found the largest classes
 and the largest methods within those classes and started there when creating
 unit testing. As we continued on and the code coverage started increasing, we
 started to tackle the smaller classes. The overall code coverage that we managed
-to achieve was a 90% which reached our ultimate goal, however the UI tier
-was not able to get to the 90% that we had hoped for each tier to achieve.
+to achieve was a 92% which reached our ultimate goal and we were able to get our 
+goal of 90% code coverage for each tier of the project.
 
 ![WebCheckers Final Code Coverage](final-code-coverage.PNG)
 
-As you can see, the UI tier did not quite meet the goal of 90% code coverage 
-that we were hoping to achieve. The model tier and application tier went well 
-beyond this goal. This was due to a lack of communication and commitment from
-some team members. It was also partially due to the fact that as classes
-were finished, team members were not writing the unit tests that needed to be
-made and writing them the last night became fairly difficult. Although we 
-had quite a bit of tests to write the last night before the final release, 
-we were able to get up to 87% code coverage on the UI tier.
+As you can see, the UI tier did meet the ultimate goal of 90% code coverage, 
+however some of the classes in this tier was not quite where we wanted them to
+be. As the team went on creating new classes, we were not keeping up with 
+unit testing on the previous classes. Once we were finished polishing off the 
+project, it became fairly difficult to create all the unit testing the night 
+before the final release. Although we were able to get the overall code coverage
+to the standard 90%, we were unable to get all classes to where we had hoped they
+would get to in terms of code coverage.
+
 ![WebCheckers UI Coverage Final](final-ui-code-coverage-april-20.PNG)
 
 We also were unable to create the code coverage for parts of the enhancements 
