@@ -26,7 +26,9 @@ This is a summary of the project.
 > important user group and user goals._
 
 To create a high quality WebCheckers product following the American Rules of
- Checkers in a web application to delight Gary and Ivana.
+ Checkers in a web application to delight Gary and Ivana. We were able to 
+ create a few different enhancements for the WebCheckers application including
+ Spectator Mode, Replay Mode and a change of theme to ducks.
 
 ### Glossary and Acronyms
 > _Provide a table of terms and acronyms._
@@ -237,20 +239,25 @@ The strategy for unit testing was to find the most complete (or what we
   testing only acquires so much. Until we exported boards as JSON objects and
    allowed them to be used in Unit Testing.
 
-![WebCheckers Current Code Coverage](current-test-coverage-06-apr.png)
+The strategy that we used for unit testing was we found the largest classes
+and the largest methods within those classes and started there when creating
+unit testing. As we continued on and the code coverage started increasing, we
+started to tackle the smaller classes. The overall code coverage that we managed
+to achieve was a 90% which reached our ultimate goal, however the UI tier
+was not able to get to the 90% that we had hoped for each tier to achieve.
 
-As you can see the UI did not meet that goal. The model did, the majority of
- the reason for this was a lack of communication and commitment for the team
-  this sprint. We lacked enough testing to truly iron out all the bugs and
-   make sure that we reached every line in the code. We were missing quite a
-    lot of Routes and when updating to the new sprint we didn't cover many
-     previous routes. UI is the biggest example of this.
-     
-![WebCheckers UI Coverage April](ui-coverage-06-apr.png)
+![WebCheckers Final Code Coverage](final-code-coverage.PNG)
 
-RequestGame, GetHome, RequestResponse, and PostSignIn no longer meet the mark
-. We
- also
- didn't
- have everyone on the team complete their parts. Such as BackupMove and
-  PostCheckTurn.
+As you can see, the UI tier did not quite meet the goal of 90% code coverage 
+that we were hoping to achieve. The model tier and application tier went well 
+beyond this goal. This was due to a lack of communication and commitment from
+some team members. It was also partially due to the fact that as classes
+were finished, team members were not writing the unit tests that needed to be
+made and writing them the last night became fairly difficult. Although we 
+had quite a bit of tests to write the last night before the final release, 
+we were able to get up to 87% code coverage on the UI tier.
+![WebCheckers UI Coverage Final](final-ui-code-coverage-april-20.PNG)
+
+We also were unable to create the code coverage for parts of the enhancements 
+given the time restriction that we had, we were able to get as much done as we
+could.
