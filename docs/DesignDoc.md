@@ -22,8 +22,6 @@ geometry: margin=1in
 This is a summary of the project.
 
 ### Purpose
-> _Provide a very brief statement about the project and the most
-> important user group and user goals._
 
 To create a high quality WebCheckers product following the American Rules of
  Checkers in a web application to delight Gary and Ivana. We were able to 
@@ -43,15 +41,12 @@ To create a high quality WebCheckers product following the American Rules of
 
 ## Requirements
 
-This section describes the features of the application.
-
 The webcheckers app follows the American rules of checkers. The main components
  for the Webcheckers implementation is the ability to sign-in as a player
  , start a game, and make a valid move. (For now).
 
 ### Definition of MVP
 
->
 The MVP is producing an application that implements the American rules of
  webcheckers. It allows players to sign-in and challenge each other to a game.
 
