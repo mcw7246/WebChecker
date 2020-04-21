@@ -36,6 +36,9 @@ To create a high quality WebCheckers product following the American Rules of
 | Term | Definition |
 |------|------------|
 | VO | Value Object |
+| MVP | Minimum Viable Product |
+| UI | User Interface|
+
 
 
 ## Requirements
@@ -112,56 +115,130 @@ Details of the components within these tiers are supplied below.
 This section describes the web interface flow; this is how the user views and interacts
 with the WebCheckers application.
 
-![Webcheckers Statechart](web-checkers-statechart.png)
+![Webcheckers Statechart](webcheckers-statechart-revised-04-21-20.png)
 
-The statechart above describes how the game is processed. There are two minor
- state charts that are included below that represent states that were
-  provided via the initial architecture, and not something produced by this
-   group.
-
-The User interface relies on 3 main pages. The Home page, which updates based
- on a player actively being signed in or not, the sign-in page, and the game
-  page. The home page displays a sign-in prompt if the player is not
-   currently stored in the http-session. From there the player can login by
-    submitting a post request to sign-in. This is processed and determines if
-     the player can be added to the lobby.
-
-Once in the lobby they can request to start a game with other players. They
- either receive or send a request. Depending on how the players respond it
-  either starts a game or resets the home screen where the player is simply
-   sitting in the lobby.
-   
-Then the game starts, during the start of the game there are 3 main states
-. Since these weren't produced by the group below is each provided statechart.
-
+The statechart above describes how the game is processed. We used several
+ smaller statecharts to define smaller essential components that are useful
+  during web-checkers, including the 2 (and a half) enhancements that we
+   included during the web-checkers latest release. 
+     
+The client can generate 4 different pages of content, which are generated
+ using a Freemarker template to update dynamically. The Home Page is seen
+  when a user first requests to visit the webpage, all other requests
+   redirect here if a player cannot be found in the session. Here a generated
+    *theme* is erased unless the session is found as well. The Home Page
+     displays how many users are logged in and how many games are currently
+      active. Using the navigation bar they can select to sign-in.
+      
+This generates a sign-in page, it determines whether a username inputted by
+ the user is valid, then will generate a Player Object and place them inside
+  the server's lobby. Then it will redirect the player home.
+  
+The player now sees a different home page, one where they can request to play
+ against another logged in player, or watch an active game. Additionally
+ , there is the ability to view all completed games by accessing a "replay
+  archive". In the nav-bar there is now the ability to redirect home, switch
+   the theme, or sign-out. Switching the theme updates the style.css (and
+    game.css) to use a different color and turns the page pink. Pressing it
+     again clears the change.
+     
+If the player chooses to watch a game or requests to play against another
+ player (who accepts) then they are redirected to the game page, which is
+  generated using the `game.ftl`. Here the active player has their pieces
+   located on the bottom of the page. And during a game there are 2 main
+    states.
+    
 ![Playing Turn Chart](playing-turn.png)
 
 There are states located inside the .ftl and javascript files
  for the client. When it's a player's turn they enter an empty state. They
   make moves and submit it for move validation. From their they can either
-   submit to confirm that their turn was valid or go back to a previous move.
+   submit to confirm that their turn was valid or go back to a previous move
+   . Additionally, the user can view the number of spectators who are
+    currently watching the game.
    
 ![Waiting Turn Chart](waiting-for-turn.png)
 
-When waiting for a turn the main thing that happens is a `POST /checkTurn
-` submitted to the server to determine the turn status has been updated.
+When it is not their turn, they are merely waiting for it. They have the
+ option to resign, (if they grow tired of waiting) or the webpage will update
+  ever 5 seconds until it is their turn again or the game ends.
+  
+If the player chooses to sign-out during an ongoing match, they will resign
+ the game.
+ 
+![Spectator Waiting for Turn Check](GameView-SpectatorMode-state-model.png)
+ 
+If a user, when on the home screen, chooses to watch another player then they
+ are directed to the game page again, but the view mode is now in *SPECTATOR*.
+  The page is updated every 5 seconds waiting for a turn to be updated.
+  
+Another possibility is for the user to enter a replay archive from the home
+ screen. By entering the archive all games that have been played before are
+  displayed. Selecting a game again loads the game page with the view mode as
+   *REPLAY*. Here the user can change the turn by either clicking next, or
+    previous. The buttons are grayed out when the user is at the first last
+     and first turn, respectively.
+  
+ 
 
 ### UI Tier
 
-The UI Tier deals with the requests dealt from the server. The server is the 
-system running the WebServer class. The user navigates to the address and a 
-`GET /home`. The only true option is to `GET /signin`. This HTTP request 
-sends to a new FTL page with a sign-in option. Once a username is type it is 
-submitted via a `POST /signin` route which is validated in different package.
+The UI Tier of the program handles client side requests to the server
+, routing them to wherever is necessary and returning a response to the user
+. When a user connects to the WebServer they issue a `GET` command for the
+ home page or home route. (If they issue any other `GET` or `POST` by
+  accident they are redirected here if they are not signed in.) The user then
+   has an option to `GET /signIn` which redirects them to a sign-in page.
+   
+The sign-in page will issue a `POST` when the user has entered a username to
+ a `POST /signIn` which the server will validate by accessing different tiers
+  of architecture. If valid it will reidrect back to the homepage.
+  
+Here there are three major features and one minor feature to the tier.
 
- If validated this Player attribute is held in the httpSession and the user 
- is redirected back to the Home screen. Here there are options to request a 
- game, which is handled through a `POST /requestgame`. There is no page so 
- the server takes the challenged player and updates their screen using the 
- `GET /home`. They answer with a `POST /requestresponse`.
+#####Starting and Playing a Game
+
+* One user must submit a `POST /requestGame` route to another player.
+* The user must accept using a `POST /requestResponse`.
+* If accepted both players are redirect to the game page which issues a `GET
+ /game` request.
+ * If it is the players turn they can make a move using a `POST /validateMove
+ `, but their move has not yet been submitted to the server. If the move is
+  invalid the move is rejected. 
+* They can back-up to the last valid move that was made using a `POST
+  /backupMove`
+ * They can submit their turn which is confirmed server side using a `POST
+  /submitTurn` route.
+ * If it is not the users turn then every 5 seconds a `POST /checkTurn
+ ` request is made to determine if the game should update the active game or
+  not.
+  * At anytime either player can end the game by resigning using the `POST
+   /resign` route. 
  
- Finally there is a navigation to the `GET /game` which is handled through 
- it's ftl imported from a model.
+#####Watching an Active Game
+
+* The active games are displayed in the designated section, clicking on the
+ 'Watch Game' button issues a `GET /spectator/game` with the name of the red
+  user as the parameters.
+* Every 5 seconds a `POST /spectator/checkTurn` is issued to see if a new
+ turn was made or not.
+ * The user can stop watching by issuing a `POST /spectator/stopWatching`
+
+#####Replaying an Already Played Game
+
+* The replay vault is accessed using a `GET /replay` route. Which generates a
+ replay page with all games played sorted by average winning percentage for
+  the players.
+* A game is accessed using a `GET /replay/game`.
+* The user watching can change with turn they are on by issuing a `POST
+ /replay/nextTurn` or a `POST /replay/previousTurn`.
+ * The user can stop watching the game and be redirected to the home page
+  with a `POST /replay/stopWatching`.
+
+#####Changing the Theme
+* A user can change the theme of the webpage by clicking the swich-theme
+ button in the navbar. This issues a `POST /changeTheme` request. This
+  updates the servers theme in the session and the generated .css files.
 
 ### Application Tier
 The Application Tier is responsible for the logic that flows through the application.
