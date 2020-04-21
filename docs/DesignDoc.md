@@ -36,6 +36,8 @@ To create a high quality WebCheckers product following the American Rules of
 | VO | Value Object |
 | MVP | Minimum Viable Product |
 | UI | User Interface|
+| CSS| Cascading Style Sheets |
+| FTL | Freemarker Template |
 
 
 
